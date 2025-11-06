@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arena Tarik Tambang - Informatika Style</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    @keyframes bounce { 
+        from{ transform:scale(1); } 
+        to{ transform:scale(1.2); } 
+    }
+    /* Kelas ini akan kita panggil dari JavaScript */
+    .rope-animation { 
+        animation: bounce 0.5s infinite alternate; 
+    }
+</style>
+
+<style>
+    /* ... (style @keyframes bounce yang sudah ada) ... */
+
+    /* Tambahkan keyframes untuk fade-in */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+</style>
+
+<style>
+body {
+  --s: 100px; /* control the size */
+  --c1: #efefef;
+  --c2: #e9e9e9;
+  
+  --_s: calc(2*var(--s)) calc(2*var(--s));
+  --_g: var(--_s) conic-gradient(at 40% 40%,#0000 75%,var(--c1) 0);
+  --_p: var(--_s) conic-gradient(at 20% 20%,#0000 75%,var(--c2) 0);
+  background:
+    calc( .9*var(--s)) calc( .9*var(--s))/var(--_p),
+    calc(-.1*var(--s)) calc(-.1*var(--s))/var(--_p),
+    calc( .7*var(--s)) calc( .7*var(--s))/var(--_g),
+    calc(-.3*var(--s)) calc(-.3*var(--s))/var(--_g),
+    conic-gradient(from 90deg at 20% 20%,var(--c2) 25%,var(--c1) 0) 
+    0 0/var(--s) var(--s);
+  animation: m 4.1s infinite;
+}
+@keyframes m {
+  0% {
+    background-position: 
+    calc( .9*var(--s)) calc( .9*var(--s)),
+    calc(-.1*var(--s)) calc(-.1*var(--s)),
+    calc( .7*var(--s)) calc( .7*var(--s)),
+    calc(-.3*var(--s)) calc(-.3*var(--s)),0 0
+  }
+  25% {
+    background-position: 
+    calc(1.9*var(--s)) calc( .9*var(--s)),
+    calc(-1.1*var(--s)) calc(-.1*var(--s)),
+    calc(1.7*var(--s)) calc( .7*var(--s)),
+    calc(-1.3*var(--s)) calc(-.3*var(--s)),0 0
+  }
+  50% {
+    background-position: 
+    calc(1.9*var(--s)) calc(-.1*var(--s)),
+    calc(-1.1*var(--s)) calc( .9*var(--s)),
+    calc(1.7*var(--s)) calc(-.3*var(--s)),
+    calc(-1.3*var(--s)) calc( .7*var(--s)),0 0
+  }
+  75% {
+    background-position: 
+    calc(2.9*var(--s)) calc(-.1*var(--s)),
+    calc(-2.1*var(--s)) calc( .9*var(--s)),
+    calc(2.7*var(--s)) calc(-.3*var(--s)),
+    calc(-2.3*var(--s)) calc( .7*var(--s)),0 0
+  }
+  100% {
+    background-position: 
+    calc(2.9*var(--s)) calc(-1.1*var(--s)),
+    calc(-2.1*var(--s)) calc(1.9*var(--s)),
+    calc(2.7*var(--s)) calc(-1.3*var(--s)),
+    calc(-2.3*var(--s)) calc(1.7*var(--s)),0 0
+  }
+}
+</style>
+
+</head>
+<body class="font-sans bg-slate-100 text-center p-5 min-h-screen">
+
+<div id="splash-screen" class="fixed inset-0 bg-gradient-to-br from-blue-700 to-indigo-900 flex flex-col items-center justify-center text-white z-[200] cursor-pointer opacity-0 transition-opacity duration-1000 ease-out">
+    <div class="animate-bounce-in text-center">
+        <h1 class="text-8xl md:text-9xl font-extrabold mb-4 drop-shadow-lg">ArTTiS</h1>
+        
+        <p class="text-3xl md:text-4xl font-semibold mb-4 tracking-wide">Arena Tarik Tambang - Informatika Style</p>
+        <br>
+        <p class="inline-block bg-red-600 text-white text-lg font-medium px-4 py-1 rounded-lg shadow-md">
+            by Dimas BN
+        </p>
+        <br><br><br><br>
+        <p id="splash-countdown" class="text-6xl font-bold mt-4 text-yellow-300"></p>
+    </div>
+</div>
+
+<style>
+    /* Keyframes untuk animasi "bounce-in" kustom */
+    @keyframes bounceIn {
+        0%, 20%, 40%, 60%, 80%, 100% {
+            transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        0% {
+            opacity: 0;
+            transform: scale3d(0.3, 0.3, 0.3);
+        }
+        20% {
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+        40% {
+            transform: scale3d(0.9, 0.9, 0.9);
+        }
+        60% {
+            opacity: 1;
+            transform: scale3d(1.03, 1.03, 1.03);
+        }
+        80% {
+            transform: scale3d(0.97, 0.97, 0.97);
+        }
+        100% {
+            opacity: 1;
+            transform: scale3d(1, 1, 1);
+        }
+    }
+    .animate-bounce-in {
+        animation: bounceIn 1.2s ease-out forwards;
+    }
+</style>
+
+    <h1 class="text-5xl font-bold text-slate-700 mb-2"><em>ArTTiS</em></h1>
+    <h2 class="text-2xl text-gray-500"><strong>Arena Tarik Tambang - informatika Style</strong></h2>
+
+<div class="flex justify-between items-center my-5 mx-auto w-full max-w-6xl px-4">
+    <div id="team-a" class="text-red-500 text-2xl md:text-4xl font-bold text-left flex-1 shrink-0">TIM A (Merah)</div>
+    <div id="timer" class="text-5xl md:text-7xl font-bold text-green-600 text-center shrink-0 mx-4">00</div>
+    <div id="team-b" class="text-blue-500 text-2xl md:text-4xl font-bold text-right flex-1 shrink-0">TIM B (Biru)</div>
+</div>
+
+<div class="flex w-[95%] max-w-6xl mx-auto my-1 border-4 border-gray-600 rounded-lg bg-white overflow-hidden shadow-inner" id="arena">
+    </div>
+
+<div id="upload-box" class="bg-white p-5 rounded-lg shadow-md w-[95%] max-w-4xl mx-auto my-5">
+    <p class="text-gray-500 font-semibold mb-3 text-lg"><b>Unggah Soal (format file .json)</b></p>
+    <input type="file" id="fileInput" accept=".json" class="block w-full max-w-md mx-auto text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none
+        file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold
+        file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+    
+    <button id="start-btn" class="hidden py-2 px-6 text-lg font-medium rounded-lg bg-green-600 text-white cursor-pointer mt-4 transition-colors hover:bg-green-700">
+        Mulai Kompetisi
+    </button>
+</div>
+
+<div id="format-guide" class="w-[95%] max-w-3xl mx-auto my-6 rounded-xl overflow-hidden shadow-xl bg-white font-sans">
+    
+    <div id="guide-header" onclick="toggleGuide()" class="bg-gradient-to-r from-slate-700 to-slate-600 text-white p-4 cursor-pointer flex justify-between items-center font-bold text-lg select-none">
+        <span>Cara Membuat File Soal (format file .json)</span>
+        <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+    </div>
+
+    <div id="guide-content" class="px-5 max-h-0 overflow-hidden transition-[max-height,padding] duration-400 ease-in-out bg-gradient-to-r from-blue-50 to-blue-100">
+        <div class="py-5 text-left">
+            <p class="mb-2"><strong>1. Buat file teks baru → simpan dengan nama </strong><code class="bg-white p-1 px-2 rounded-md font-mono text-sm shadow-sm border border-gray-200">soal.json</code></p>
+            <p class="mb-2"><strong>2. Salin kode di bawah ini → tempel ke file tersebut</strong></p>
+            
+            <pre id="json-example" class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto text-sm border border-gray-700 text-left my-4">
+{
+  <span class="text-cyan-400">"easy"</span>: [
+    {
+      <span class="text-green-400">"q"</span>: <span class="text-orange-400">"Ibukota Indonesia adalah ..."</span>,
+      <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"Jakarta"</span>, <span class="text-orange-400">"Surabaya"</span>, <span class="text-orange-400">"Bandung"</span>, <span class="text-orange-400">"Medan"</span>],
+      <span class="text-green-400">"c"</span>: <span class="text-purple-400">0</span>
+    },
+    {
+      <span class="text-green-400">"q"</span>: <span class="text-orange-400">"1 + 1 = ?"</span>,
+      <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"1"</span>, <span class="text-orange-400">"2"</span>, <span class="text-orange-400">"3"</span>, <span class="text-orange-400">"4"</span>],
+      <span class="text-green-400">"c"</span>: <span class="text-purple-400">1</span>
+    }
+  ],
+  <span class="text-cyan-400">"hard"</span>: [
+    {
+      <span class="text-green-400">"q"</span>: <span class="text-orange-400">"Hasil dari 12 × 15 = ?"</span>,
+      <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"160"</span>, <span class="text-orange-400">"170"</span>, <span class="text-orange-400">"180"</span>, <span class="text-orange-400">"190"</span>],
+      <span class="text-green-400">"c"</span>: <span class="text-purple-400">2</span>
+    }
+  ]
+}</pre>
+
+            <p><strong>Penjelasan:</strong></p>
+            <ul class="text-left list-disc list-inside max-w-2xl mx-auto mb-4 space-y-1">
+                <li><code>easy</code> → soal mudah, benar = <b>1 langkah</b></li>
+                <li><code>hard</code> → soal sulit, benar = <b>2 langkah</b></li>
+                <li><code>q</code> → pertanyaan</li>
+                <li><code>o</code> → 4 pilihan jawaban (A B C D)</li>
+                <li><code>c</code> → indeks jawaban benar: <b>0=A, 1=B, 2=C, 3=D</b></li>
+            </ul>
+
+            <div class="text-center mt-5">
+                <button onclick="downloadContoh()" class="py-3 px-8 text-base bg-green-600 text-white border-none rounded-lg cursor-pointer transition-colors hover:bg-green-700 active:bg-green-800">
+                    <strong>Download Contoh File .json</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="quiz-container" class="hidden bg-white p-5 rounded-lg shadow-lg w-full mx-auto my-5 px-6 md:px-10">
+    <div id="difficulty-indicator" class="font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block">
+        </div>
+    <div id="question-text" class="text-2xl font-bold mb-5 text-gray-800">
+        </div>
+    <div id="options" class="">
+        </div>
+    <div id="feedback-message" class="text-xl font-medium mt-4 hidden">
+        </div>
+</div>
+
+<div id="win-message" class="fixed inset-0 w-full h-full bg-black/85 text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
+    <span id="winner-text"></span>
+    <button onclick="resetGame()" class="text-xl mt-6 py-4 px-8 bg-green-600 border-none rounded-lg text-white cursor-pointer transition-colors hover:bg-green-700 active:bg-green-800">
+        Tanding Lagi
+    </button>
+</div>
+
+<div id="rules-modal" class="fixed inset-0 w-full h-full bg-black/90 text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
+    <h2 class="text-3xl md:text-5xl font-bold mb-5 text-green-500 text-center">PERATURAN PERMAINAN</h2>
+    <ul class="list-disc list-inside space-y-3 text-lg md:text-2xl leading-relaxed">
+        <li>Dua tim akan saling bertanding menjawab soal pilihan ganda</li>
+        <li>Setiap jawaban benar = tarik 1 langkah (atau 2 langkah untuk soal sulit)</li>
+        <li>Setiap jawaban salah = lawan maju 1 langkah</li>
+        <li>Waktu menjawab tiap soal hanya 10 detik</li>
+        <li>Pemenang ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya</li>
+    </ul>
+    <button id="close-rules" class="mt-8 py-4 px-10 text-xl md:text-2xl bg-green-600 text-white border-none rounded-lg cursor-pointer transition-colors hover:bg-green-700 active:bg-green-800">
+        Saya Mengerti, Mulai!
+    </button>
+</div>
+
+
+<script>
+// Toggle buka/tutup panel (Fungsi ini 100% sama, hanya target ID ikonnya diubah)
+function toggleGuide() {
+    const content = document.getElementById('guide-content');
+    const icon = document.getElementById('toggle-icon'); // Target <svg>
+    const header = document.getElementById('guide-header');
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        // Tutup
+        content.style.maxHeight = '0';
+        content.style.padding = '0 20px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        // Buka
+        content.style.maxHeight = content.scrollHeight + 50 + 'px';
+        content.style.padding = '20px'; // Padding asli dari inline style
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// Download contoh JSON (Fungsi ini 100% sama)
+function downloadContoh() {
+    const contohJSON = {
+        easy: [
+            { q: "Ibukota Indonesia adalah ...", o: ["Jakarta","Surabaya","Bandung","Medan"], c: 0 },
+            { q: "Warna bendera Indonesia?", o: ["Merah-Putih","Merah-Hitam","Biru-Putih","Hijau-Kuning"], c: 0 }
+        ],
+        hard: [
+            { q: "Luas persegi dengan sisi 8 cm adalah?", o: ["48 cm²","56 cm²","64 cm²","72 cm²"], c: 2 }
+        ]
+    };
+    const dataStr = JSON.stringify(contohJSON, null, 2);
+    const blob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'contoh-soal-tarik-tambang.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// === SCRIPT GAME ===
+const arena = document.getElementById('arena');
+const questionText = document.getElementById('question-text');
+const optionsDiv = document.getElementById('options');
+const feedback = document.getElementById('feedback-message');
+const diff = document.getElementById('difficulty-indicator');
+const quiz = document.getElementById('quiz-container');
+const timerEl = document.getElementById('timer');
+const winBox = document.getElementById('win-message');
+const winnerText = document.getElementById('winner-text');
+const startBtn = document.getElementById('start-btn');
+const rulesModal = document.getElementById('rules-modal');
+const closeRulesBtn = document.getElementById('close-rules');
+
+let easy=[],hard=[],shuffledEasy=[],shuffledHard=[];
+let iE=0,iH=0,rope=10,active=true,questionActive=true;
+let currentQ={},difficulty="easy";
+let timeLeft=0,timerInt;
+const QUESTION_TIME=10; // detik per soal
+
+function openGoogleReview() {
+    // Ganti URL ini dengan URL Google Maps Anda
+    const reviewUrl = 'https://g.page/r/CRZT2jOWS46AEB0/review'; 
+    window.open(reviewUrl, '_blank');
+}
+
+function createArena(){
+    arena.innerHTML='';
+    for(let i=0;i<21;i++){
+        const s=document.createElement('div');
+        // MODIFIKASI: Menggunakan kelas Tailwind
+        s.className = 'flex-1 h-20 md:h-24 border-r-2 border-dotted border-gray-300 flex justify-center items-center text-3xl';
+        
+        if(i<10) s.classList.add('bg-red-50'); // win-zone-a
+        else if(i>10) s.classList.add('bg-blue-50'); // win-zone-b
+        else s.classList.add('bg-yellow-100'); // center
+        
+        if(i === 20) s.classList.add('border-r-0'); // Menggantikan :last-child
+        
+        s.dataset.step=i;
+        arena.appendChild(s);
+    }
+}
+function updateRope(){
+    document.querySelectorAll('#arena > div').forEach(s=>s.innerHTML=''); // <-- INI PERBAIKANNYA
+    const e=document.querySelector(`[data-step="${rope}"]`);
+    // MODIFIKASI: Menggunakan kelas Tailwind (text-amber-900) dan kelas animasi kustom (rope-animation)
+    if(e) e.innerHTML='<span class="rope-animation text-amber-900 text-4xl">🪢</span>';
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
+function startTimer(){
+    clearInterval(timerInt);
+    timeLeft=QUESTION_TIME;
+    timerEl.textContent=timeLeft<10?'0'+timeLeft:timeLeft;
+    timerInt=setInterval(()=>{
+        timeLeft--;
+        timerEl.textContent=timeLeft<10?'0'+timeLeft:timeLeft;
+        if(timeLeft<=0){
+            clearInterval(timerInt);
+            playSound('timeout');
+            feedback.textContent='Waktu Habis!';
+            // MODIFIKASI: Menggunakan classList untuk show/hide/style
+            feedback.className='text-3xl font-bold mt-4 block text-red-700'; // Reset kelas dan tampilkan (Lebih besar dan tebal)
+            setTimeout(()=>{nextQuestion();},1200);
+        }
+    },1000);
+}
+function loadQuestion(){
+    const hardChance=Math.random()<0.3;
+    currentQ=hardChance && iH<shuffledHard.length?shuffledEasy[iH++]:shuffledEasy[iE++%shuffledEasy.length];
+    difficulty=hardChance?'hard':'easy';
+    
+    diff.textContent=hardChance?'SOAL SULIT (2 Langkah)':'SOAL MUDAH (1 Langkah)';
+    // MODIFIKASI: Menggunakan kelas Tailwind
+    diff.className = 'font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block';
+    diff.classList.add(hardChance ? 'bg-red-500' : 'bg-green-500');
+    
+    questionText.textContent=currentQ.q;
+    optionsDiv.innerHTML='';
+    // MODIFIKASI: Menggunakan classList
+    feedback.classList.add('hidden'); // Sembunyikan feedback
+    feedback.classList.remove('block', 'text-green-700', 'text-red-700');
+
+    const labels=['A','B','C','D'];
+    currentQ.o.forEach((opt,i)=>{
+        // MODIFIKASI: Menggunakan kelas Tailwind untuk layout dan tombol
+        const row=document.createElement('div');
+        row.className='grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_4fr_1fr] items-center gap-3 mb-3';
+        
+        const bA=document.createElement('button');
+        const bB=document.createElement('button');
+        const t=document.createElement('div');
+        
+        // Kelas tombol modern dengan hover/active transition
+        const baseBtnClasses = 'py-4 px-2 text-lg font-semibold rounded-lg text-white cursor-pointer transition-transform duration-150 ease-in-out hover:scale-105 active:scale-95';
+        
+        bA.className = baseBtnClasses + ' bg-red-600';
+        bB.className = baseBtnClasses + ' bg-blue-600';
+        
+        // Kelas teks opsi
+        t.className = 'bg-gray-100 border-2 border-gray-200 rounded-lg p-3 text-center text-xl font-medium text-gray-800';
+        t.textContent=opt;
+        
+        bA.textContent=labels[i];
+        bB.textContent=labels[i];
+        
+        bA.onclick=()=>handleAnswer('A',i);
+        bB.onclick=()=>handleAnswer('B',i);
+        
+        row.append(bA,t,bB);
+        optionsDiv.appendChild(row);
+    });
+    startTimer();
+}
+function handleAnswer(team,i){
+    if(!active||!questionActive)return;
+    questionActive=false;
+    clearInterval(timerInt);
+    const correct=currentQ.c;
+    
+    // MODIFIKASI: Reset kelas feedback sebelum menambahkan yang baru
+    feedback.className = 'text-3xl font-bold mt-4 block'; // Tampilkan (Lebih besar dan tebal)
+    
+    if(i===correct){
+        playSound('correct');
+        const step=difficulty==='hard'?2:1;
+        rope += team==='A' ? -step : step;
+        feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Benar! +${step} langkah`;
+        feedback.classList.add('text-green-700'); // Kelas correct
+    } else {
+        playSound('wrong');
+        rope += team==='A' ? 1 : -1;
+        feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Salah! Lawan maju 1 langkah`;
+        feedback.classList.add('text-red-700'); // Kelas incorrect
+    }
+    
+    updateRope();
+    checkWin();
+    setTimeout(()=>nextQuestion(),1500);
+}
+function checkWin(){
+    if(rope <= 0) win('TIM A');
+    else if(rope >= 20) win('TIM B');
+}
+function nextQuestion(){
+    // MODIFIKASI: Menggunakan classList
+    feedback.classList.add('hidden');
+    feedback.classList.remove('block', 'text-green-700', 'text-red-700');
+    
+    questionActive=true;
+    if(rope <= 0 || rope >= 20) return;
+    loadQuestion();
+}
+function win(t){
+    active=false;
+    clearInterval(timerInt);
+    winnerText.textContent=`${t} MENANG 🎉`;
+    // MODIFIKASI: Menggunakan classList
+    winBox.classList.remove('hidden');
+    winBox.classList.add('flex'); // Tampilkan sebagai flex
+}
+function resetGame(){
+    // MODIFIKASI: Menggunakan classList
+    winBox.classList.add('hidden');
+    winBox.classList.remove('flex');
+    
+    rope=10; active=true; questionActive=true;
+    shuffledEasy=[...easy]; shuffle(shuffledEasy);
+    shuffledHard=[...hard]; shuffle(shuffledHard);
+    iE=iH=0;
+    updateRope();
+    loadQuestion();
+    
+    quiz.classList.remove('hidden'); // Tampilkan kuis
+    
+    const guide = document.getElementById('format-guide');
+    if (guide) guide.classList.add('hidden'); // Sembunyikan panduan
+}
+function playSound(type){
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    if(type==='correct') o.frequency.value=800;
+    else if(type==='wrong') o.frequency.value=300;
+    else if(type==='timeout') o.frequency.value=500;
+    g.gain.setValueAtTime(0.2,ctx.currentTime);
+    o.start(); o.stop(ctx.currentTime+0.3);
+}
+
+/* Upload & Start */
+document.getElementById('fileInput').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=function(evt){
+        try{
+            const data=JSON.parse(evt.target.result);
+            easy=data.easy||[]; hard=data.hard||[];
+            if(easy.length === 0 && hard.length === 0){
+                alert('File JSON kosong atau tidak ada soal!');
+                return;
+            }
+            alert('Soal berhasil dimuat!');
+            // MODIFIKASI: Menggunakan classList
+            rulesModal.classList.remove('hidden');
+            rulesModal.classList.add('flex'); // Tampilkan modal peraturan
+        }catch(err){
+            alert('Format file salah! Pastikan JSON valid.');
+        }
+    };
+    r.readAsText(f);
+});
+
+// Tutup peraturan dan mulai game
+closeRulesBtn.addEventListener('click', () => {
+    // MODIFIKASI: Menggunakan classList
+    rulesModal.classList.add('hidden');
+    rulesModal.classList.remove('flex');
+    
+    document.getElementById('upload-box').classList.add('hidden');
+    document.getElementById('format-guide').classList.add('hidden');
+    
+    quiz.classList.remove('hidden');
+    
+    resetGame();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const splashScreen = document.getElementById('splash-screen');
+    // 1. Ambil elemen countdown
+    const countdownEl = document.getElementById('splash-countdown');
+    let countdownInterval; // Variabel untuk menyimpan interval
+
+    // Tampilkan splash screen dengan fade-in
+    setTimeout(() => {
+        splashScreen.style.opacity = '1';
+    }, 100);
+
+    createArena();
+    updateRope();
+
+    // --- 2. Mulai Logika Hitung Mundur ---
+    let count = 5; // Mulai hitungan dari 3
+
+    // Atur interval untuk berjalan setiap 1 detik
+    countdownInterval = setInterval(() => {
+        if (count > 0) {
+            countdownEl.textContent = count; // Tampilkan angka 5, 4, 3, 2, 1
+            count--;
+        } else if (count === 0) {
+            countdownEl.textContent = "GasszZZ!!"; // Tepat sebelum hilang, tampilkan "Mulai!"
+            count--;
+        } else {
+            // Hentikan interval setelah "Mulai!" tampil
+            clearInterval(countdownInterval);
+        }
+    }, 1000); // 1000ms = 1 detik
+
+    // Fungsi untuk menyembunyikan splash screen
+    const hideSplashScreen = () => {
+        // 3. Hentikan interval jika user klik lebih cepat
+        clearInterval(countdownInterval); 
+
+        splashScreen.style.opacity = '0';
+        setTimeout(() => {
+            splashScreen.remove(); 
+            document.body.classList.remove('overflow-hidden');
+        }, 2500); 
+    };
+
+    // Sembunyikan splash screen setelah 8 detik (sinkron dengan hitungan 5, 4, 3, 2, 1, Monggo!)
+    setTimeout(hideSplashScreen, 8000);
+
+    // Sembunyikan splash screen saat di-klik
+    splashScreen.addEventListener('click', hideSplashScreen);
+});
+</script>
+
+</body>
+</html>
