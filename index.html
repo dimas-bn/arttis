@@ -276,6 +276,24 @@ body{
     </div>
 </div>
 
+<div id="preview-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[105] p-5">
+    <div class="panel rounded-xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="p-5 border-b border-[color:rgba(139,92,246,0.25)]">
+            <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🔍 PREVIEW SOAL</h2>
+            <p id="preview-summary" class="text-sm text-slate-400 font-mono mt-1"></p>
+        </div>
+        <div id="preview-list" class="overflow-y-auto p-5 space-y-3 text-left"></div>
+        <div class="p-4 border-t border-[color:rgba(139,92,246,0.25)] flex flex-wrap justify-end gap-3">
+            <button onclick="closePreview()" class="btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-white">
+                Batal
+            </button>
+            <button onclick="confirmPreview()" class="btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_20px_rgba(52,235,158,.4)]">
+                Lanjutkan ke Aturan Main →
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="quiz-container" class="hidden panel p-5 rounded-xl w-full mx-auto my-5 px-6 md:px-10 max-w-6xl">
     <div id="difficulty-indicator" class="font-display font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block">
         </div>
@@ -411,6 +429,9 @@ const historyModal = document.getElementById('history-modal');
 const historyList = document.getElementById('history-list');
 const winStats = document.getElementById('win-stats');
 const rulesDurationText = document.getElementById('rules-duration-text');
+const previewModal = document.getElementById('preview-modal');
+const previewList = document.getElementById('preview-list');
+const previewSummary = document.getElementById('preview-summary');
 
 const BANK_KEY = 'arttis_bank_soal';
 const HISTORY_KEY = 'arttis_riwayat';
@@ -455,8 +476,7 @@ loadBankBtn.addEventListener('click', () => {
     easy = data.easy || [];
     hard = data.hard || [];
     currentMapel = name;
-    rulesModal.classList.remove('hidden');
-    rulesModal.classList.add('flex');
+    openPreview();
 });
 deleteBankBtn.addEventListener('click', () => {
     const name = bankSelect.value;
@@ -467,6 +487,50 @@ deleteBankBtn.addEventListener('click', () => {
     saveBank(bank);
     refreshBankSelect();
 });
+
+/* --- Preview Soal --- */
+function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+}
+function renderPreviewGroup(list, label, badgeClass){
+    if(!list || list.length===0) return '';
+    return list.map((item, idx) => {
+        const opts = (item.o||[]).map((opt,i)=>{
+            const isCorrect = i === item.c;
+            return `<li class="${isCorrect ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${['A','B','C','D'][i]}. ${escapeHtml(opt)} ${isCorrect ? '✔' : ''}</li>`;
+        }).join('');
+        return `
+        <div class="bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.25)] rounded-lg p-4">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="font-display text-xs font-bold px-2.5 py-1 rounded-full text-white ${badgeClass}">${label} #${idx+1}</span>
+            </div>
+            <p class="font-semibold text-slate-100 mb-2">${escapeHtml(item.q)}</p>
+            <ul class="text-sm space-y-1 font-mono">${opts}</ul>
+        </div>`;
+    }).join('');
+}
+function openPreview(){
+    previewSummary.textContent = `${easy.length} soal mudah • ${hard.length} soal sulit • Total ${easy.length + hard.length} soal`;
+    previewList.innerHTML =
+        renderPreviewGroup(easy, 'MUDAH', 'bg-gradient-to-r from-emerald-500 to-teal-500') +
+        renderPreviewGroup(hard, 'SULIT', 'bg-gradient-to-r from-[color:var(--team-a)] to-rose-600');
+    if(easy.length===0 && hard.length===0){
+        previewList.innerHTML = '<p class="text-slate-400 text-center py-6">Tidak ada soal untuk ditampilkan.</p>';
+    }
+    previewModal.classList.remove('hidden');
+    previewModal.classList.add('flex');
+}
+function closePreview(){
+    previewModal.classList.add('hidden');
+    previewModal.classList.remove('flex');
+}
+function confirmPreview(){
+    closePreview();
+    rulesModal.classList.remove('hidden');
+    rulesModal.classList.add('flex');
+}
 
 /* --- Riwayat Pertandingan (localStorage) --- */
 function getHistory(){
@@ -755,8 +819,7 @@ document.getElementById('fileInput').addEventListener('change',e=>{
             }
 
             alert('Soal berhasil dimuat!');
-            rulesModal.classList.remove('hidden');
-            rulesModal.classList.add('flex'); // Tampilkan modal peraturan
+            openPreview();
         }catch(err){
             alert('Format file salah! Pastikan JSON valid.');
         }
