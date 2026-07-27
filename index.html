@@ -3,184 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arena Tarik Tambang - Informatika Style</title>
+<title>ArTTiS — Arena Tarik Tambang Informatika</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-    @keyframes bounce { 
-        from{ transform:scale(1); } 
-        to{ transform:scale(1.2); } 
-    }
-    /* Kelas ini akan kita panggil dari JavaScript */
-    .rope-animation { 
-        animation: bounce 0.5s infinite alternate; 
-    }
-</style>
-
-<style>
-    /* ... (style @keyframes bounce yang sudah ada) ... */
-
-    /* Tambahkan keyframes untuk fade-in */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    .animate-fade-in {
-        animation: fadeIn 0.8s ease-out forwards;
-    }
-</style>
-
-<style>
-body {
-  --s: 100px; /* control the size */
-  --c1: #efefef;
-  --c2: #e9e9e9;
-  
-  --_s: calc(2*var(--s)) calc(2*var(--s));
-  --_g: var(--_s) conic-gradient(at 40% 40%,#0000 75%,var(--c1) 0);
-  --_p: var(--_s) conic-gradient(at 20% 20%,#0000 75%,var(--c2) 0);
-  background:
-    calc( .9*var(--s)) calc( .9*var(--s))/var(--_p),
-    calc(-.1*var(--s)) calc(-.1*var(--s))/var(--_p),
-    calc( .7*var(--s)) calc( .7*var(--s))/var(--_g),
-    calc(-.3*var(--s)) calc(-.3*var(--s))/var(--_g),
-    conic-gradient(from 90deg at 20% 20%,var(--c2) 25%,var(--c1) 0) 
-    0 0/var(--s) var(--s);
-  animation: m 4.1s infinite;
+:root{
+    --void: #05060d;
+    --panel: #0c1122;
+    --panel-2: #10182c;
+    --line: rgba(94, 234, 212, 0.12);
+    --team-a: #ff3b6e;
+    --team-a-glow: rgba(255, 59, 110, 0.55);
+    --team-b: #22d3ee;
+    --team-b-glow: rgba(34, 211, 238, 0.55);
+    --violet: #8b5cf6;
+    --violet-glow: rgba(139, 92, 246, 0.5);
+    --ink: #e7ecfb;
+    --ink-dim: #8a93b3;
+    --ok: #34eb9e;
+    --warn: #fbbf24;
 }
-@keyframes m {
-  0% {
-    background-position: 
-    calc( .9*var(--s)) calc( .9*var(--s)),
-    calc(-.1*var(--s)) calc(-.1*var(--s)),
-    calc( .7*var(--s)) calc( .7*var(--s)),
-    calc(-.3*var(--s)) calc(-.3*var(--s)),0 0
-  }
-  25% {
-    background-position: 
-    calc(1.9*var(--s)) calc( .9*var(--s)),
-    calc(-1.1*var(--s)) calc(-.1*var(--s)),
-    calc(1.7*var(--s)) calc( .7*var(--s)),
-    calc(-1.3*var(--s)) calc(-.3*var(--s)),0 0
-  }
-  50% {
-    background-position: 
-    calc(1.9*var(--s)) calc(-.1*var(--s)),
-    calc(-1.1*var(--s)) calc( .9*var(--s)),
-    calc(1.7*var(--s)) calc(-.3*var(--s)),
-    calc(-1.3*var(--s)) calc( .7*var(--s)),0 0
-  }
-  75% {
-    background-position: 
-    calc(2.9*var(--s)) calc(-.1*var(--s)),
-    calc(-2.1*var(--s)) calc( .9*var(--s)),
-    calc(2.7*var(--s)) calc(-.3*var(--s)),
-    calc(-2.3*var(--s)) calc( .7*var(--s)),0 0
-  }
-  100% {
-    background-position: 
-    calc(2.9*var(--s)) calc(-1.1*var(--s)),
-    calc(-2.1*var(--s)) calc(1.9*var(--s)),
-    calc(2.7*var(--s)) calc(-1.3*var(--s)),
-    calc(-2.3*var(--s)) calc(1.7*var(--s)),0 0
-  }
+*{ scrollbar-color: var(--violet) var(--panel); }
+body{
+    font-family:'Rajdhani',sans-serif;
+    background: var(--void);
+    color: var(--ink);
+    position: relative;
+    overflow-x: hidden;
 }
+.font-display{ font-family:'Orbitron',sans-serif; }
+.font-mono{ font-family:'JetBrains Mono',monospace; }
+
+/* Animated circuit-grid backdrop */
+.grid-bg{
+    position: fixed; inset: 0; z-index: -2;
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 42px 42px;
+    animation: gridPan 18s linear infinite;
+}
+@keyframes gridPan{
+    from{ background-position: 0 0, 0 0; }
+    to{ background-position: 42px 84px, 42px 84px; }
+}
+.glow-orb{
+    position: fixed; z-index: -1; border-radius: 9999px; filter: blur(90px); opacity: .35;
+    pointer-events: none;
+}
+.orb-a{ width: 480px; height: 480px; top: -160px; left: -160px; background: var(--team-a); }
+.orb-b{ width: 480px; height: 480px; bottom: -160px; right: -160px; background: var(--team-b); }
+.orb-v{ width: 380px; height: 380px; top: 40%; left: 50%; transform: translate(-50%,-50%); background: var(--violet); opacity: .18; }
+
+/* Glass panel */
+.panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)), var(--panel);
+    border: 1px solid rgba(139,92,246,0.25);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset, 0 20px 60px -20px rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+}
+.neon-text-a{ color: var(--team-a); text-shadow: 0 0 12px var(--team-a-glow), 0 0 30px var(--team-a-glow); }
+.neon-text-b{ color: var(--team-b); text-shadow: 0 0 12px var(--team-b-glow), 0 0 30px var(--team-b-glow); }
+.neon-text-v{ color: #c4b5fd; text-shadow: 0 0 14px var(--violet-glow); }
+
+.btn-neon{
+    position: relative;
+    font-family:'Orbitron',sans-serif;
+    letter-spacing: .04em;
+    transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-neon:hover{ transform: translateY(-2px) scale(1.02); filter: brightness(1.1); }
+.btn-neon:active{ transform: translateY(0) scale(.97); }
+
+@keyframes bounce {
+    from{ transform:scale(1); filter: drop-shadow(0 0 6px rgba(251,191,36,.6)); }
+    to{ transform:scale(1.25); filter: drop-shadow(0 0 18px rgba(251,191,36,.95)); }
+}
+.rope-animation { animation: bounce 0.5s infinite alternate; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+
+@keyframes bounceIn {
+    0%,20%,40%,60%,80%,100%{ transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+    0%{ opacity: 0; transform: scale3d(0.3,0.3,0.3); }
+    20%{ transform: scale3d(1.1,1.1,1.1); }
+    40%{ transform: scale3d(0.9,0.9,0.9); }
+    60%{ opacity: 1; transform: scale3d(1.03,1.03,1.03); }
+    80%{ transform: scale3d(0.97,0.97,0.97); }
+    100%{ opacity: 1; transform: scale3d(1,1,1); }
+}
+.animate-bounce-in { animation: bounceIn 1.2s ease-out forwards; }
+
+@keyframes scanline{
+    0%{ transform: translateY(-100%); }
+    100%{ transform: translateY(100vh); }
+}
+.scanline{
+    position: absolute; left:0; right:0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(139,92,246,.9), transparent);
+    animation: scanline 3.2s linear infinite;
+    box-shadow: 0 0 20px rgba(139,92,246,.8);
+}
+
+@keyframes pulseRing{
+    0%{ box-shadow: 0 0 0 0 rgba(139,92,246,.55); }
+    100%{ box-shadow: 0 0 0 14px rgba(139,92,246,0); }
+}
+.pulse-ring{ animation: pulseRing 1.6s ease-out infinite; }
+
+/* Arena track segments */
+.track-seg{
+    border-right: 1px dashed rgba(148,163,184,.18);
+}
+.track-seg:last-child{ border-right: none; }
+
+/* Scrollbars */
+::-webkit-scrollbar{ width: 8px; height: 8px; }
+::-webkit-scrollbar-track{ background: var(--panel); }
+::-webkit-scrollbar-thumb{ background: var(--violet); border-radius: 8px; }
 </style>
 
 </head>
-<body class="font-sans bg-slate-100 text-center p-5 min-h-screen">
+<body class="text-center p-5 min-h-screen">
 
-<div id="splash-screen" class="fixed inset-0 bg-gradient-to-br from-blue-700 to-indigo-900 flex flex-col items-center justify-center text-white z-[200] cursor-pointer opacity-0 transition-opacity duration-1000 ease-out">
-    <div class="animate-bounce-in text-center">
-        <h1 class="text-8xl md:text-9xl font-extrabold mb-4 drop-shadow-lg">ArTTiS</h1>
-        
-        <p class="text-3xl md:text-4xl font-semibold mb-4 tracking-wide">Arena Tarik Tambang - Informatika Style</p>
+<div class="grid-bg"></div>
+<div class="glow-orb orb-a"></div>
+<div class="glow-orb orb-b"></div>
+<div class="glow-orb orb-v"></div>
+
+<div id="splash-screen" class="fixed inset-0 bg-[radial-gradient(circle_at_50%_20%,#1a0b2e_0%,#05060d_60%)] flex flex-col items-center justify-center text-white z-[200] cursor-pointer opacity-0 transition-opacity duration-1000 ease-out overflow-hidden">
+    <div class="grid-bg"></div>
+    <div class="scanline" style="top:0"></div>
+    <div class="animate-bounce-in text-center relative px-4">
+        <h1 class="font-display text-7xl md:text-9xl font-black mb-4 neon-text-v tracking-widest">ArTTiS</h1>
+        <p class="text-2xl md:text-4xl font-semibold mb-4 tracking-wide text-slate-200">Arena Tarik Tambang · Informatika Style</p>
         <br>
-        <p class="inline-block bg-red-600 text-white text-lg font-medium px-4 py-1 rounded-lg shadow-md">
+        <p class="inline-block bg-gradient-to-r from-[color:var(--team-a)] to-rose-600 text-white text-lg font-bold px-5 py-1.5 rounded-full shadow-[0_0_25px_var(--team-a-glow)] font-display tracking-wide">
             by Dimas BN
         </p>
         <br><br><br><br>
-        <p id="splash-countdown" class="text-6xl font-bold mt-4 text-yellow-300"></p>
+        <p id="splash-countdown" class="font-mono text-6xl font-bold mt-4 text-[color:var(--warn)] drop-shadow-[0_0_20px_rgba(251,191,36,.7)]"></p>
     </div>
 </div>
 
-<style>
-    /* Keyframes untuk animasi "bounce-in" kustom */
-    @keyframes bounceIn {
-        0%, 20%, 40%, 60%, 80%, 100% {
-            transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-        }
-        0% {
-            opacity: 0;
-            transform: scale3d(0.3, 0.3, 0.3);
-        }
-        20% {
-            transform: scale3d(1.1, 1.1, 1.1);
-        }
-        40% {
-            transform: scale3d(0.9, 0.9, 0.9);
-        }
-        60% {
-            opacity: 1;
-            transform: scale3d(1.03, 1.03, 1.03);
-        }
-        80% {
-            transform: scale3d(0.97, 0.97, 0.97);
-        }
-        100% {
-            opacity: 1;
-            transform: scale3d(1, 1, 1);
-        }
-    }
-    .animate-bounce-in {
-        animation: bounceIn 1.2s ease-out forwards;
-    }
-</style>
+    <h1 class="font-display text-4xl md:text-5xl font-black mb-2 neon-text-v tracking-widest pt-2"><em class="not-italic">ArTTiS</em></h1>
+    <h2 class="text-xl md:text-2xl text-[color:var(--ink-dim)] font-semibold tracking-wide">Arena Tarik Tambang · Informatika Style</h2>
 
-    <h1 class="text-5xl font-bold text-slate-700 mb-2"><em>ArTTiS</em></h1>
-    <h2 class="text-2xl text-gray-500"><strong>Arena Tarik Tambang - informatika Style</strong></h2>
-
-<div class="flex justify-between items-center my-5 mx-auto w-full max-w-6xl px-4">
-    <div id="team-a" class="text-red-500 text-2xl md:text-4xl font-bold text-left flex-1 shrink-0">TIM A (Merah)</div>
-    <div id="timer" class="text-5xl md:text-7xl font-bold text-green-600 text-center shrink-0 mx-4">00</div>
-    <div id="team-b" class="text-blue-500 text-2xl md:text-4xl font-bold text-right flex-1 shrink-0">TIM B (Biru)</div>
+<div class="flex justify-between items-center my-6 mx-auto w-full max-w-6xl px-4">
+    <div id="team-a" class="font-display neon-text-a text-2xl md:text-4xl font-bold text-left flex-1 shrink-0 tracking-wide">TIM A (Merah)</div>
+    <div id="timer" class="font-mono text-5xl md:text-7xl font-bold text-[color:var(--ok)] text-center shrink-0 mx-4 drop-shadow-[0_0_18px_rgba(52,235,158,.6)]">00</div>
+    <div id="team-b" class="font-display neon-text-b text-2xl md:text-4xl font-bold text-right flex-1 shrink-0 tracking-wide">TIM B (Biru)</div>
 </div>
 
-<div class="flex w-[95%] max-w-6xl mx-auto my-1 border-4 border-gray-600 rounded-lg bg-white overflow-hidden shadow-inner" id="arena">
+<div class="flex w-[95%] max-w-6xl mx-auto my-1 border border-[color:rgba(139,92,246,0.35)] rounded-xl bg-[color:var(--panel)]/80 overflow-hidden shadow-[0_0_40px_-10px_rgba(139,92,246,0.35)] backdrop-blur-sm relative" id="arena">
     </div>
 
-<div id="upload-box" class="bg-white p-5 rounded-lg shadow-md w-[95%] max-w-4xl mx-auto my-5">
-    <p class="text-gray-500 font-semibold mb-3 text-lg"><b>Unggah Soal (format file .json)</b></p>
-    <input type="file" id="fileInput" accept=".json" class="block w-full max-w-md mx-auto text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none
+<div id="upload-box" class="panel p-6 rounded-xl w-[95%] max-w-4xl mx-auto my-6">
+    <p class="text-[color:var(--ink-dim)] font-semibold mb-3 text-lg font-display tracking-wide"><b>Unggah Soal (format file .json)</b></p>
+    <input type="file" id="fileInput" accept=".json" class="block w-full max-w-md mx-auto text-sm text-slate-200 border border-[color:rgba(139,92,246,0.4)] rounded-lg cursor-pointer bg-[color:var(--panel-2)] focus:outline-none
         file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold
-        file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-    
-    <button id="start-btn" class="hidden py-2 px-6 text-lg font-medium rounded-lg bg-green-600 text-white cursor-pointer mt-4 transition-colors hover:bg-green-700">
+        file:bg-[color:var(--violet)] file:text-white hover:file:brightness-110">
+
+    <button id="start-btn" class="btn-neon hidden py-2 px-6 text-lg font-medium rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white cursor-pointer mt-4 shadow-[0_0_25px_rgba(52,235,158,.4)]">
         Mulai Kompetisi
     </button>
 </div>
 
-<div id="format-guide" class="w-[95%] max-w-3xl mx-auto my-6 rounded-xl overflow-hidden shadow-xl bg-white font-sans">
-    
-    <div id="guide-header" onclick="toggleGuide()" class="bg-gradient-to-r from-slate-700 to-slate-600 text-white p-4 cursor-pointer flex justify-between items-center font-bold text-lg select-none">
+<div id="format-guide" class="w-[95%] max-w-3xl mx-auto my-6 rounded-xl overflow-hidden panel">
+
+    <div id="guide-header" onclick="toggleGuide()" class="bg-gradient-to-r from-[color:var(--panel-2)] to-[#1a0f36] text-white p-4 cursor-pointer flex justify-between items-center font-bold text-lg select-none font-display tracking-wide">
         <span>Cara Membuat File Soal (format file .json)</span>
-        <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-300 ease-in-out text-[color:var(--violet)]" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
     </div>
 
-    <div id="guide-content" class="px-5 max-h-0 overflow-hidden transition-[max-height,padding] duration-400 ease-in-out bg-gradient-to-r from-blue-50 to-blue-100">
+    <div id="guide-content" class="px-5 max-h-0 overflow-hidden transition-[max-height,padding] duration-400 ease-in-out bg-[color:var(--panel)]">
         <div class="py-5 text-left">
-            <p class="mb-2"><strong>1. Buat file teks baru → simpan dengan nama </strong><code class="bg-white p-1 px-2 rounded-md font-mono text-sm shadow-sm border border-gray-200">soal.json</code></p>
-            <p class="mb-2"><strong>2. Salin kode di bawah ini → tempel ke file tersebut</strong></p>
-            
-            <pre id="json-example" class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto text-sm border border-gray-700 text-left my-4">
+            <p class="mb-2 text-slate-300"><strong>1. Buat file teks baru → simpan dengan nama </strong><code class="bg-[color:var(--panel-2)] text-[color:var(--team-b)] p-1 px-2 rounded-md font-mono text-sm shadow-sm border border-[color:rgba(34,211,238,0.3)]">soal.json</code></p>
+            <p class="mb-2 text-slate-300"><strong>2. Salin kode di bawah ini → tempel ke file tersebut</strong></p>
+
+            <pre id="json-example" class="bg-[#080b16] text-white p-4 rounded-lg overflow-x-auto text-sm border border-[color:rgba(139,92,246,0.3)] text-left my-4 font-mono">
 {
   <span class="text-cyan-400">"easy"</span>: [
     {
@@ -203,17 +213,17 @@ body {
   ]
 }</pre>
 
-            <p><strong>Penjelasan:</strong></p>
-            <ul class="text-left list-disc list-inside max-w-2xl mx-auto mb-4 space-y-1">
-                <li><code>easy</code> → soal mudah, benar = <b>1 langkah</b></li>
-                <li><code>hard</code> → soal sulit, benar = <b>2 langkah</b></li>
-                <li><code>q</code> → pertanyaan</li>
-                <li><code>o</code> → 4 pilihan jawaban (A B C D)</li>
-                <li><code>c</code> → indeks jawaban benar: <b>0=A, 1=B, 2=C, 3=D</b></li>
+            <p class="text-slate-300"><strong>Penjelasan:</strong></p>
+            <ul class="text-left list-disc list-inside max-w-2xl mx-auto mb-4 space-y-1 text-slate-300">
+                <li><code class="text-[color:var(--team-b)]">easy</code> → soal mudah, benar = <b>1 langkah</b></li>
+                <li><code class="text-[color:var(--team-b)]">hard</code> → soal sulit, benar = <b>2 langkah</b></li>
+                <li><code class="text-[color:var(--team-b)]">q</code> → pertanyaan</li>
+                <li><code class="text-[color:var(--team-b)]">o</code> → 4 pilihan jawaban (A B C D)</li>
+                <li><code class="text-[color:var(--team-b)]">c</code> → indeks jawaban benar: <b>0=A, 1=B, 2=C, 3=D</b></li>
             </ul>
 
             <div class="text-center mt-5">
-                <button onclick="downloadContoh()" class="py-3 px-8 text-base bg-green-600 text-white border-none rounded-lg cursor-pointer transition-colors hover:bg-green-700 active:bg-green-800">
+                <button onclick="downloadContoh()" class="btn-neon py-3 px-8 text-base bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-none rounded-lg cursor-pointer shadow-[0_0_25px_rgba(52,235,158,.35)]">
                     <strong>Download Contoh File .json</strong>
                 </button>
             </div>
@@ -221,10 +231,10 @@ body {
     </div>
 </div>
 
-<div id="quiz-container" class="hidden bg-white p-5 rounded-lg shadow-lg w-full mx-auto my-5 px-6 md:px-10">
-    <div id="difficulty-indicator" class="font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block">
+<div id="quiz-container" class="hidden panel p-5 rounded-xl w-full mx-auto my-5 px-6 md:px-10 max-w-6xl">
+    <div id="difficulty-indicator" class="font-display font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block">
         </div>
-    <div id="question-text" class="text-2xl font-bold mb-5 text-gray-800">
+    <div id="question-text" class="text-2xl font-bold mb-5 text-slate-100">
         </div>
     <div id="options" class="">
         </div>
@@ -232,23 +242,23 @@ body {
         </div>
 </div>
 
-<div id="win-message" class="fixed inset-0 w-full h-full bg-black/85 text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
-    <span id="winner-text"></span>
-    <button onclick="resetGame()" class="text-xl mt-6 py-4 px-8 bg-green-600 border-none rounded-lg text-white cursor-pointer transition-colors hover:bg-green-700 active:bg-green-800">
+<div id="win-message" class="fixed inset-0 w-full h-full bg-[#05060d]/92 backdrop-blur-sm text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
+    <span id="winner-text" class="font-display neon-text-v"></span>
+    <button onclick="resetGame()" class="btn-neon text-xl mt-8 py-4 px-8 bg-gradient-to-r from-[color:var(--violet)] to-fuchsia-600 border-none rounded-lg text-white cursor-pointer shadow-[0_0_35px_var(--violet-glow)]">
         Tanding Lagi
     </button>
 </div>
 
-<div id="rules-modal" class="fixed inset-0 w-full h-full bg-black/90 text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
-    <h2 class="text-3xl md:text-5xl font-bold mb-5 text-green-500 text-center">PERATURAN PERMAINAN</h2>
-    <ul class="list-disc list-inside space-y-3 text-lg md:text-2xl leading-relaxed">
+<div id="rules-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
+    <h2 class="font-display text-3xl md:text-5xl font-bold mb-5 neon-text-v text-center tracking-wide">PERATURAN PERMAINAN</h2>
+    <ul class="list-disc list-inside space-y-3 text-lg md:text-2xl leading-relaxed max-w-3xl text-slate-200">
         <li>Dua tim akan saling bertanding menjawab soal pilihan ganda</li>
         <li>Setiap jawaban benar = tarik 1 langkah (atau 2 langkah untuk soal sulit)</li>
         <li>Setiap jawaban salah = lawan maju 1 langkah</li>
         <li>Waktu menjawab tiap soal hanya 10 detik</li>
         <li>Pemenang ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya</li>
     </ul>
-    <button id="close-rules" class="mt-8 py-4 px-10 text-xl md:text-2xl bg-green-600 text-white border-none rounded-lg cursor-pointer transition-colors hover:bg-green-700 active:bg-green-800">
+    <button id="close-rules" class="btn-neon mt-8 py-4 px-10 text-xl md:text-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-none rounded-lg cursor-pointer shadow-[0_0_30px_rgba(52,235,158,.4)]">
         Saya Mengerti, Mulai!
     </button>
 </div>
@@ -317,7 +327,7 @@ const QUESTION_TIME=10; // detik per soal
 
 function openGoogleReview() {
     // Ganti URL ini dengan URL Google Maps Anda
-    const reviewUrl = 'https://g.page/r/CRZT2jOWS46AEB0/review'; 
+    const reviewUrl = 'https://g.page/r/CRZT2jOWS46AEB0/review';
     window.open(reviewUrl, '_blank');
 }
 
@@ -325,15 +335,13 @@ function createArena(){
     arena.innerHTML='';
     for(let i=0;i<21;i++){
         const s=document.createElement('div');
-        // MODIFIKASI: Menggunakan kelas Tailwind
-        s.className = 'flex-1 h-20 md:h-24 border-r-2 border-dotted border-gray-300 flex justify-center items-center text-3xl';
-        
-        if(i<10) s.classList.add('bg-red-50'); // win-zone-a
-        else if(i>10) s.classList.add('bg-blue-50'); // win-zone-b
-        else s.classList.add('bg-yellow-100'); // center
-        
-        if(i === 20) s.classList.add('border-r-0'); // Menggantikan :last-child
-        
+        // Segmen arena bertema neon/futuristik
+        s.className = 'track-seg flex-1 h-20 md:h-24 flex justify-center items-center text-3xl relative';
+
+        if(i<10) s.classList.add('bg-[color:rgba(255,59,110,0.07)]'); // win-zone-a
+        else if(i>10) s.classList.add('bg-[color:rgba(34,211,238,0.07)]'); // win-zone-b
+        else s.classList.add('bg-[color:rgba(139,92,246,0.16)]'); // center
+
         s.dataset.step=i;
         arena.appendChild(s);
     }
@@ -341,8 +349,8 @@ function createArena(){
 function updateRope(){
     document.querySelectorAll('#arena > div').forEach(s=>s.innerHTML=''); // <-- INI PERBAIKANNYA
     const e=document.querySelector(`[data-step="${rope}"]`);
-    // MODIFIKASI: Menggunakan kelas Tailwind (text-amber-900) dan kelas animasi kustom (rope-animation)
-    if(e) e.innerHTML='<span class="rope-animation text-amber-900 text-4xl">🪢</span>';
+    // Marker energi (rope) dengan efek glow neon
+    if(e) e.innerHTML='<span class="rope-animation text-4xl">🪢</span>';
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 function startTimer(){
@@ -356,8 +364,8 @@ function startTimer(){
             clearInterval(timerInt);
             playSound('timeout');
             feedback.textContent='Waktu Habis!';
-            // MODIFIKASI: Menggunakan classList untuk show/hide/style
-            feedback.className='text-3xl font-bold mt-4 block text-red-700'; // Reset kelas dan tampilkan (Lebih besar dan tebal)
+            // Reset kelas dan tampilkan (Lebih besar dan tebal) dengan warna neon danger
+            feedback.className='text-3xl font-bold mt-4 block text-[color:var(--team-a)] drop-shadow-[0_0_10px_var(--team-a-glow)]';
             setTimeout(()=>{nextQuestion();},1200);
         }
     },1000);
@@ -366,44 +374,46 @@ function loadQuestion(){
     const hardChance=Math.random()<0.3;
     currentQ=hardChance && iH<shuffledHard.length?shuffledEasy[iH++]:shuffledEasy[iE++%shuffledEasy.length];
     difficulty=hardChance?'hard':'easy';
-    
+
     diff.textContent=hardChance?'SOAL SULIT (2 Langkah)':'SOAL MUDAH (1 Langkah)';
-    // MODIFIKASI: Menggunakan kelas Tailwind
-    diff.className = 'font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block';
-    diff.classList.add(hardChance ? 'bg-red-500' : 'bg-green-500');
-    
+    diff.className = 'font-display font-bold text-base py-2 px-5 rounded-full text-white mb-4 inline-block';
+    diff.classList.add(hardChance ? 'bg-gradient-to-r' : 'bg-gradient-to-r');
+    if(hardChance){
+        diff.classList.add('from-[color:var(--team-a)]','to-rose-600','shadow-[0_0_20px_var(--team-a-glow)]');
+    } else {
+        diff.classList.add('from-emerald-500','to-teal-500','shadow-[0_0_20px_rgba(52,235,158,.4)]');
+    }
+
     questionText.textContent=currentQ.q;
     optionsDiv.innerHTML='';
-    // MODIFIKASI: Menggunakan classList
     feedback.classList.add('hidden'); // Sembunyikan feedback
-    feedback.classList.remove('block', 'text-green-700', 'text-red-700');
+    feedback.classList.remove('block', 'text-emerald-400', 'text-[color:var(--team-a)]');
 
     const labels=['A','B','C','D'];
     currentQ.o.forEach((opt,i)=>{
-        // MODIFIKASI: Menggunakan kelas Tailwind untuk layout dan tombol
         const row=document.createElement('div');
         row.className='grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_4fr_1fr] items-center gap-3 mb-3';
-        
+
         const bA=document.createElement('button');
         const bB=document.createElement('button');
         const t=document.createElement('div');
-        
-        // Kelas tombol modern dengan hover/active transition
-        const baseBtnClasses = 'py-4 px-2 text-lg font-semibold rounded-lg text-white cursor-pointer transition-transform duration-150 ease-in-out hover:scale-105 active:scale-95';
-        
-        bA.className = baseBtnClasses + ' bg-red-600';
-        bB.className = baseBtnClasses + ' bg-blue-600';
-        
-        // Kelas teks opsi
-        t.className = 'bg-gray-100 border-2 border-gray-200 rounded-lg p-3 text-center text-xl font-medium text-gray-800';
+
+        // Kelas tombol neon dengan hover/active transition
+        const baseBtnClasses = 'btn-neon py-4 px-2 text-lg font-bold rounded-lg text-white cursor-pointer font-display';
+
+        bA.className = baseBtnClasses + ' bg-gradient-to-br from-[color:var(--team-a)] to-rose-700 shadow-[0_0_18px_var(--team-a-glow)]';
+        bB.className = baseBtnClasses + ' bg-gradient-to-br from-[color:var(--team-b)] to-cyan-700 shadow-[0_0_18px_var(--team-b-glow)]';
+
+        // Kelas teks opsi (panel tengah)
+        t.className = 'bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.3)] rounded-lg p-3 text-center text-xl font-semibold text-slate-100';
         t.textContent=opt;
-        
+
         bA.textContent=labels[i];
         bB.textContent=labels[i];
-        
+
         bA.onclick=()=>handleAnswer('A',i);
         bB.onclick=()=>handleAnswer('B',i);
-        
+
         row.append(bA,t,bB);
         optionsDiv.appendChild(row);
     });
@@ -414,23 +424,22 @@ function handleAnswer(team,i){
     questionActive=false;
     clearInterval(timerInt);
     const correct=currentQ.c;
-    
-    // MODIFIKASI: Reset kelas feedback sebelum menambahkan yang baru
+
     feedback.className = 'text-3xl font-bold mt-4 block'; // Tampilkan (Lebih besar dan tebal)
-    
+
     if(i===correct){
         playSound('correct');
         const step=difficulty==='hard'?2:1;
         rope += team==='A' ? -step : step;
         feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Benar! +${step} langkah`;
-        feedback.classList.add('text-green-700'); // Kelas correct
+        feedback.classList.add('text-emerald-400','drop-shadow-[0_0_10px_rgba(52,235,158,.6)]'); // Kelas correct
     } else {
         playSound('wrong');
         rope += team==='A' ? 1 : -1;
         feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Salah! Lawan maju 1 langkah`;
-        feedback.classList.add('text-red-700'); // Kelas incorrect
+        feedback.classList.add('text-[color:var(--team-a)]','drop-shadow-[0_0_10px_var(--team-a-glow)]'); // Kelas incorrect
     }
-    
+
     updateRope();
     checkWin();
     setTimeout(()=>nextQuestion(),1500);
@@ -440,10 +449,9 @@ function checkWin(){
     else if(rope >= 20) win('TIM B');
 }
 function nextQuestion(){
-    // MODIFIKASI: Menggunakan classList
     feedback.classList.add('hidden');
-    feedback.classList.remove('block', 'text-green-700', 'text-red-700');
-    
+    feedback.classList.remove('block', 'text-emerald-400', 'text-[color:var(--team-a)]');
+
     questionActive=true;
     if(rope <= 0 || rope >= 20) return;
     loadQuestion();
@@ -452,24 +460,22 @@ function win(t){
     active=false;
     clearInterval(timerInt);
     winnerText.textContent=`${t} MENANG 🎉`;
-    // MODIFIKASI: Menggunakan classList
     winBox.classList.remove('hidden');
     winBox.classList.add('flex'); // Tampilkan sebagai flex
 }
 function resetGame(){
-    // MODIFIKASI: Menggunakan classList
     winBox.classList.add('hidden');
     winBox.classList.remove('flex');
-    
+
     rope=10; active=true; questionActive=true;
     shuffledEasy=[...easy]; shuffle(shuffledEasy);
     shuffledHard=[...hard]; shuffle(shuffledHard);
     iE=iH=0;
     updateRope();
     loadQuestion();
-    
+
     quiz.classList.remove('hidden'); // Tampilkan kuis
-    
+
     const guide = document.getElementById('format-guide');
     if (guide) guide.classList.add('hidden'); // Sembunyikan panduan
 }
@@ -497,7 +503,6 @@ document.getElementById('fileInput').addEventListener('change',e=>{
                 return;
             }
             alert('Soal berhasil dimuat!');
-            // MODIFIKASI: Menggunakan classList
             rulesModal.classList.remove('hidden');
             rulesModal.classList.add('flex'); // Tampilkan modal peraturan
         }catch(err){
@@ -509,15 +514,14 @@ document.getElementById('fileInput').addEventListener('change',e=>{
 
 // Tutup peraturan dan mulai game
 closeRulesBtn.addEventListener('click', () => {
-    // MODIFIKASI: Menggunakan classList
     rulesModal.classList.add('hidden');
     rulesModal.classList.remove('flex');
-    
+
     document.getElementById('upload-box').classList.add('hidden');
     document.getElementById('format-guide').classList.add('hidden');
-    
+
     quiz.classList.remove('hidden');
-    
+
     resetGame();
 });
 
@@ -555,13 +559,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fungsi untuk menyembunyikan splash screen
     const hideSplashScreen = () => {
         // 3. Hentikan interval jika user klik lebih cepat
-        clearInterval(countdownInterval); 
+        clearInterval(countdownInterval);
 
         splashScreen.style.opacity = '0';
         setTimeout(() => {
-            splashScreen.remove(); 
+            splashScreen.remove();
             document.body.classList.remove('overflow-hidden');
-        }, 2500); 
+        }, 2500);
     };
 
     // Sembunyikan splash screen setelah 8 detik (sinkron dengan hitungan 5, 4, 3, 2, 1, Monggo!)
