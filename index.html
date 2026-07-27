@@ -153,27 +153,72 @@ body{
     </div>
 </div>
 
+    <button id="open-history-btn" onclick="openHistory()" class="btn-neon fixed top-3 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 md:px-4 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        🏆 Riwayat
+    </button>
+
     <h1 class="font-display text-4xl md:text-5xl font-black mb-2 neon-text-v tracking-widest pt-2"><em class="not-italic">ArTTiS</em></h1>
     <h2 class="text-xl md:text-2xl text-[color:var(--ink-dim)] font-semibold tracking-wide">Arena Tarik Tambang · Informatika Style</h2>
+    <div id="mapel-tag" class="hidden font-mono text-sm text-[color:var(--team-b)] mt-2 tracking-wide"></div>
 
 <div class="flex justify-between items-center my-6 mx-auto w-full max-w-6xl px-4">
-    <div id="team-a" class="font-display neon-text-a text-2xl md:text-4xl font-bold text-left flex-1 shrink-0 tracking-wide">TIM A (Merah)</div>
+    <div class="flex-1 text-left">
+        <div id="team-a" class="font-display neon-text-a text-2xl md:text-4xl font-bold tracking-wide">TIM A (Merah)</div>
+        <div id="team-a-stats" class="font-mono text-xs md:text-sm text-slate-400 mt-1">✔ 0 &nbsp; ✘ 0</div>
+    </div>
     <div id="timer" class="font-mono text-5xl md:text-7xl font-bold text-[color:var(--ok)] text-center shrink-0 mx-4 drop-shadow-[0_0_18px_rgba(52,235,158,.6)]">00</div>
-    <div id="team-b" class="font-display neon-text-b text-2xl md:text-4xl font-bold text-right flex-1 shrink-0 tracking-wide">TIM B (Biru)</div>
+    <div class="flex-1 text-right">
+        <div id="team-b" class="font-display neon-text-b text-2xl md:text-4xl font-bold tracking-wide">TIM B (Biru)</div>
+        <div id="team-b-stats" class="font-mono text-xs md:text-sm text-slate-400 mt-1">✔ 0 &nbsp; ✘ 0</div>
+    </div>
 </div>
 
 <div class="flex w-[95%] max-w-6xl mx-auto my-1 border border-[color:rgba(139,92,246,0.35)] rounded-xl bg-[color:var(--panel)]/80 overflow-hidden shadow-[0_0_40px_-10px_rgba(139,92,246,0.35)] backdrop-blur-sm relative" id="arena">
     </div>
 
-<div id="upload-box" class="panel p-6 rounded-xl w-[95%] max-w-4xl mx-auto my-6">
-    <p class="text-[color:var(--ink-dim)] font-semibold mb-3 text-lg font-display tracking-wide"><b>Unggah Soal (format file .json)</b></p>
-    <input type="file" id="fileInput" accept=".json" class="block w-full max-w-md mx-auto text-sm text-slate-200 border border-[color:rgba(139,92,246,0.4)] rounded-lg cursor-pointer bg-[color:var(--panel-2)] focus:outline-none
-        file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold
-        file:bg-[color:var(--violet)] file:text-white hover:file:brightness-110">
+<div id="upload-box" class="panel p-6 rounded-xl w-[95%] max-w-4xl mx-auto my-6 text-left">
 
-    <button id="start-btn" class="btn-neon hidden py-2 px-6 text-lg font-medium rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white cursor-pointer mt-4 shadow-[0_0_25px_rgba(52,235,158,.4)]">
-        Mulai Kompetisi
-    </button>
+    <div class="mb-5">
+        <label for="mapel-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">📘 NAMA MAPEL / SESI</label>
+        <input type="text" id="mapel-input" placeholder="Contoh: Matematika Kelas 8A" class="w-full text-sm md:text-base text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)] focus:shadow-[0_0_12px_var(--violet-glow)]">
+    </div>
+
+    <div class="mb-5">
+        <label for="duration-input" class="flex justify-between items-center text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">
+            <span>⏱️ DURASI PER SOAL</span>
+            <span id="duration-value" class="font-mono text-[color:var(--ok)] text-base">10 detik</span>
+        </label>
+        <input type="range" id="duration-input" min="5" max="30" step="1" value="10" class="w-full accent-[color:var(--violet)] cursor-pointer">
+    </div>
+
+    <div class="mb-5 pt-4 border-t border-[color:rgba(139,92,246,0.2)]">
+        <p class="text-center text-[color:var(--ink-dim)] font-semibold mb-3 text-lg font-display tracking-wide"><b>Unggah Soal Baru (format file .json)</b></p>
+        <input type="file" id="fileInput" accept=".json" class="block w-full max-w-md mx-auto text-sm text-slate-200 border border-[color:rgba(139,92,246,0.4)] rounded-lg cursor-pointer bg-[color:var(--panel-2)] focus:outline-none
+            file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold
+            file:bg-[color:var(--violet)] file:text-white hover:file:brightness-110">
+
+        <label class="flex items-center justify-center gap-2 mt-3 text-sm text-slate-300 cursor-pointer select-none">
+            <input type="checkbox" id="save-to-bank-checkbox" checked class="w-4 h-4 accent-[color:var(--violet)] cursor-pointer">
+            Simpan soal ini ke Bank Soal (biar tidak perlu upload ulang lain kali)
+        </label>
+    </div>
+
+    <div id="bank-section" class="pt-4 border-t border-[color:rgba(139,92,246,0.2)]">
+        <p class="text-center text-[color:var(--ink-dim)] font-semibold mb-3 text-lg font-display tracking-wide"><b>Atau Muat dari Bank Soal Tersimpan</b></p>
+        <div class="flex flex-col md:flex-row gap-2 max-w-xl mx-auto">
+            <select id="bank-select" class="flex-1 text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-3 py-2.5 focus:outline-none">
+                <option value="">-- Pilih Mapel Tersimpan --</option>
+            </select>
+            <button id="load-bank-btn" class="btn-neon py-2.5 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-[color:var(--team-b)] to-cyan-700 text-white shadow-[0_0_15px_var(--team-b-glow)]">Muat</button>
+            <button id="delete-bank-btn" class="btn-neon py-2.5 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-[color:var(--team-a)] to-rose-700 text-white shadow-[0_0_15px_var(--team-a-glow)]">Hapus</button>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button id="start-btn" class="btn-neon hidden py-2 px-6 text-lg font-medium rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white cursor-pointer mt-4 shadow-[0_0_25px_rgba(52,235,158,.4)]">
+            Mulai Kompetisi
+        </button>
+    </div>
 </div>
 
 <div id="format-guide" class="w-[95%] max-w-3xl mx-auto my-6 rounded-xl overflow-hidden panel">
@@ -244,9 +289,30 @@ body{
 
 <div id="win-message" class="fixed inset-0 w-full h-full bg-[#05060d]/92 backdrop-blur-sm text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
     <span id="winner-text" class="font-display neon-text-v"></span>
-    <button onclick="resetGame()" class="btn-neon text-xl mt-8 py-4 px-8 bg-gradient-to-r from-[color:var(--violet)] to-fuchsia-600 border-none rounded-lg text-white cursor-pointer shadow-[0_0_35px_var(--violet-glow)]">
-        Tanding Lagi
-    </button>
+    <div id="win-stats" class="font-mono text-base md:text-lg font-normal text-slate-300 mt-5 space-y-1"></div>
+    <div class="flex flex-wrap gap-4 justify-center mt-8">
+        <button onclick="resetGame()" class="btn-neon text-xl py-4 px-8 bg-gradient-to-r from-[color:var(--violet)] to-fuchsia-600 border-none rounded-lg text-white cursor-pointer shadow-[0_0_35px_var(--violet-glow)]">
+            Tanding Lagi
+        </button>
+        <button onclick="openHistory()" class="btn-neon text-lg py-4 px-8 bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] rounded-lg text-white cursor-pointer">
+            🏆 Lihat Riwayat
+        </button>
+    </div>
+</div>
+
+<div id="history-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[110] p-5">
+    <div class="panel rounded-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="flex justify-between items-center p-5 border-b border-[color:rgba(139,92,246,0.25)]">
+            <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🏆 RIWAYAT PERTANDINGAN</h2>
+            <button onclick="closeHistory()" class="text-slate-400 hover:text-white text-2xl leading-none px-2">✕</button>
+        </div>
+        <div id="history-list" class="overflow-y-auto p-5 space-y-3 text-left"></div>
+        <div class="p-4 border-t border-[color:rgba(139,92,246,0.25)] flex justify-end">
+            <button onclick="clearHistory()" class="btn-neon py-2 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-[color:var(--team-a)] to-rose-700 text-white shadow-[0_0_15px_var(--team-a-glow)]">
+                🗑️ Hapus Semua Riwayat
+            </button>
+        </div>
+    </div>
 </div>
 
 <div id="rules-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
@@ -255,7 +321,7 @@ body{
         <li>Dua tim akan saling bertanding menjawab soal pilihan ganda</li>
         <li>Setiap jawaban benar = tarik 1 langkah (atau 2 langkah untuk soal sulit)</li>
         <li>Setiap jawaban salah = lawan maju 1 langkah</li>
-        <li>Waktu menjawab tiap soal hanya 10 detik</li>
+        <li id="rules-duration-text">Waktu menjawab tiap soal hanya 10 detik</li>
         <li>Pemenang ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya</li>
     </ul>
     <button id="close-rules" class="btn-neon mt-8 py-4 px-10 text-xl md:text-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-none rounded-lg cursor-pointer shadow-[0_0_30px_rgba(52,235,158,.4)]">
@@ -323,7 +389,138 @@ let easy=[],hard=[],shuffledEasy=[],shuffledHard=[];
 let iE=0,iH=0,rope=10,active=true,questionActive=true;
 let currentQ={},difficulty="easy";
 let timeLeft=0,timerInt;
-const QUESTION_TIME=10; // detik per soal
+let QUESTION_TIME=10; // detik per soal (bisa diubah lewat slider durasi)
+
+/* ==== Fitur baru: Nama Mapel, Bank Soal, Riwayat Pertandingan ==== */
+let currentMapel='';
+let statsA={correct:0,wrong:0};
+let statsB={correct:0,wrong:0};
+let matchStartTime=null;
+
+const mapelInput = document.getElementById('mapel-input');
+const durationInput = document.getElementById('duration-input');
+const durationValue = document.getElementById('duration-value');
+const mapelTag = document.getElementById('mapel-tag');
+const teamAStats = document.getElementById('team-a-stats');
+const teamBStats = document.getElementById('team-b-stats');
+const saveToBankCheckbox = document.getElementById('save-to-bank-checkbox');
+const bankSelect = document.getElementById('bank-select');
+const loadBankBtn = document.getElementById('load-bank-btn');
+const deleteBankBtn = document.getElementById('delete-bank-btn');
+const historyModal = document.getElementById('history-modal');
+const historyList = document.getElementById('history-list');
+const winStats = document.getElementById('win-stats');
+const rulesDurationText = document.getElementById('rules-duration-text');
+
+const BANK_KEY = 'arttis_bank_soal';
+const HISTORY_KEY = 'arttis_riwayat';
+
+/* --- Durasi custom --- */
+durationInput.addEventListener('input', () => {
+    QUESTION_TIME = parseInt(durationInput.value, 10);
+    durationValue.textContent = QUESTION_TIME + ' detik';
+    if (rulesDurationText) {
+        rulesDurationText.textContent = `Waktu menjawab tiap soal hanya ${QUESTION_TIME} detik`;
+    }
+});
+
+/* --- Bank Soal (localStorage) --- */
+function getBank(){
+    try{ return JSON.parse(localStorage.getItem(BANK_KEY) || '{}'); }
+    catch(e){ return {}; }
+}
+function saveBank(bank){
+    localStorage.setItem(BANK_KEY, JSON.stringify(bank));
+}
+function refreshBankSelect(){
+    const bank = getBank();
+    const names = Object.keys(bank);
+    bankSelect.innerHTML = '<option value="">-- Pilih Mapel Tersimpan --</option>';
+    names.forEach(name=>{
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = `${name} (${(bank[name].easy||[]).length + (bank[name].hard||[]).length} soal)`;
+        bankSelect.appendChild(opt);
+    });
+}
+loadBankBtn.addEventListener('click', () => {
+    const name = bankSelect.value;
+    if(!name){ alert('Pilih dulu mapel dari daftar Bank Soal.'); return; }
+    const bank = getBank();
+    const data = bank[name];
+    if(!data || ((data.easy||[]).length===0 && (data.hard||[]).length===0)){
+        alert('Soal untuk mapel ini kosong atau tidak ditemukan.');
+        return;
+    }
+    easy = data.easy || [];
+    hard = data.hard || [];
+    currentMapel = name;
+    rulesModal.classList.remove('hidden');
+    rulesModal.classList.add('flex');
+});
+deleteBankBtn.addEventListener('click', () => {
+    const name = bankSelect.value;
+    if(!name){ alert('Pilih dulu mapel yang ingin dihapus.'); return; }
+    if(!confirm(`Hapus soal mapel "${name}" dari Bank Soal? Tindakan ini tidak bisa dibatalkan.`)) return;
+    const bank = getBank();
+    delete bank[name];
+    saveBank(bank);
+    refreshBankSelect();
+});
+
+/* --- Riwayat Pertandingan (localStorage) --- */
+function getHistory(){
+    try{ return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+    catch(e){ return []; }
+}
+function saveHistoryRecord(record){
+    const list = getHistory();
+    list.unshift(record); // terbaru di atas
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+}
+function formatDurasi(sec){
+    const m = Math.floor(sec/60), s = sec%60;
+    return m>0 ? `${m}m ${s}d` : `${s} detik`;
+}
+function renderHistory(){
+    const list = getHistory();
+    if(list.length===0){
+        historyList.innerHTML = '<p class="text-slate-400 text-center py-6">Belum ada riwayat pertandingan.</p>';
+        return;
+    }
+    historyList.innerHTML = list.map(r => `
+        <div class="bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.25)] rounded-lg p-4">
+            <div class="flex justify-between items-start flex-wrap gap-2">
+                <div>
+                    <p class="font-display font-bold text-lg neon-text-v">${r.mapel || '(Tanpa Nama)'}</p>
+                    <p class="text-xs text-slate-400 font-mono">${r.tanggal}</p>
+                </div>
+                <span class="font-display font-bold text-sm px-3 py-1 rounded-full ${r.pemenang==='TIM A' ? 'bg-[color:var(--team-a)]' : 'bg-[color:var(--team-b)]'} text-white">
+                    ${r.pemenang} MENANG
+                </span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mt-3 font-mono text-sm">
+                <div class="text-[color:var(--team-a)]">TIM A &nbsp; ✔ ${r.skorA.correct} &nbsp; ✘ ${r.skorA.wrong}</div>
+                <div class="text-[color:var(--team-b)] text-right">TIM B &nbsp; ✔ ${r.skorB.correct} &nbsp; ✘ ${r.skorB.wrong}</div>
+            </div>
+            <p class="text-xs text-slate-400 mt-2 font-mono">Total soal: ${r.totalSoal} • Durasi: ${formatDurasi(r.durasiDetik)}</p>
+        </div>
+    `).join('');
+}
+function openHistory(){
+    renderHistory();
+    historyModal.classList.remove('hidden');
+    historyModal.classList.add('flex');
+}
+function closeHistory(){
+    historyModal.classList.add('hidden');
+    historyModal.classList.remove('flex');
+}
+function clearHistory(){
+    if(!confirm('Hapus semua riwayat pertandingan? Tindakan ini tidak bisa dibatalkan.')) return;
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+}
 
 function openGoogleReview() {
     // Ganti URL ini dengan URL Google Maps Anda
@@ -433,12 +630,16 @@ function handleAnswer(team,i){
         rope += team==='A' ? -step : step;
         feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Benar! +${step} langkah`;
         feedback.classList.add('text-emerald-400','drop-shadow-[0_0_10px_rgba(52,235,158,.6)]'); // Kelas correct
+        if(team==='A') statsA.correct++; else statsB.correct++;
     } else {
         playSound('wrong');
         rope += team==='A' ? 1 : -1;
         feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Salah! Lawan maju 1 langkah`;
         feedback.classList.add('text-[color:var(--team-a)]','drop-shadow-[0_0_10px_var(--team-a-glow)]'); // Kelas incorrect
+        if(team==='A') statsA.wrong++; else statsB.wrong++;
     }
+    teamAStats.textContent = `✔ ${statsA.correct}   ✘ ${statsA.wrong}`;
+    teamBStats.textContent = `✔ ${statsB.correct}   ✘ ${statsB.wrong}`;
 
     updateRope();
     checkWin();
@@ -460,6 +661,26 @@ function win(t){
     active=false;
     clearInterval(timerInt);
     winnerText.textContent=`${t} MENANG 🎉`;
+
+    const durasiDetik = matchStartTime ? Math.round((Date.now()-matchStartTime)/1000) : 0;
+    const totalSoal = statsA.correct + statsA.wrong + statsB.correct + statsB.wrong;
+
+    winStats.innerHTML = `
+        <p><span class="text-[color:var(--team-a)]">TIM A</span> — ✔ ${statsA.correct} benar &nbsp; ✘ ${statsA.wrong} salah</p>
+        <p><span class="text-[color:var(--team-b)]">TIM B</span> — ✔ ${statsB.correct} benar &nbsp; ✘ ${statsB.wrong} salah</p>
+        <p class="text-slate-400 text-sm mt-2">Total ${totalSoal} soal • Durasi ${formatDurasi(durasiDetik)}</p>
+    `;
+
+    saveHistoryRecord({
+        mapel: currentMapel || '(Tanpa Nama)',
+        tanggal: new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' }),
+        pemenang: t,
+        skorA: { ...statsA },
+        skorB: { ...statsB },
+        totalSoal: totalSoal,
+        durasiDetik: durasiDetik
+    });
+
     winBox.classList.remove('hidden');
     winBox.classList.add('flex'); // Tampilkan sebagai flex
 }
@@ -468,6 +689,19 @@ function resetGame(){
     winBox.classList.remove('flex');
 
     rope=10; active=true; questionActive=true;
+    statsA={correct:0,wrong:0};
+    statsB={correct:0,wrong:0};
+    matchStartTime=Date.now();
+    teamAStats.textContent = '✔ 0   ✘ 0';
+    teamBStats.textContent = '✔ 0   ✘ 0';
+
+    if(currentMapel){
+        mapelTag.textContent = `📘 Sesi: ${currentMapel}`;
+        mapelTag.classList.remove('hidden');
+    } else {
+        mapelTag.classList.add('hidden');
+    }
+
     shuffledEasy=[...easy]; shuffle(shuffledEasy);
     shuffledHard=[...hard]; shuffle(shuffledHard);
     iE=iH=0;
@@ -493,6 +727,15 @@ function playSound(type){
 /* Upload & Start */
 document.getElementById('fileInput').addEventListener('change',e=>{
     const f=e.target.files[0]; if(!f) return;
+
+    const mapelName = mapelInput.value.trim();
+    if(!mapelName){
+        alert('Isi dulu "Nama Mapel / Sesi" sebelum mengunggah soal.');
+        mapelInput.focus();
+        e.target.value='';
+        return;
+    }
+
     const r=new FileReader();
     r.onload=function(evt){
         try{
@@ -502,6 +745,15 @@ document.getElementById('fileInput').addEventListener('change',e=>{
                 alert('File JSON kosong atau tidak ada soal!');
                 return;
             }
+            currentMapel = mapelName;
+
+            if(saveToBankCheckbox.checked){
+                const bank = getBank();
+                bank[mapelName] = { easy, hard };
+                saveBank(bank);
+                refreshBankSelect();
+            }
+
             alert('Soal berhasil dimuat!');
             rulesModal.classList.remove('hidden');
             rulesModal.classList.add('flex'); // Tampilkan modal peraturan
@@ -538,6 +790,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createArena();
     updateRope();
+    refreshBankSelect();
 
     // --- 2. Mulai Logika Hitung Mundur ---
     let count = 5; // Mulai hitungan dari 3
