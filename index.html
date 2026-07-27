@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ArTTiS — Arena Tarik Tambang Informatika</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -336,7 +338,13 @@ body{
             <button onclick="closeHistory()" class="text-slate-400 hover:text-white text-2xl leading-none px-2">✕</button>
         </div>
         <div id="history-list" class="overflow-y-auto p-5 space-y-3 text-left"></div>
-        <div class="p-4 border-t border-[color:rgba(139,92,246,0.25)] flex justify-end">
+        <div class="p-4 border-t border-[color:rgba(139,92,246,0.25)] flex flex-wrap justify-end gap-3">
+            <button onclick="exportHistoryPDF()" class="btn-neon py-2 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-[0_0_15px_rgba(251,146,60,0.4)]">
+                📄 Export PDF
+            </button>
+            <button onclick="exportHistoryExcel()" class="btn-neon py-2 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_15px_rgba(52,235,158,.4)]">
+                📊 Export Excel
+            </button>
             <button onclick="clearHistory()" class="btn-neon py-2 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-[color:var(--team-a)] to-rose-700 text-white shadow-[0_0_15px_var(--team-a-glow)]">
                 🗑️ Hapus Semua Riwayat
             </button>
@@ -612,6 +620,104 @@ function clearHistory(){
     if(!confirm('Hapus semua riwayat pertandingan? Tindakan ini tidak bisa dibatalkan.')) return;
     localStorage.removeItem(HISTORY_KEY);
     renderHistory();
+}
+
+/* --- Export Riwayat: PDF & Excel --- */
+function exportHistoryPDF(){
+    const list = getHistory();
+    if(list.length===0){ alert('Belum ada riwayat pertandingan untuk diekspor.'); return; }
+    if(!window.jspdf){ alert('Modul PDF belum siap dimuat. Pastikan koneksi internet aktif, lalu coba lagi.'); return; }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const marginX = 14;
+    let y = 18;
+
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(16);
+    doc.text('Riwayat Pertandingan - ArTTiS', marginX, y);
+    y += 6;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text(`Diekspor pada: ${new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' })}`, marginX, y);
+    y += 4;
+    doc.text(`Total pertandingan: ${list.length}`, marginX, y);
+    y += 8;
+    doc.setDrawColor(180);
+    doc.line(marginX, y, pageWidth - marginX, y);
+    y += 8;
+
+    list.forEach((r, idx) => {
+        // Perkiraan tinggi blok, kalau tidak muat pindah halaman baru
+        const blockHeight = r.totalRounds && r.totalRounds > 1 ? 34 : 30;
+        if(y + blockHeight > pageHeight - 15){
+            doc.addPage();
+            y = 18;
+        }
+
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(11);
+        doc.setTextColor(20);
+        doc.text(`${idx+1}. ${r.mapel || '(Tanpa Nama)'}`, marginX, y);
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(9);
+        doc.setTextColor(90);
+        doc.text(r.tanggal, pageWidth - marginX, y, { align: 'right' });
+        y += 6;
+
+        doc.setFontSize(10);
+        doc.setTextColor(20);
+        doc.text(`Pemenang: ${r.pemenang}`, marginX, y);
+        y += 5;
+        doc.text(`Tim A: ${r.skorA.correct} benar / ${r.skorA.wrong} salah     Tim B: ${r.skorB.correct} benar / ${r.skorB.wrong} salah`, marginX, y);
+        y += 5;
+        if(r.totalRounds && r.totalRounds > 1){
+            doc.text(`Mode: Best of ${r.totalRounds}  •  Skor Ronde: A ${r.roundsA} - B ${r.roundsB}`, marginX, y);
+            y += 5;
+        }
+        doc.setTextColor(110);
+        doc.text(`Total soal: ${r.totalSoal}  •  Durasi: ${formatDurasi(r.durasiDetik)}`, marginX, y);
+        y += 6;
+        doc.setDrawColor(220);
+        doc.line(marginX, y, pageWidth - marginX, y);
+        y += 6;
+    });
+
+    doc.save(`riwayat-arttis-${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+function exportHistoryExcel(){
+    const list = getHistory();
+    if(list.length===0){ alert('Belum ada riwayat pertandingan untuk diekspor.'); return; }
+    if(!window.XLSX){ alert('Modul Excel belum siap dimuat. Pastikan koneksi internet aktif, lalu coba lagi.'); return; }
+
+    const rows = list.map((r, idx) => ({
+        'No': idx+1,
+        'Mapel/Sesi': r.mapel || '(Tanpa Nama)',
+        'Tanggal': r.tanggal,
+        'Pemenang': r.pemenang,
+        'Mode': r.totalRounds && r.totalRounds > 1 ? `Best of ${r.totalRounds}` : 'Sekali Tarik',
+        'Skor Ronde A': r.roundsA ?? '-',
+        'Skor Ronde B': r.roundsB ?? '-',
+        'Tim A Benar': r.skorA.correct,
+        'Tim A Salah': r.skorA.wrong,
+        'Tim B Benar': r.skorB.correct,
+        'Tim B Salah': r.skorB.wrong,
+        'Total Soal': r.totalSoal,
+        'Durasi (detik)': r.durasiDetik
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    ws['!cols'] = [
+        {wch:4},{wch:22},{wch:20},{wch:10},{wch:14},
+        {wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:11},{wch:14}
+    ];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Riwayat Pertandingan');
+    XLSX.writeFile(wb, `riwayat-arttis-${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
 function openGoogleReview() {
