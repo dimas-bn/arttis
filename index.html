@@ -355,6 +355,13 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
         </div>
     </div>
 
+    <div class="pt-4 border-t border-[color:rgba(139,92,246,0.2)] text-center">
+        <p class="text-[color:var(--ink-dim)] font-semibold mb-3 text-lg font-display tracking-wide"><b>✨ Atau Buat Soal Otomatis dengan AI</b></p>
+        <button id="open-ai-generator-btn" onclick="openAiGenerator()" class="btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+            🤖 Buka Generator Soal AI (Gemini)
+        </button>
+    </div>
+
     <div class="text-center">
         <button id="start-btn" class="btn-neon hidden py-2 px-6 text-lg font-medium rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white cursor-pointer mt-4 shadow-[0_0_25px_rgba(52,235,158,.4)]">
             Mulai Kompetisi
@@ -430,6 +437,61 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
             </button>
             <button onclick="confirmPreview()" class="btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_20px_rgba(52,235,158,.4)]">
                 Lanjutkan ke Aturan Main →
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="ai-generator-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[108] p-5">
+    <div class="panel rounded-xl w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div class="flex justify-between items-start p-5 border-b border-[color:rgba(139,92,246,0.25)]">
+            <div>
+                <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🤖 GENERATOR SOAL AI</h2>
+                <p class="text-xs text-slate-400 mt-1">Ditenagai Google Gemini (gratis)</p>
+            </div>
+            <button onclick="closeAiGenerator()" class="text-slate-400 hover:text-white text-2xl leading-none px-2">✕</button>
+        </div>
+
+        <div class="overflow-y-auto p-5 space-y-4 text-left">
+            <div>
+                <label for="gemini-api-key" class="flex justify-between items-center text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">
+                    <span>🔑 GEMINI API KEY</span>
+                    <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="text-xs font-normal text-[color:var(--team-b)] underline">Ambil gratis di sini ↗</a>
+                </label>
+                <input type="password" id="gemini-api-key" placeholder="Tempel API Key Gemini kamu di sini" class="w-full text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
+                <p class="text-xs text-slate-500 mt-1.5">🔒 Kunci API hanya disimpan di browser ini (localStorage) dan dikirim langsung ke server Google — tidak melalui server lain manapun.</p>
+            </div>
+
+            <div>
+                <label for="ai-topic-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">📖 TOPIK / MATERI</label>
+                <input type="text" id="ai-topic-input" placeholder="Contoh: Sistem Pencernaan Manusia, Bab 3" class="w-full text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
+            </div>
+
+            <div>
+                <label for="ai-grade-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">🎓 JENJANG / KELAS <span class="font-normal text-slate-500">(opsional)</span></label>
+                <input type="text" id="ai-grade-input" placeholder="Contoh: SMA Kelas 10" class="w-full text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label for="ai-easy-count" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">🟢 JUMLAH SOAL MUDAH</label>
+                    <input type="number" id="ai-easy-count" min="1" max="15" value="5" class="w-full text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none">
+                </div>
+                <div>
+                    <label for="ai-hard-count" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">🔴 JUMLAH SOAL SULIT</label>
+                    <input type="number" id="ai-hard-count" min="0" max="10" value="3" class="w-full text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none">
+                </div>
+            </div>
+
+            <div id="ai-generator-status" class="hidden text-sm rounded-lg p-3"></div>
+        </div>
+
+        <div class="p-4 border-t border-[color:rgba(139,92,246,0.25)] flex flex-wrap justify-end gap-3">
+            <button onclick="closeAiGenerator()" class="btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-white">
+                Batal
+            </button>
+            <button id="ai-generate-btn" onclick="generateQuestionsWithAI()" class="btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+                ✨ Generate Soal
             </button>
         </div>
     </div>
@@ -632,6 +694,19 @@ const rulesRoundsText = document.getElementById('rules-rounds-text');
 const previewModal = document.getElementById('preview-modal');
 const previewList = document.getElementById('preview-list');
 const previewSummary = document.getElementById('preview-summary');
+
+/* ==== Fitur baru: Generator Soal AI (Gemini) ==== */
+const GEMINI_KEY_STORAGE = 'arttis_gemini_api_key';
+const GEMINI_MODEL = 'gemini-3.5-flash';
+const GEMINI_FALLBACK_MODEL = 'gemini-2.5-flash';
+const aiGeneratorModal = document.getElementById('ai-generator-modal');
+const geminiApiKeyInput = document.getElementById('gemini-api-key');
+const aiTopicInput = document.getElementById('ai-topic-input');
+const aiGradeInput = document.getElementById('ai-grade-input');
+const aiEasyCountInput = document.getElementById('ai-easy-count');
+const aiHardCountInput = document.getElementById('ai-hard-count');
+const aiGeneratorStatus = document.getElementById('ai-generator-status');
+const aiGenerateBtn = document.getElementById('ai-generate-btn');
 
 const BANK_KEY = 'arttis_bank_soal';
 const HISTORY_KEY = 'arttis_riwayat';
@@ -952,6 +1027,162 @@ function confirmPreview(){
         : 'Pemenang ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya';
     rulesModal.classList.remove('hidden');
     rulesModal.classList.add('flex');
+}
+
+/* --- Generator Soal AI (Google Gemini, gratis) --- */
+function openAiGenerator(){
+    const savedKey = localStorage.getItem(GEMINI_KEY_STORAGE);
+    if(savedKey) geminiApiKeyInput.value = savedKey;
+    setAiStatus('', null);
+    aiGeneratorModal.classList.remove('hidden');
+    aiGeneratorModal.classList.add('flex');
+}
+function closeAiGenerator(){
+    aiGeneratorModal.classList.add('hidden');
+    aiGeneratorModal.classList.remove('flex');
+}
+function setAiStatus(message, kind){
+    // kind: 'loading' | 'error' | 'success' | null (untuk sembunyikan)
+    if(!message){
+        aiGeneratorStatus.classList.add('hidden');
+        return;
+    }
+    aiGeneratorStatus.classList.remove('hidden');
+    const styles = {
+        loading: 'bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-slate-200',
+        error: 'bg-rose-950/40 border border-[color:var(--team-a)] text-rose-300',
+        success: 'bg-emerald-950/40 border border-emerald-500 text-emerald-300'
+    };
+    aiGeneratorStatus.className = 'text-sm rounded-lg p-3 ' + (styles[kind] || styles.loading);
+    aiGeneratorStatus.textContent = message;
+}
+async function callGemini(model, prompt, apiKey){
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.9 }
+        })
+    });
+    let data = null;
+    try{ data = await res.json(); }catch(e){ /* respons bukan JSON, biarkan data null */ }
+    return { ok: res.ok, status: res.status, data };
+}
+function buildGeminiPrompt(topik, jenjang, jumlahEasy, jumlahHard){
+    return `Kamu adalah asisten pembuat soal pilihan ganda untuk kuis edukasi interaktif "tarik tambang" antar siswa di Indonesia.
+
+Buatkan soal pilihan ganda dengan topik/materi: "${topik}"
+Jenjang/kelas: ${jenjang || 'umum, sesuaikan dengan topik'}
+Jumlah soal kategori "easy" (mudah): ${jumlahEasy}
+Jumlah soal kategori "hard" (sulit): ${jumlahHard}
+
+Aturan wajib:
+- Gunakan Bahasa Indonesia yang jelas, baku, dan sesuai jenjang yang disebutkan.
+- Setiap soal memiliki TEPAT 4 pilihan jawaban yang masuk akal, tidak ambigu, dan hanya 1 yang benar.
+- Soal kategori "easy" untuk pemahaman dasar/hafalan/definisi. Soal kategori "hard" untuk analisis, perhitungan, atau penerapan konsep yang lebih dalam.
+- Jangan mengulang soal atau pilihan jawaban yang sama persis.
+- Jangan sertakan penjelasan, catatan, markdown, atau teks apapun di luar JSON.
+
+Keluarkan HANYA JSON valid dengan format PERSIS seperti ini (c = indeks jawaban benar, 0=A, 1=B, 2=C, 3=D):
+{"easy":[{"q":"teks soal","o":["opsi A","opsi B","opsi C","opsi D"],"c":0}],"hard":[{"q":"teks soal","o":["opsi A","opsi B","opsi C","opsi D"],"c":0}]}`;
+}
+function validateAiQuestions(arr){
+    if(!Array.isArray(arr)) return [];
+    return arr.filter(item =>
+        item && typeof item.q === 'string' && item.q.trim().length > 0 &&
+        Array.isArray(item.o) && item.o.length === 4 && item.o.every(o => typeof o === 'string' && o.trim().length > 0) &&
+        Number.isInteger(item.c) && item.c >= 0 && item.c <= 3
+    );
+}
+async function generateQuestionsWithAI(){
+    const apiKey = geminiApiKeyInput.value.trim();
+    const topik = aiTopicInput.value.trim();
+    const jenjang = aiGradeInput.value.trim();
+    const jumlahEasy = parseInt(aiEasyCountInput.value, 10) || 0;
+    const jumlahHard = parseInt(aiHardCountInput.value, 10) || 0;
+
+    if(!apiKey){ setAiStatus('⚠️ Isi dulu Gemini API Key. Klik link di atas untuk ambil gratis.', 'error'); return; }
+    if(!topik){ setAiStatus('⚠️ Isi dulu topik/materi soal yang ingin dibuat.', 'error'); return; }
+    if(jumlahEasy + jumlahHard <= 0){ setAiStatus('⚠️ Jumlah soal mudah + sulit harus lebih dari 0.', 'error'); return; }
+    if(!mapelInput.value.trim()){ setAiStatus('⚠️ Isi dulu "Nama Mapel / Sesi" di atas (sebelum membuka Generator AI).', 'error'); return; }
+
+    localStorage.setItem(GEMINI_KEY_STORAGE, apiKey);
+
+    aiGenerateBtn.disabled = true;
+    aiGenerateBtn.classList.add('opacity-50','cursor-not-allowed');
+    setAiStatus(`✨ Sedang membuat ${jumlahEasy + jumlahHard} soal tentang "${topik}"... mohon tunggu.`, 'loading');
+
+    try{
+        const prompt = buildGeminiPrompt(topik, jenjang, jumlahEasy, jumlahHard);
+        let res = await callGemini(GEMINI_MODEL, prompt, apiKey);
+
+        // Fallback: kalau model 3.5 belum tersedia di akun/region ini, coba model 2.5
+        if(res.status === 404){
+            setAiStatus(`⏳ Model ${GEMINI_MODEL} belum tersedia di akun ini, mencoba ${GEMINI_FALLBACK_MODEL}...`, 'loading');
+            res = await callGemini(GEMINI_FALLBACK_MODEL, prompt, apiKey);
+        }
+
+        if(res.status === 400 || res.status === 403){
+            setAiStatus('❌ API Key ditolak Google. Pastikan kunci valid dan aktif di aistudio.google.com/apikey.', 'error');
+            return;
+        }
+        if(res.status === 429){
+            setAiStatus('⏳ Batas gratis Gemini tercapai untuk saat ini. Tunggu sebentar lalu coba lagi.', 'error');
+            return;
+        }
+        if(!res.ok){
+            setAiStatus(`❌ Gemini mengembalikan error (kode ${res.status}). Coba lagi beberapa saat lagi.`, 'error');
+            return;
+        }
+
+        const data = res.data;
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if(!rawText){
+            setAiStatus('❌ Respons AI kosong atau tidak terduga. Coba generate ulang.', 'error');
+            return;
+        }
+
+        let parsed;
+        try{
+            parsed = JSON.parse(rawText);
+        }catch(e){
+            setAiStatus('❌ Gagal membaca hasil AI sebagai JSON. Coba generate ulang.', 'error');
+            return;
+        }
+
+        const validEasy = validateAiQuestions(parsed.easy);
+        const validHard = validateAiQuestions(parsed.hard);
+
+        if(validEasy.length===0 && validHard.length===0){
+            setAiStatus('❌ AI tidak menghasilkan soal yang valid. Coba ubah topik atau generate ulang.', 'error');
+            return;
+        }
+
+        easy = validEasy;
+        hard = validHard;
+        currentMapel = mapelInput.value.trim();
+
+        if(saveToBankCheckbox.checked){
+            const bank = getBank();
+            bank[currentMapel] = { easy, hard };
+            saveBank(bank);
+            refreshBankSelect();
+        }
+
+        setAiStatus(`✅ Berhasil! ${validEasy.length} soal mudah + ${validHard.length} soal sulit dibuat.`, 'success');
+        setTimeout(()=>{
+            closeAiGenerator();
+            openPreview();
+        }, 700);
+
+    }catch(err){
+        setAiStatus('❌ Gagal terhubung ke Gemini. Periksa koneksi internet lalu coba lagi.', 'error');
+    }finally{
+        aiGenerateBtn.disabled = false;
+        aiGenerateBtn.classList.remove('opacity-50','cursor-not-allowed');
+    }
 }
 
 /* --- Riwayat Pertandingan (localStorage) --- */
