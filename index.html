@@ -321,6 +321,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     <div class="mb-5">
         <label for="mapel-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">📘 NAMA MAPEL / SESI</label>
         <input type="text" id="mapel-input" placeholder="Contoh: Matematika Kelas 8A" class="w-full text-sm md:text-base text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)] focus:shadow-[0_0_12px_var(--violet-glow)]">
+        <p id="url-sync-notice" class="hidden text-xs text-[color:var(--ok)] mt-1.5">🔗 Diisi otomatis dari Aplikasi Jadwal KBM</p>
     </div>
 
     <div class="mb-5">
@@ -696,6 +697,7 @@ const comboBadge = document.getElementById('combo-badge');
 const ctxConfetti = confettiCanvas.getContext('2d');
 
 const mapelInput = document.getElementById('mapel-input');
+const urlSyncNotice = document.getElementById('url-sync-notice');
 const durationInput = document.getElementById('duration-input');
 const durationValue = document.getElementById('duration-value');
 const roundsInput = document.getElementById('rounds-input');
@@ -964,6 +966,31 @@ function refreshBankSelect(){
         opt.textContent = `${name} (${(bank[name].easy||[]).length + (bank[name].hard||[]).length} soal)`;
         bankSelect.appendChild(opt);
     });
+}
+
+/* --- Integrasi Level 2: Aplikasi Jadwal KBM ---
+   Aplikasi Jadwal KBM bisa mengarahkan guru ke ArTTiS dengan link berisi
+   parameter URL, contoh:
+     https://arttis.pages.dev/?mapel=Matematika&kelas=8A
+   ArTTiS otomatis mengisi "Nama Mapel/Sesi" dari parameter ini, dan kalau
+   ada soal tersimpan di Bank Soal dengan nama yang cocok, otomatis dipilihkan. */
+function applyUrlParams(){
+    const params = new URLSearchParams(window.location.search);
+    const mapelParam = (params.get('mapel') || '').trim();
+    const kelasParam = (params.get('kelas') || '').trim();
+
+    if(!mapelParam && !kelasParam) return;
+
+    const sesiName = [mapelParam, kelasParam].filter(Boolean).join(' - ');
+    mapelInput.value = sesiName;
+    urlSyncNotice.classList.remove('hidden');
+
+    // Kalau ada soal tersimpan dengan nama persis sama, pilihkan otomatis di Bank Soal
+    // (guru tetap yang klik "Muat" — tidak langsung dimuat otomatis).
+    const bank = getBank();
+    if(bank[sesiName]){
+        bankSelect.value = sesiName;
+    }
 }
 loadBankBtn.addEventListener('click', () => {
     const name = bankSelect.value;
@@ -2019,6 +2046,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createArena();
     updateRope();
     refreshBankSelect();
+    applyUrlParams();
     resizeConfettiCanvas();
     muteBtn.textContent = muted ? '🔇' : '🔊';
     updateOnlineStatus();
