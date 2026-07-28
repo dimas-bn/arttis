@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ArTTiS — Arena Tarik Tambang Informatika</title>
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#8b5cf6">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ArTTiS">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/icon-192.png" type="image/png">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -272,6 +283,14 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     <button id="open-history-btn" onclick="openHistory()" class="btn-neon fixed top-3 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 md:px-4 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
         🏆 Riwayat
     </button>
+
+    <button id="install-app-btn" onclick="installPwa()" class="btn-neon hidden fixed top-16 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_15px_rgba(52,235,158,.4)]">
+        📲 Install App
+    </button>
+
+    <div id="offline-indicator" class="hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-[200] font-display text-xs md:text-sm font-bold py-2 px-4 rounded-full bg-[color:var(--warn)] text-black shadow-[0_0_20px_rgba(251,191,36,.6)]">
+        📡 Sedang Offline — menjalankan versi tersimpan
+    </div>
 
     <h1 class="font-display text-4xl md:text-5xl font-black mb-2 neon-text-v tracking-widest pt-2"><em class="not-italic">ArTTiS</em></h1>
     <h2 class="text-xl md:text-2xl text-[color:var(--ink-dim)] font-semibold tracking-wide">Arena Tarik Tambang · Informatika Style</h2>
@@ -666,6 +685,9 @@ let comboCount=0;
 let muted = localStorage.getItem('arttis_muted') === '1';
 let audioCtx=null;
 let tvMode=false;
+let deferredInstallPrompt=null;
+const installAppBtn = document.getElementById('install-app-btn');
+const offlineIndicator = document.getElementById('offline-indicator');
 const muteBtn = document.getElementById('mute-btn');
 const tvModeBtn = document.getElementById('tv-mode-btn');
 const flashOverlay = document.getElementById('flash-overlay');
@@ -1796,6 +1818,40 @@ document.addEventListener('fullscreenchange', () => {
     }
 });
 
+/* ============ PWA — Offline Mode & Install ============ */
+if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.warn('ArTTiS: registrasi Service Worker gagal (fitur offline tidak aktif):', err);
+        });
+    });
+}
+
+// Tombol "Install App" hanya muncul kalau browser mendukung & mengizinkan (Chrome/Edge/Android).
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    installAppBtn.classList.remove('hidden');
+});
+function installPwa(){
+    if(!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.finally(() => {
+        deferredInstallPrompt = null;
+        installAppBtn.classList.add('hidden');
+    });
+}
+window.addEventListener('appinstalled', () => {
+    installAppBtn.classList.add('hidden');
+});
+
+// Indikator status koneksi — mengingatkan guru kalau lagi offline.
+function updateOnlineStatus(){
+    offlineIndicator.classList.toggle('hidden', navigator.onLine);
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
 /* ============ EFEK VISUAL — heboh & dahsyat ============ */
 function flashScreen(kind){
     flashOverlay.classList.remove('flash-correct','flash-wrong');
@@ -1965,6 +2021,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshBankSelect();
     resizeConfettiCanvas();
     muteBtn.textContent = muted ? '🔇' : '🔊';
+    updateOnlineStatus();
 
     // --- 2. Mulai Logika Hitung Mundur ---
     let count = 5; // Mulai hitungan dari 3
