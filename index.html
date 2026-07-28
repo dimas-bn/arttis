@@ -129,7 +129,111 @@ body{
 /* Scrollbars */
 ::-webkit-scrollbar{ width: 8px; height: 8px; }
 ::-webkit-scrollbar-track{ background: var(--panel); }
-::-webkit-scrollbar-thumb{ background: var(--violet); border-radius: 8px; }
+::-webkit-scrollbar-thumb{ background: var(--violet); border-radius: 8px; }/* Efek suara & visual heboh */
+@keyframes shakeKey{
+    0%,100%{ transform: translate(0,0); }
+    10%{ transform: translate(-8px,2px); }
+    20%{ transform: translate(8px,-2px); }
+    30%{ transform: translate(-6px,3px) rotate(-0.5deg); }
+    40%{ transform: translate(6px,-3px) rotate(0.5deg); }
+    50%{ transform: translate(-4px,2px); }
+    60%{ transform: translate(4px,-2px); }
+    70%{ transform: translate(-2px,1px); }
+    80%{ transform: translate(2px,-1px); }
+    90%{ transform: translate(-1px,0); }
+}
+.shake-anim{ animation: shakeKey 0.5s ease-in-out; }
+
+#flash-overlay{ transition: opacity .12s ease-out; }
+.flash-correct{ opacity: 1 !important; background: radial-gradient(circle at 50% 40%, rgba(52,235,158,0.35), transparent 70%); }
+.flash-wrong{ opacity: 1 !important; background: radial-gradient(circle at 50% 40%, rgba(255,59,110,0.4), transparent 70%); }
+
+@keyframes comboPop{
+    0%{ transform: scale(0.5) translateY(10px); opacity:0; }
+    40%{ transform: scale(1.25) translateY(0); opacity:1; }
+    70%{ transform: scale(1); }
+    100%{ transform: scale(1); opacity:1; }
+}
+.combo-pop{ animation: comboPop 0.45s cubic-bezier(0.34,1.56,0.64,1); }
+
+@keyframes dangerPulse{
+    0%,100%{ text-shadow: 0 0 12px currentColor, 0 0 26px currentColor; }
+    50%{ text-shadow: 0 0 26px currentColor, 0 0 55px currentColor; }
+}
+.danger-pulse{ animation: dangerPulse 0.7s ease-in-out infinite; color: var(--warn) !important; }
+
+@keyframes tickPulse{
+    0%,100%{ transform: scale(1); }
+    50%{ transform: scale(1.12); }
+}
+.tick-urgent{ animation: tickPulse 1s ease-in-out infinite; color: var(--team-a) !important; text-shadow: 0 0 20px var(--team-a-glow); }
+
+@keyframes winPopIn{
+    0%{ transform: scale(0.4) rotate(-6deg); opacity: 0; }
+    60%{ transform: scale(1.1) rotate(2deg); opacity: 1; }
+    100%{ transform: scale(1) rotate(0); opacity: 1; }
+}
+.win-pop{ animation: winPopIn 0.6s cubic-bezier(0.34,1.56,0.64,1); }/* ============ TV MODE — tampilan raksasa untuk proyektor ============ */
+body.tv-mode #mapel-tag,
+body.tv-mode #round-tag,
+body.tv-mode #tournament-tag{ font-size: 1.15rem !important; }
+
+body.tv-mode #team-a, body.tv-mode #team-b{ font-size: 2.8rem !important; line-height: 1.1; }
+@media (min-width: 768px){
+    body.tv-mode #team-a, body.tv-mode #team-b{ font-size: 4rem !important; }
+}
+body.tv-mode #team-a-stats, body.tv-mode #team-b-stats{ font-size: 1.2rem !important; }
+
+body.tv-mode #timer{ font-size: 5.5rem !important; }
+@media (min-width: 768px){
+    body.tv-mode #timer{ font-size: 9rem !important; }
+}
+
+body.tv-mode #arena{ max-width: 96vw !important; }
+body.tv-mode #arena > div{ height: 6rem !important; }
+@media (min-width: 768px){
+    body.tv-mode #arena > div{ height: 8.5rem !important; }
+}
+body.tv-mode .rope-animation{ font-size: 3.2rem !important; }
+@media (min-width: 768px){
+    body.tv-mode .rope-animation{ font-size: 4.5rem !important; }
+}
+
+body.tv-mode #quiz-container{ max-width: 96vw !important; padding: 2rem !important; }
+body.tv-mode #difficulty-indicator{ font-size: 1.3rem !important; padding: 0.85rem 2rem !important; }
+body.tv-mode #question-text{ font-size: 1.9rem !important; }
+@media (min-width: 768px){
+    body.tv-mode #question-text{ font-size: 2.8rem !important; }
+}
+body.tv-mode #options button{ font-size: 1.5rem !important; padding: 1.5rem 0.5rem !important; }
+@media (min-width: 768px){
+    body.tv-mode #options button{ font-size: 2rem !important; padding: 1.75rem 0.5rem !important; }
+}
+body.tv-mode #options > div > div{ font-size: 1.3rem !important; padding: 1rem !important; }
+@media (min-width: 768px){
+    body.tv-mode #options > div > div{ font-size: 1.75rem !important; }
+}
+body.tv-mode #feedback-message{ font-size: 1.8rem !important; }
+@media (min-width: 768px){
+    body.tv-mode #feedback-message{ font-size: 2.6rem !important; }
+}
+body.tv-mode #combo-badge{ font-size: 1.8rem !important; }
+
+body.tv-mode #mute-btn,
+body.tv-mode #tv-mode-btn,
+body.tv-mode #open-history-btn{ opacity: 0.35; transition: opacity .2s; }
+body.tv-mode #mute-btn:hover,
+body.tv-mode #tv-mode-btn:hover,
+body.tv-mode #open-history-btn:hover{ opacity: 1; }
+
+body.tv-mode h1.font-display{ font-size: 3rem !important; }
+@media (min-width: 768px){
+    body.tv-mode h1.font-display{ font-size: 4.5rem !important; }
+}
+body.tv-mode h2{ font-size: 1.3rem !important; }
+@media (min-width: 768px){
+    body.tv-mode h2{ font-size: 1.75rem !important; }
+}
 </style>
 
 </head>
@@ -139,6 +243,8 @@ body{
 <div class="glow-orb orb-a"></div>
 <div class="glow-orb orb-b"></div>
 <div class="glow-orb orb-v"></div>
+<canvas id="confetti-canvas" class="fixed inset-0 z-[150] pointer-events-none"></canvas>
+<div id="flash-overlay" class="fixed inset-0 z-[140] pointer-events-none opacity-0"></div>
 
 <div id="splash-screen" class="fixed inset-0 bg-[radial-gradient(circle_at_50%_20%,#1a0b2e_0%,#05060d_60%)] flex flex-col items-center justify-center text-white z-[200] cursor-pointer opacity-0 transition-opacity duration-1000 ease-out overflow-hidden">
     <div class="grid-bg"></div>
@@ -155,6 +261,14 @@ body{
     </div>
 </div>
 
+    <button id="mute-btn" onclick="toggleMute()" class="btn-neon fixed top-3 left-3 z-30 text-base md:text-lg py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        🔊
+    </button>
+
+    <button id="tv-mode-btn" onclick="toggleTvMode()" class="btn-neon fixed top-16 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        📺 Mode TV
+    </button>
+
     <button id="open-history-btn" onclick="openHistory()" class="btn-neon fixed top-3 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 md:px-4 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
         🏆 Riwayat
     </button>
@@ -163,6 +277,10 @@ body{
     <h2 class="text-xl md:text-2xl text-[color:var(--ink-dim)] font-semibold tracking-wide">Arena Tarik Tambang · Informatika Style</h2>
     <div id="mapel-tag" class="hidden font-mono text-sm text-[color:var(--team-b)] mt-2 tracking-wide"></div>
     <div id="round-tag" class="hidden font-mono text-sm text-[color:var(--warn)] mt-1 tracking-wide"></div>
+    <div id="tournament-tag" class="hidden font-mono text-sm text-[color:var(--violet)] mt-1 tracking-wide"></div>
+    <button id="open-bracket-btn" onclick="openBracket()" class="btn-neon hidden font-display text-xs font-bold py-1.5 px-4 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] mt-2">
+        📋 Lihat Bagan Turnamen
+    </button>
 
 <div class="flex justify-between items-center my-6 mx-auto w-full max-w-6xl px-4">
     <div class="flex-1 text-left">
@@ -195,13 +313,23 @@ body{
     </div>
 
     <div class="mb-5">
-        <label for="rounds-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">🏁 MODE PERTANDINGAN</label>
+        <label for="rounds-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">🏁 MODE PER-MATCH</label>
         <select id="rounds-input" class="w-full text-sm md:text-base text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
             <option value="1">Sekali Tarik (Single Match)</option>
             <option value="3">Best of 3 (menang 2 ronde)</option>
             <option value="5">Best of 5 (menang 3 ronde)</option>
             <option value="7">Best of 7 (menang 4 ronde)</option>
         </select>
+    </div>
+
+    <div class="mb-5">
+        <label for="team-count-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">👥 JUMLAH TIM</label>
+        <select id="team-count-input" class="w-full text-sm md:text-base text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
+            <option value="2">2 Tim (Head to Head Biasa)</option>
+            <option value="4">4 Tim (Mode Turnamen — Semifinal &amp; Final)</option>
+            <option value="8">8 Tim (Mode Turnamen — 3 Babak)</option>
+        </select>
+        <div id="team-names-container" class="hidden mt-3 grid grid-cols-2 gap-2"></div>
     </div>
 
     <div class="mb-5 pt-4 border-t border-[color:rgba(139,92,246,0.2)]">
@@ -316,6 +444,7 @@ body{
         </div>
     <div id="feedback-message" class="text-xl font-medium mt-4 hidden">
         </div>
+    <div id="combo-badge" class="hidden font-display text-xl md:text-2xl font-black mt-3 text-[color:var(--warn)] drop-shadow-[0_0_16px_rgba(251,191,36,.8)] tracking-wide"></div>
 </div>
 
 <div id="win-message" class="fixed inset-0 w-full h-full bg-[#05060d]/92 backdrop-blur-sm text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
@@ -349,6 +478,17 @@ body{
                 🗑️ Hapus Semua Riwayat
             </button>
         </div>
+    </div>
+</div>
+
+<div id="bracket-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[115] p-5">
+    <div class="panel rounded-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div class="flex justify-between items-center p-5 border-b border-[color:rgba(139,92,246,0.25)]">
+            <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🏆 BAGAN TURNAMEN</h2>
+            <button onclick="closeBracket()" class="text-slate-400 hover:text-white text-2xl leading-none px-2">✕</button>
+        </div>
+        <div id="bracket-content" class="overflow-y-auto p-5 space-y-5 text-left"></div>
+        <div id="bracket-footer" class="p-4 border-t border-[color:rgba(139,92,246,0.25)] flex flex-wrap justify-end gap-3"></div>
     </div>
 </div>
 
@@ -432,6 +572,7 @@ let QUESTION_TIME=10; // detik per soal (bisa diubah lewat slider durasi)
 let currentMapel='';
 let statsA={correct:0,wrong:0};
 let statsB={correct:0,wrong:0};
+let questionStats={}; // { "teks soal": {correct:0, wrong:0} } — untuk fitur Statistik Soal Tersulit
 let matchStartTime=null;
 
 /* ==== Fitur baru: Mode Best of N Ronde ==== */
@@ -440,6 +581,35 @@ let currentRound=1;
 let roundsA=0;
 let roundsB=0;
 let matchOver=true;
+
+/* ==== Fitur baru: Mode Turnamen Multi-Tim ==== */
+let tournamentMode=false;
+let tournamentTeams=[];
+let tournamentRounds=[]; // [ [ {team1,team2,winner}, ... ], ... ]
+let currentRoundIndex=0;
+let currentMatchIndexInRound=0;
+let teamAShort='Tim A';
+let teamBShort='Tim B';
+
+const teamCountInput = document.getElementById('team-count-input');
+const teamNamesContainer = document.getElementById('team-names-container');
+const tournamentTag = document.getElementById('tournament-tag');
+const openBracketBtn = document.getElementById('open-bracket-btn');
+const bracketModal = document.getElementById('bracket-modal');
+const bracketContent = document.getElementById('bracket-content');
+const bracketFooter = document.getElementById('bracket-footer');
+
+/* ==== Fitur baru: Efek Suara & Visual ==== */
+let comboCount=0;
+let muted = localStorage.getItem('arttis_muted') === '1';
+let audioCtx=null;
+let tvMode=false;
+const muteBtn = document.getElementById('mute-btn');
+const tvModeBtn = document.getElementById('tv-mode-btn');
+const flashOverlay = document.getElementById('flash-overlay');
+const confettiCanvas = document.getElementById('confetti-canvas');
+const comboBadge = document.getElementById('combo-badge');
+const ctxConfetti = confettiCanvas.getContext('2d');
 
 const mapelInput = document.getElementById('mapel-input');
 const durationInput = document.getElementById('duration-input');
@@ -474,6 +644,210 @@ durationInput.addEventListener('input', () => {
         rulesDurationText.textContent = `Waktu menjawab tiap soal hanya ${QUESTION_TIME} detik`;
     }
 });
+
+/* --- Mode Turnamen: input nama tim dinamis --- */
+teamCountInput.addEventListener('change', () => {
+    const count = parseInt(teamCountInput.value, 10);
+    if(count <= 2){
+        teamNamesContainer.classList.add('hidden');
+        teamNamesContainer.innerHTML = '';
+        return;
+    }
+    teamNamesContainer.classList.remove('hidden');
+    teamNamesContainer.innerHTML = '';
+    for(let i=1;i<=count;i++){
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.id = `team-name-${i}`;
+        inp.placeholder = `Nama Tim ${i}`;
+        inp.className = 'text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-3 py-2 focus:outline-none focus:border-[color:var(--violet)]';
+        teamNamesContainer.appendChild(inp);
+    }
+});
+
+/* --- Mode Turnamen: helper label tim --- */
+function applyTeamLabels(labelA, labelB, shortA, shortB){
+    teamAShort = shortA;
+    teamBShort = shortB;
+    document.getElementById('team-a').textContent = labelA;
+    document.getElementById('team-b').textContent = labelB;
+}
+function teamDisplayName(tag){
+    return tag==='TIM A' ? teamAShort : teamBShort;
+}
+
+/* --- Mode Turnamen: bracket sistem gugur --- */
+function buildBracket(teams){
+    tournamentTeams = teams;
+    let round1 = [];
+    for(let i=0;i<teams.length;i+=2){
+        round1.push({ team1: teams[i], team2: teams[i+1], winner: null });
+    }
+    tournamentRounds = [round1];
+    let prevCount = round1.length;
+    while(prevCount > 1){
+        const round = [];
+        for(let i=0;i<prevCount;i+=2){
+            round.push({ team1: 'TBD', team2: 'TBD', winner: null });
+        }
+        tournamentRounds.push(round);
+        prevCount = round.length;
+    }
+}
+function roundLabel(idx, total){
+    const fromEnd = total - idx;
+    if(fromEnd===1) return 'FINAL';
+    if(fromEnd===2) return 'SEMIFINAL';
+    if(fromEnd===3) return 'PEREMPAT FINAL';
+    return `BABAK ${idx+1}`;
+}
+function renderBracketContent(isFinal){
+    bracketContent.innerHTML = tournamentRounds.map((round, rIdx) => `
+        <div>
+            <p class="font-display text-sm font-bold text-[color:var(--violet)] mb-2 tracking-wide">${roundLabel(rIdx, tournamentRounds.length)}</p>
+            <div class="space-y-2">
+                ${round.map((m, mIdx) => {
+                    const isCurrent = !isFinal && rIdx===currentRoundIndex && mIdx===currentMatchIndexInRound;
+                    return `
+                    <div class="flex items-center justify-between gap-3 bg-[color:var(--panel-2)] border ${isCurrent ? 'border-[color:var(--warn)] shadow-[0_0_15px_rgba(251,191,36,.35)]' : 'border-[color:rgba(139,92,246,0.2)]'} rounded-lg px-4 py-2.5">
+                        <span class="text-sm ${m.winner===m.team1 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(m.team1)} ${m.winner===m.team1 ? '✔' : ''}</span>
+                        <span class="text-xs text-slate-500 font-mono">vs</span>
+                        <span class="text-sm ${m.winner===m.team2 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${m.winner===m.team2 ? '✔' : ''} ${escapeHtml(m.team2)}</span>
+                        ${isCurrent ? '<span class="text-xs font-display font-bold text-[color:var(--warn)] ml-2">▶ SELANJUTNYA</span>' : ''}
+                    </div>`;
+                }).join('')}
+            </div>
+        </div>
+    `).join('');
+
+    if(isFinal){
+        const champion = tournamentTeams.length>0 ? tournamentRounds[tournamentRounds.length-1][0].winner : '';
+        bracketFooter.innerHTML = '';
+        const btnRestart = document.createElement('button');
+        btnRestart.className = 'btn-neon py-2.5 px-5 text-sm font-bold rounded-lg bg-gradient-to-r from-[color:var(--violet)] to-fuchsia-600 text-white shadow-[0_0_20px_var(--violet-glow)]';
+        btnRestart.textContent = '🔁 Ulangi Turnamen (Tim Sama)';
+        btnRestart.onclick = restartTournament;
+        const btnSetup = document.createElement('button');
+        btnSetup.className = 'btn-neon py-2.5 px-5 text-sm font-bold rounded-lg bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-white';
+        btnSetup.textContent = '⚙️ Pengaturan Baru';
+        btnSetup.onclick = backToSetup;
+        bracketFooter.append(btnRestart, btnSetup);
+    } else {
+        const match = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
+        bracketFooter.innerHTML = '';
+        const btnStart = document.createElement('button');
+        btnStart.className = 'btn-neon py-2.5 px-6 text-sm font-bold rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_20px_rgba(52,235,158,.4)]';
+        btnStart.textContent = `▶️ Mulai: ${match.team1} vs ${match.team2}`;
+        btnStart.onclick = startTournamentMatch;
+        bracketFooter.appendChild(btnStart);
+    }
+}
+function openBracket(isFinal){
+    winBox.classList.add('hidden');
+    winBox.classList.remove('flex');
+    renderBracketContent(!!isFinal);
+    bracketModal.classList.remove('hidden');
+    bracketModal.classList.add('flex');
+}
+function closeBracket(){
+    bracketModal.classList.add('hidden');
+    bracketModal.classList.remove('flex');
+}
+function startTournamentMatch(){
+    const match = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
+    closeBracket();
+    applyTeamLabels(match.team1, match.team2, match.team1, match.team2);
+    tournamentTag.textContent = `🏆 Turnamen ${tournamentTeams.length} Tim • ${roundLabel(currentRoundIndex, tournamentRounds.length)} • ${match.team1} vs ${match.team2}`;
+    tournamentTag.classList.remove('hidden');
+    openBracketBtn.classList.remove('hidden');
+
+    document.getElementById('upload-box').classList.add('hidden');
+    document.getElementById('format-guide').classList.add('hidden');
+    quiz.classList.remove('hidden');
+
+    startNewMatch();
+}
+function finishTournamentMatch(winnerName, summary){
+    const match = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
+    match.winner = winnerName;
+
+    const nextRoundIdx = currentRoundIndex + 1;
+    if(nextRoundIdx < tournamentRounds.length){
+        const nextMatchIdx = Math.floor(currentMatchIndexInRound/2);
+        const slot = currentMatchIndexInRound % 2 === 0 ? 'team1' : 'team2';
+        tournamentRounds[nextRoundIdx][nextMatchIdx][slot] = winnerName;
+    }
+
+    currentMatchIndexInRound++;
+    if(currentMatchIndexInRound >= tournamentRounds[currentRoundIndex].length){
+        currentRoundIndex++;
+        currentMatchIndexInRound = 0;
+    }
+
+    const finished = currentRoundIndex >= tournamentRounds.length;
+
+    if(finished){
+        winnerText.textContent = `🏆 ${winnerName} JUARA TURNAMEN! 🏆`;
+        winStats.innerHTML = `
+            <p class="text-slate-300">Total ${tournamentTeams.length} tim bertanding dalam turnamen ini.</p>
+            <p class="text-slate-400 text-sm mt-2">Total ${summary.totalSoal} soal di match terakhir • Durasi ${formatDurasi(summary.durasiDetik)}</p>
+            <p class="text-slate-400 text-sm mt-1">Klik tombol di bawah untuk melihat bagan akhir.</p>
+        `;
+        winPrimaryBtn.textContent = '📋 Lihat Bagan Akhir';
+        winPrimaryBtn.onclick = () => openBracket(true);
+        playSound('matchwin');
+        launchConfetti(280);
+        setTimeout(()=>launchConfetti(200), 400);
+        setTimeout(()=>launchConfetti(150), 800);
+        saveTournamentHistory(winnerName);
+    } else {
+        const nextMatch = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
+        winnerText.textContent = `${winnerName} MENANG! ✅`;
+        winStats.innerHTML = `
+            <p class="text-slate-300">Match berikutnya: <span class="text-[color:var(--warn)] font-bold">${escapeHtml(nextMatch.team1)} vs ${escapeHtml(nextMatch.team2)}</span></p>
+            <p class="text-slate-400 text-sm mt-2">Total ${summary.totalSoal} soal • Durasi ${formatDurasi(summary.durasiDetik)}</p>
+        `;
+        winPrimaryBtn.textContent = '📋 Lihat Bagan & Lanjut';
+        winPrimaryBtn.onclick = () => openBracket(false);
+        playSound('roundwin');
+        launchConfetti(100);
+    }
+}
+function saveTournamentHistory(champion){
+    const bracketSummary = tournamentRounds.map(round => round.map(m => `${m.team1} vs ${m.team2} → ${m.winner || '-'}`));
+    saveHistoryRecord({
+        mapel: currentMapel || '(Tanpa Nama)',
+        tanggal: new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' }),
+        pemenang: champion,
+        skorA: { correct:0, wrong:0 },
+        skorB: { correct:0, wrong:0 },
+        totalSoal: 0,
+        durasiDetik: 0,
+        isTournament: true,
+        tournamentTeams: [...tournamentTeams],
+        bracketSummary: bracketSummary
+    });
+}
+function restartTournament(){
+    buildBracket(tournamentTeams);
+    currentRoundIndex = 0;
+    currentMatchIndexInRound = 0;
+    closeBracket();
+    startTournamentMatch();
+}
+function backToSetup(){
+    winBox.classList.add('hidden');
+    winBox.classList.remove('flex');
+    closeBracket();
+    quiz.classList.add('hidden');
+    document.getElementById('upload-box').classList.remove('hidden');
+    document.getElementById('format-guide').classList.remove('hidden');
+    tournamentTag.classList.add('hidden');
+    openBracketBtn.classList.add('hidden');
+    mapelTag.classList.add('hidden');
+    roundTag.classList.add('hidden');
+    tournamentMode = false;
+}
 
 /* --- Bank Soal (localStorage) --- */
 function getBank(){
@@ -523,6 +897,19 @@ function escapeHtml(str){
     const div = document.createElement('div');
     div.textContent = String(str);
     return div.innerHTML;
+}
+/* --- Statistik Soal Tersulit --- */
+function getHardestQuestions(limit){
+    return Object.keys(questionStats)
+        .map(q => ({ q, correct: questionStats[q].correct, wrong: questionStats[q].wrong }))
+        .filter(item => item.wrong > 0)
+        .sort((a,b) => {
+            if(b.wrong !== a.wrong) return b.wrong - a.wrong;
+            const rateA = a.wrong / (a.correct + a.wrong);
+            const rateB = b.wrong / (b.correct + b.wrong);
+            return rateB - rateA;
+        })
+        .slice(0, limit);
 }
 function renderPreviewGroup(list, label, badgeClass){
     if(!list || list.length===0) return '';
@@ -581,13 +968,27 @@ function formatDurasi(sec){
     const m = Math.floor(sec/60), s = sec%60;
     return m>0 ? `${m}m ${s}d` : `${s} detik`;
 }
-function renderHistory(){
-    const list = getHistory();
-    if(list.length===0){
-        historyList.innerHTML = '<p class="text-slate-400 text-center py-6">Belum ada riwayat pertandingan.</p>';
-        return;
+function renderHistoryCard(r){
+    if(r.isTournament){
+        return `
+        <div class="bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.25)] rounded-lg p-4">
+            <div class="flex justify-between items-start flex-wrap gap-2">
+                <div>
+                    <p class="font-display font-bold text-lg neon-text-v">🏆 ${r.mapel || '(Tanpa Nama)'}</p>
+                    <p class="text-xs text-slate-400 font-mono">${r.tanggal} • Turnamen ${r.tournamentTeams.length} Tim</p>
+                </div>
+                <span class="font-display font-bold text-sm px-3 py-1 rounded-full bg-gradient-to-r from-[color:var(--violet)] to-fuchsia-600 text-white">
+                    ${escapeHtml(r.pemenang)} JUARA
+                </span>
+            </div>
+            <div class="mt-3 space-y-1">
+                ${(r.bracketSummary||[]).map((round,idx) => `
+                    <p class="text-xs text-slate-400 font-mono"><span class="text-[color:var(--warn)]">${roundLabel(idx, r.bracketSummary.length)}:</span> ${round.map(m=>escapeHtml(m)).join(' • ')}</p>
+                `).join('')}
+            </div>
+        </div>`;
     }
-    historyList.innerHTML = list.map(r => `
+    return `
         <div class="bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.25)] rounded-lg p-4">
             <div class="flex justify-between items-start flex-wrap gap-2">
                 <div>
@@ -604,8 +1005,20 @@ function renderHistory(){
             </div>
             ${r.totalRounds && r.totalRounds>1 ? `<p class="text-xs text-[color:var(--warn)] mt-1 font-mono">Mode Best of ${r.totalRounds} • Skor Ronde: A ${r.roundsA} - B ${r.roundsB}</p>` : ''}
             <p class="text-xs text-slate-400 mt-2 font-mono">Total soal: ${r.totalSoal} • Durasi: ${formatDurasi(r.durasiDetik)}</p>
-        </div>
-    `).join('');
+            ${r.hardestQuestions && r.hardestQuestions.length>0 ? `
+            <div class="mt-2 pt-2 border-t border-[color:rgba(139,92,246,0.15)]">
+                <p class="text-xs font-display font-bold text-[color:var(--warn)] mb-1">📊 Soal Tersulit</p>
+                ${r.hardestQuestions.map(h => `<p class="text-xs text-slate-400">• ${escapeHtml(h.q)} <span class="text-[color:var(--team-a)] font-mono">(${h.wrong}x salah)</span></p>`).join('')}
+            </div>` : ''}
+        </div>`;
+}
+function renderHistory(){
+    const list = getHistory();
+    if(list.length===0){
+        historyList.innerHTML = '<p class="text-slate-400 text-center py-6">Belum ada riwayat pertandingan.</p>';
+        return;
+    }
+    historyList.innerHTML = list.map(r => renderHistoryCard(r)).join('');
 }
 function openHistory(){
     renderHistory();
@@ -651,8 +1064,10 @@ function exportHistoryPDF(){
     y += 8;
 
     list.forEach((r, idx) => {
+        const hardestList = r.hardestQuestions || [];
         // Perkiraan tinggi blok, kalau tidak muat pindah halaman baru
-        const blockHeight = r.totalRounds && r.totalRounds > 1 ? 34 : 30;
+        let blockHeight = r.totalRounds && r.totalRounds > 1 ? 34 : 30;
+        blockHeight += hardestList.length > 0 ? (4 + hardestList.length * 4.5) : 0;
         if(y + blockHeight > pageHeight - 15){
             doc.addPage();
             y = 18;
@@ -680,7 +1095,21 @@ function exportHistoryPDF(){
         }
         doc.setTextColor(110);
         doc.text(`Total soal: ${r.totalSoal}  •  Durasi: ${formatDurasi(r.durasiDetik)}`, marginX, y);
-        y += 6;
+        y += 5;
+        if(hardestList.length > 0){
+            doc.setFont('helvetica','bold');
+            doc.setTextColor(180,83,9);
+            doc.text('Soal Tersulit:', marginX, y);
+            y += 4.5;
+            doc.setFont('helvetica','normal');
+            doc.setTextColor(110);
+            hardestList.forEach(h=>{
+                const line = doc.splitTextToSize(`- ${h.q} (${h.wrong}x salah)`, pageWidth - marginX*2 - 4);
+                doc.text(line, marginX+2, y);
+                y += 4.5 * line.length;
+            });
+        }
+        y += 3;
         doc.setDrawColor(220);
         doc.line(marginX, y, pageWidth - marginX, y);
         y += 6;
@@ -707,13 +1136,16 @@ function exportHistoryExcel(){
         'Tim B Benar': r.skorB.correct,
         'Tim B Salah': r.skorB.wrong,
         'Total Soal': r.totalSoal,
-        'Durasi (detik)': r.durasiDetik
+        'Durasi (detik)': r.durasiDetik,
+        'Soal Tersulit': (r.hardestQuestions && r.hardestQuestions.length>0)
+            ? r.hardestQuestions.map(h => `${h.q} (${h.wrong}x salah)`).join(' | ')
+            : '-'
     }));
 
     const ws = XLSX.utils.json_to_sheet(rows);
     ws['!cols'] = [
         {wch:4},{wch:22},{wch:20},{wch:10},{wch:14},
-        {wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:11},{wch:14}
+        {wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:11},{wch:14},{wch:50}
     ];
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Riwayat Pertandingan');
@@ -746,18 +1178,30 @@ function updateRope(){
     const e=document.querySelector(`[data-step="${rope}"]`);
     // Marker energi (rope) dengan efek glow neon
     if(e) e.innerHTML='<span class="rope-animation text-4xl">🪢</span>';
+    updateDangerGlow();
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 function startTimer(){
     clearInterval(timerInt);
     timeLeft=QUESTION_TIME;
     timerEl.textContent=timeLeft<10?'0'+timeLeft:timeLeft;
+    timerEl.classList.remove('tick-urgent');
     timerInt=setInterval(()=>{
         timeLeft--;
         timerEl.textContent=timeLeft<10?'0'+timeLeft:timeLeft;
+        if(timeLeft<=3 && timeLeft>0){
+            timerEl.classList.add('tick-urgent');
+            playSound('tick');
+        }
         if(timeLeft<=0){
             clearInterval(timerInt);
+            timerEl.classList.remove('tick-urgent');
             playSound('timeout');
+            flashScreen('wrong');
+            comboCount=0;
+            hideCombo();
+            if(!questionStats[currentQ.q]) questionStats[currentQ.q] = {correct:0, wrong:0};
+            questionStats[currentQ.q].wrong++;
             feedback.textContent='Waktu Habis!';
             // Reset kelas dan tampilkan (Lebih besar dan tebal) dengan warna neon danger
             feedback.className='text-3xl font-bold mt-4 block text-[color:var(--team-a)] drop-shadow-[0_0_10px_var(--team-a-glow)]';
@@ -822,19 +1266,36 @@ function handleAnswer(team,i){
 
     feedback.className = 'text-3xl font-bold mt-4 block'; // Tampilkan (Lebih besar dan tebal)
 
+    if(!questionStats[currentQ.q]) questionStats[currentQ.q] = {correct:0, wrong:0};
+
     if(i===correct){
         playSound('correct');
+        flashScreen('correct');
         const step=difficulty==='hard'?2:1;
         rope += team==='A' ? -step : step;
-        feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Benar! +${step} langkah`;
+        feedback.textContent=`${team==='A'?teamAShort:teamBShort} Benar! +${step} langkah`;
         feedback.classList.add('text-emerald-400','drop-shadow-[0_0_10px_rgba(52,235,158,.6)]'); // Kelas correct
         if(team==='A') statsA.correct++; else statsB.correct++;
+        questionStats[currentQ.q].correct++;
+
+        comboCount++;
+        if(comboCount>=2){
+            showCombo(comboCount);
+            if(comboCount%2===0) playSound('combo');
+        } else {
+            hideCombo();
+        }
     } else {
         playSound('wrong');
+        flashScreen('wrong');
+        shakeArena();
         rope += team==='A' ? 1 : -1;
-        feedback.textContent=`${team==='A'?'Tim A':'Tim B'} Salah! Lawan maju 1 langkah`;
+        feedback.textContent=`${team==='A'?teamAShort:teamBShort} Salah! Lawan maju 1 langkah`;
         feedback.classList.add('text-[color:var(--team-a)]','drop-shadow-[0_0_10px_var(--team-a-glow)]'); // Kelas incorrect
         if(team==='A') statsA.wrong++; else statsB.wrong++;
+        questionStats[currentQ.q].wrong++;
+        comboCount=0;
+        hideCombo();
     }
     teamAStats.textContent = `✔ ${statsA.correct}   ✘ ${statsA.wrong}`;
     teamBStats.textContent = `✔ ${statsB.correct}   ✘ ${statsB.wrong}`;
@@ -867,42 +1328,72 @@ function win(t){
 
     if(matchOver){
         const finalWinner = totalRounds===1 ? t : (roundsA>=majority ? 'TIM A' : 'TIM B');
-        winnerText.textContent = totalRounds>1 ? `${finalWinner} JUARA PERTANDINGAN 🎉` : `${finalWinner} MENANG 🎉`;
-
         const durasiDetik = matchStartTime ? Math.round((Date.now()-matchStartTime)/1000) : 0;
-        let statsHtml = `
-            <p><span class="text-[color:var(--team-a)]">TIM A</span> — ✔ ${statsA.correct} benar &nbsp; ✘ ${statsA.wrong} salah</p>
-            <p><span class="text-[color:var(--team-b)]">TIM B</span> — ✔ ${statsB.correct} benar &nbsp; ✘ ${statsB.wrong} salah</p>`;
-        if(totalRounds>1){
-            statsHtml += `<p class="text-[color:var(--warn)] font-bold mt-2">Skor Ronde Akhir: TIM A ${roundsA} — TIM B ${roundsB}</p>`;
+        const hardest = getHardestQuestions(3);
+
+        if(tournamentMode){
+            const winnerName = teamDisplayName(finalWinner);
+            finishTournamentMatch(winnerName, { totalSoal, durasiDetik, hardest });
+        } else {
+            const finalWinnerName = teamDisplayName(finalWinner).toUpperCase();
+            winnerText.textContent = totalRounds>1 ? `${finalWinnerName} JUARA PERTANDINGAN 🎉` : `${finalWinnerName} MENANG 🎉`;
+
+            let statsHtml = `
+                <p><span class="text-[color:var(--team-a)]">${teamAShort.toUpperCase()}</span> — ✔ ${statsA.correct} benar &nbsp; ✘ ${statsA.wrong} salah</p>
+                <p><span class="text-[color:var(--team-b)]">${teamBShort.toUpperCase()}</span> — ✔ ${statsB.correct} benar &nbsp; ✘ ${statsB.wrong} salah</p>`;
+            if(totalRounds>1){
+                statsHtml += `<p class="text-[color:var(--warn)] font-bold mt-2">Skor Ronde Akhir: ${teamAShort} ${roundsA} — ${teamBShort} ${roundsB}</p>`;
+            }
+            statsHtml += `<p class="text-slate-400 text-sm mt-2">Total ${totalSoal} soal • Durasi ${formatDurasi(durasiDetik)}</p>`;
+
+            if(hardest.length > 0){
+                statsHtml += `<div class="text-left max-w-md mx-auto mt-4 bg-[color:var(--panel-2)]/70 border border-[color:rgba(139,92,246,0.25)] rounded-lg p-3">
+                    <p class="text-sm font-display font-bold text-[color:var(--warn)] mb-2">📊 SOAL TERSULIT</p>
+                    ${hardest.map(h => `<p class="text-xs md:text-sm text-slate-300 mb-1">• ${escapeHtml(h.q)} <span class="text-[color:var(--team-a)] font-mono">(${h.wrong}x salah)</span></p>`).join('')}
+                </div>`;
+            }
+            winStats.innerHTML = statsHtml;
+
+            saveHistoryRecord({
+                mapel: currentMapel || '(Tanpa Nama)',
+                tanggal: new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' }),
+                pemenang: finalWinnerName,
+                skorA: { ...statsA },
+                skorB: { ...statsB },
+                totalSoal: totalSoal,
+                durasiDetik: durasiDetik,
+                totalRounds: totalRounds,
+                roundsA: roundsA,
+                roundsB: roundsB,
+                hardestQuestions: hardest
+            });
+
+            winPrimaryBtn.textContent = '🔁 Tanding Lagi';
+            winPrimaryBtn.onclick = startNewMatch;
+
+            playSound('matchwin');
+            launchConfetti(220);
+            setTimeout(()=>launchConfetti(140), 400);
         }
-        statsHtml += `<p class="text-slate-400 text-sm mt-2">Total ${totalSoal} soal • Durasi ${formatDurasi(durasiDetik)}</p>`;
-        winStats.innerHTML = statsHtml;
-
-        saveHistoryRecord({
-            mapel: currentMapel || '(Tanpa Nama)',
-            tanggal: new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' }),
-            pemenang: finalWinner,
-            skorA: { ...statsA },
-            skorB: { ...statsB },
-            totalSoal: totalSoal,
-            durasiDetik: durasiDetik,
-            totalRounds: totalRounds,
-            roundsA: roundsA,
-            roundsB: roundsB
-        });
-
-        winPrimaryBtn.textContent = '🔁 Tanding Lagi';
-        winPrimaryBtn.onclick = startNewMatch;
     } else {
-        winnerText.textContent = `RONDE ${currentRound} SELESAI — ${t} MENANG!`;
+        winnerText.textContent = `RONDE ${currentRound} SELESAI — ${teamDisplayName(t)} MENANG!`;
         winStats.innerHTML = `
-            <p class="text-[color:var(--warn)] font-bold">Skor Ronde: TIM A ${roundsA} — TIM B ${roundsB}</p>
+            <p class="text-[color:var(--warn)] font-bold">Skor Ronde: ${teamAShort} ${roundsA} — ${teamBShort} ${roundsB}</p>
             <p class="text-slate-400 text-sm mt-2">Lanjut ke Ronde ${currentRound+1} dari ${totalRounds}</p>
         `;
         winPrimaryBtn.textContent = '▶️ Lanjut ke Ronde Berikutnya';
         winPrimaryBtn.onclick = startNextRound;
+
+        playSound('roundwin');
+        launchConfetti(90);
     }
+
+    winnerText.classList.remove('win-pop');
+    void winnerText.offsetWidth;
+    winnerText.classList.add('win-pop');
+
+    comboCount=0;
+    hideCombo();
 
     winBox.classList.remove('hidden');
     winBox.classList.add('flex'); // Tampilkan sebagai flex
@@ -928,9 +1419,12 @@ function startNewMatch(){
     rope=10; active=true; questionActive=true;
     statsA={correct:0,wrong:0};
     statsB={correct:0,wrong:0};
+    questionStats={};
     matchStartTime=Date.now();
     teamAStats.textContent = '✔ 0   ✘ 0';
     teamBStats.textContent = '✔ 0   ✘ 0';
+    comboCount=0;
+    hideCombo();
 
     if(currentMapel){
         mapelTag.textContent = `📘 Sesi: ${currentMapel}`;
@@ -958,6 +1452,8 @@ function startNextRound(){
     currentRound++;
     rope=10; active=true; questionActive=true;
     updateRoundTag();
+    comboCount=0;
+    hideCombo();
 
     shuffledEasy=[...easy]; shuffle(shuffledEasy);
     shuffledHard=[...hard]; shuffle(shuffledHard);
@@ -969,15 +1465,184 @@ function startNextRound(){
 }
 // Alias untuk kompatibilitas — memulai pertandingan baru dari awal
 function resetGame(){ startNewMatch(); }
-function playSound(type){
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator(); const g=ctx.createGain();
+
+/* ============ SOUND DESIGN — lebih heboh ============ */
+function getAudioCtx(){
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+}
+function tone(ctx, freq, start, dur, type='sine', peakGain=0.22, glideTo=null){
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, ctx.currentTime + start);
+    if(glideTo !== null){
+        o.frequency.exponentialRampToValueAtTime(Math.max(glideTo,1), ctx.currentTime + start + dur);
+    }
     o.connect(g); g.connect(ctx.destination);
-    if(type==='correct') o.frequency.value=800;
-    else if(type==='wrong') o.frequency.value=300;
-    else if(type==='timeout') o.frequency.value=500;
-    g.gain.setValueAtTime(0.2,ctx.currentTime);
-    o.start(); o.stop(ctx.currentTime+0.3);
+    g.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+    g.gain.exponentialRampToValueAtTime(peakGain, ctx.currentTime + start + Math.min(0.02,dur/4));
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
+    o.start(ctx.currentTime + start);
+    o.stop(ctx.currentTime + start + dur + 0.05);
+}
+function playSound(type){
+    if(muted) return;
+    try{
+        const ctx = getAudioCtx();
+        switch(type){
+            case 'correct': // chime ceria naik
+                tone(ctx, 660, 0, 0.11, 'triangle', 0.22);
+                tone(ctx, 880, 0.08, 0.14, 'triangle', 0.22);
+                tone(ctx, 1180, 0.16, 0.18, 'sine', 0.18);
+                break;
+            case 'wrong': // buzzer tegas turun
+                tone(ctx, 220, 0, 0.18, 'sawtooth', 0.22, 90);
+                tone(ctx, 140, 0.1, 0.22, 'square', 0.16, 70);
+                break;
+            case 'timeout': // sirine pendek
+                tone(ctx, 500, 0, 0.12, 'square', 0.18);
+                tone(ctx, 350, 0.12, 0.12, 'square', 0.18);
+                tone(ctx, 500, 0.24, 0.16, 'square', 0.18);
+                break;
+            case 'tick': // detak tegang 3 detik terakhir
+                tone(ctx, 900, 0, 0.06, 'square', 0.15);
+                break;
+            case 'combo': // arpeggio combo
+                tone(ctx, 700, 0, 0.09, 'triangle', 0.2);
+                tone(ctx, 900, 0.07, 0.09, 'triangle', 0.2);
+                tone(ctx, 1100, 0.14, 0.09, 'triangle', 0.2);
+                tone(ctx, 1400, 0.21, 0.14, 'sine', 0.18);
+                break;
+            case 'roundwin': // fanfare kecil
+                tone(ctx, 523, 0, 0.14, 'triangle', 0.22);
+                tone(ctx, 659, 0.12, 0.14, 'triangle', 0.22);
+                tone(ctx, 784, 0.24, 0.22, 'triangle', 0.24);
+                break;
+            case 'matchwin': // fanfare besar dua suara
+                tone(ctx, 523, 0, 0.15, 'triangle', 0.24);
+                tone(ctx, 659, 0.13, 0.15, 'triangle', 0.24);
+                tone(ctx, 784, 0.26, 0.15, 'triangle', 0.24);
+                tone(ctx, 1046, 0.39, 0.35, 'sine', 0.26);
+                tone(ctx, 262, 0, 0.15, 'sine', 0.12);
+                tone(ctx, 330, 0.13, 0.15, 'sine', 0.12);
+                tone(ctx, 392, 0.26, 0.15, 'sine', 0.12);
+                tone(ctx, 523, 0.39, 0.35, 'sine', 0.14);
+                break;
+        }
+    }catch(e){ /* Web Audio tidak tersedia, abaikan diam-diam */ }
+}
+function toggleMute(){
+    muted = !muted;
+    localStorage.setItem('arttis_muted', muted ? '1' : '0');
+    muteBtn.textContent = muted ? '🔇' : '🔊';
+}
+
+/* ============ TV MODE — tampilan raksasa untuk proyektor ============ */
+function toggleTvMode(){
+    tvMode = !tvMode;
+    document.body.classList.toggle('tv-mode', tvMode);
+    tvModeBtn.textContent = tvMode ? '📺 Keluar TV Mode' : '📺 Mode TV';
+
+    if(tvMode){
+        const el = document.documentElement;
+        const reqFs = el.requestFullscreen || el.webkitRequestFullscreen;
+        if(reqFs){ reqFs.call(el).catch(()=>{ /* browser menolak, tetap lanjut tanpa fullscreen */ }); }
+    } else {
+        if(document.fullscreenElement || document.webkitFullscreenElement){
+            const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+            if(exitFs){ exitFs.call(document).catch(()=>{}); }
+        }
+    }
+}
+// Kalau guru keluar fullscreen manual (misal tekan Esc), sinkronkan status tombol
+document.addEventListener('fullscreenchange', () => {
+    if(!document.fullscreenElement && tvMode){
+        tvMode = false;
+        document.body.classList.remove('tv-mode');
+        tvModeBtn.textContent = '📺 Mode TV';
+    }
+});
+
+/* ============ EFEK VISUAL — heboh & dahsyat ============ */
+function flashScreen(kind){
+    flashOverlay.classList.remove('flash-correct','flash-wrong');
+    void flashOverlay.offsetWidth; // restart animasi
+    flashOverlay.classList.add(kind==='correct' ? 'flash-correct' : 'flash-wrong');
+    setTimeout(()=>{ flashOverlay.classList.remove('flash-correct','flash-wrong'); flashOverlay.style.opacity='0'; }, 220);
+}
+function shakeArena(){
+    arena.classList.remove('shake-anim');
+    void arena.offsetWidth;
+    arena.classList.add('shake-anim');
+    setTimeout(()=>arena.classList.remove('shake-anim'), 500);
+}
+function showCombo(n){
+    comboBadge.textContent = `🔥 COMBO x${n}!`;
+    comboBadge.classList.remove('hidden','combo-pop');
+    void comboBadge.offsetWidth;
+    comboBadge.classList.add('combo-pop');
+}
+function hideCombo(){
+    comboBadge.classList.add('hidden');
+}
+
+/* Confetti ringan berbasis canvas, tanpa dependensi eksternal */
+let confettiParticles = [];
+let confettiRAF = null;
+function resizeConfettiCanvas(){
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeConfettiCanvas);
+function launchConfetti(count){
+    resizeConfettiCanvas();
+    const colors = ['#ff3b6e','#22d3ee','#8b5cf6','#fbbf24','#34eb9e','#ffffff'];
+    for(let i=0;i<count;i++){
+        confettiParticles.push({
+            x: Math.random()*confettiCanvas.width,
+            y: -20 - Math.random()*200,
+            w: 6+Math.random()*6,
+            h: 8+Math.random()*10,
+            color: colors[Math.floor(Math.random()*colors.length)],
+            vy: 2+Math.random()*3.5,
+            vx: -2+Math.random()*4,
+            rot: Math.random()*360,
+            vrot: -8+Math.random()*16,
+            life: 0,
+            maxLife: 160+Math.random()*80
+        });
+    }
+    if(!confettiRAF) animateConfetti();
+}
+function animateConfetti(){
+    ctxConfetti.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+    confettiParticles.forEach(p=>{
+        p.x += p.vx; p.y += p.vy; p.rot += p.vrot; p.life++;
+        ctxConfetti.save();
+        ctxConfetti.translate(p.x,p.y);
+        ctxConfetti.rotate(p.rot*Math.PI/180);
+        ctxConfetti.fillStyle = p.color;
+        ctxConfetti.globalAlpha = Math.max(0, 1 - p.life/p.maxLife);
+        ctxConfetti.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+        ctxConfetti.restore();
+    });
+    confettiParticles = confettiParticles.filter(p=>p.life < p.maxLife && p.y < confettiCanvas.height+40);
+    if(confettiParticles.length>0){
+        confettiRAF = requestAnimationFrame(animateConfetti);
+    } else {
+        ctxConfetti.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+        confettiRAF = null;
+    }
+}
+
+/* Zona bahaya: kedip saat tali mendekati garis kemenangan */
+function updateDangerGlow(){
+    const teamAEl = document.getElementById('team-a');
+    const teamBEl = document.getElementById('team-b');
+    teamAEl.classList.toggle('danger-pulse', rope<=4);
+    teamBEl.classList.toggle('danger-pulse', rope>=16);
 }
 
 /* Upload & Start */
@@ -1024,12 +1689,33 @@ closeRulesBtn.addEventListener('click', () => {
     rulesModal.classList.add('hidden');
     rulesModal.classList.remove('flex');
 
-    document.getElementById('upload-box').classList.add('hidden');
-    document.getElementById('format-guide').classList.add('hidden');
+    const teamCount = parseInt(teamCountInput.value, 10);
 
-    quiz.classList.remove('hidden');
+    if(teamCount <= 2){
+        tournamentMode = false;
+        applyTeamLabels('TIM A (Merah)', 'TIM B (Biru)', 'Tim A', 'Tim B');
+        tournamentTag.classList.add('hidden');
+        openBracketBtn.classList.add('hidden');
 
-    startNewMatch();
+        document.getElementById('upload-box').classList.add('hidden');
+        document.getElementById('format-guide').classList.add('hidden');
+        quiz.classList.remove('hidden');
+
+        startNewMatch();
+    } else {
+        // Kumpulkan nama tim, default "Tim N" kalau kosong
+        const names = [];
+        for(let i=1;i<=teamCount;i++){
+            const inp = document.getElementById(`team-name-${i}`);
+            const val = inp && inp.value.trim() ? inp.value.trim() : `Tim ${i}`;
+            names.push(val);
+        }
+        tournamentMode = true;
+        buildBracket(names);
+        currentRoundIndex = 0;
+        currentMatchIndexInRound = 0;
+        startTournamentMatch(); // langsung mulai match pertama
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1046,6 +1732,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createArena();
     updateRope();
     refreshBankSelect();
+    resizeConfettiCanvas();
+    muteBtn.textContent = muted ? '🔇' : '🔊';
 
     // --- 2. Mulai Logika Hitung Mundur ---
     let count = 5; // Mulai hitungan dari 3
