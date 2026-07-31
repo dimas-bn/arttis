@@ -325,6 +325,16 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 
     <div class="mb-5">
+        <label for="soal-language-select" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">🌐 BAHASA SOAL</label>
+        <select id="soal-language-select" class="w-full text-sm md:text-base text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
+            <option value="id">🇮🇩 Bahasa Indonesia</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="mixed">🌐 Campuran / Lainnya</option>
+        </select>
+        <p class="text-xs text-slate-500 mt-1.5">Sekadar penanda untuk ditampilkan &amp; disimpan — kalau pakai Generator AI, ini juga menentukan bahasa soal yang dibuat.</p>
+    </div>
+
+    <div class="mb-5">
         <label for="duration-input" class="flex justify-between items-center text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">
             <span>⏱️ DURASI PER SOAL</span>
             <span id="duration-value" class="font-mono text-[color:var(--ok)] text-base">10 detik</span>
@@ -485,6 +495,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
             <div>
                 <label for="ai-topic-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">📖 TOPIK / MATERI</label>
                 <input type="text" id="ai-topic-input" placeholder="Contoh: Sistem Pencernaan Manusia, Bab 3" class="w-full text-sm text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
+                <p id="ai-language-hint" class="text-xs text-slate-500 mt-1.5"></p>
             </div>
 
             <div>
@@ -641,6 +652,9 @@ const timerEl = document.getElementById('timer');
 const winBox = document.getElementById('win-message');
 const winnerText = document.getElementById('winner-text');
 const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', () => {
+    openPreview();
+});
 const rulesModal = document.getElementById('rules-modal');
 const closeRulesBtn = document.getElementById('close-rules');
 
@@ -652,6 +666,7 @@ let QUESTION_TIME=10; // detik per soal (bisa diubah lewat slider durasi)
 
 /* ==== Fitur baru: Nama Mapel, Bank Soal, Riwayat Pertandingan ==== */
 let currentMapel='';
+let currentSoalLanguage='id'; // 'id' | 'en' | 'mixed'
 let statsA={correct:0,wrong:0};
 let statsB={correct:0,wrong:0};
 let questionStats={}; // { "teks soal": {correct:0, wrong:0} } — untuk fitur Statistik Soal Tersulit
@@ -697,6 +712,7 @@ const comboBadge = document.getElementById('combo-badge');
 const ctxConfetti = confettiCanvas.getContext('2d');
 
 const mapelInput = document.getElementById('mapel-input');
+const soalLanguageSelect = document.getElementById('soal-language-select');
 const urlSyncNotice = document.getElementById('url-sync-notice');
 const durationInput = document.getElementById('duration-input');
 const durationValue = document.getElementById('duration-value');
@@ -924,7 +940,8 @@ function saveTournamentHistory(champion){
         durasiDetik: 0,
         isTournament: true,
         tournamentTeams: [...tournamentTeams],
-        bracketSummary: bracketSummary
+        bracketSummary: bracketSummary,
+        language: currentSoalLanguage
     });
 }
 function restartTournament(){
@@ -946,6 +963,16 @@ function backToSetup(){
     mapelTag.classList.add('hidden');
     roundTag.classList.add('hidden');
     tournamentMode = false;
+
+    // Kalau masih ada soal termuat di memori (dari match/turnamen sebelumnya), tawarkan
+    // lanjut langsung tanpa upload/muat ulang — cukup ubah pengaturan lalu klik tombol ini.
+    const totalSoalTermuat = easy.length + hard.length;
+    if(totalSoalTermuat > 0){
+        startBtn.textContent = `▶️ Lanjutkan dengan Soal Sebelumnya (${totalSoalTermuat} soal)`;
+        startBtn.classList.remove('hidden');
+    } else {
+        startBtn.classList.add('hidden');
+    }
 }
 
 /* --- Bank Soal (localStorage) --- */
@@ -954,7 +981,8 @@ function getBank(){
     catch(e){ return {}; }
 }
 function saveBank(bank){
-    localStorage.setItem(BANK_KEY, JSON.stringify(bank));
+    try{ localStorage.setItem(BANK_KEY, JSON.stringify(bank)); }
+    catch(e){ console.warn('ArTTiS: gagal menyimpan Bank Soal (localStorage penuh/diblok):', e); }
 }
 function refreshBankSelect(){
     const bank = getBank();
@@ -963,7 +991,8 @@ function refreshBankSelect(){
     names.forEach(name=>{
         const opt = document.createElement('option');
         opt.value = name;
-        opt.textContent = `${name} (${(bank[name].easy||[]).length + (bank[name].hard||[]).length} soal)`;
+        const jumlahSoal = (bank[name].easy||[]).length + (bank[name].hard||[]).length;
+        opt.textContent = `${name} (${jumlahSoal} soal) · ${languageBadge(bank[name].language)}`;
         bankSelect.appendChild(opt);
     });
 }
@@ -1004,6 +1033,8 @@ loadBankBtn.addEventListener('click', () => {
     easy = data.easy || [];
     hard = data.hard || [];
     currentMapel = name;
+    currentSoalLanguage = data.language || 'id';
+    soalLanguageSelect.value = currentSoalLanguage;
     openPreview();
 });
 deleteBankBtn.addEventListener('click', () => {
@@ -1017,6 +1048,22 @@ deleteBankBtn.addEventListener('click', () => {
 });
 
 /* --- Preview Soal --- */
+/* --- Multi-bahasa Soal --- */
+function languageLabel(code){
+    if(code==='en') return '🇬🇧 English';
+    if(code==='mixed') return '🌐 Campuran';
+    return '🇮🇩 Bahasa Indonesia';
+}
+function languageBadge(code){
+    if(code==='en') return '🇬🇧 EN';
+    if(code==='mixed') return '🌐 MIX';
+    return '🇮🇩 ID';
+}
+function languageLabelPlain(code){
+    if(code==='en') return 'English';
+    if(code==='mixed') return 'Campuran/Lainnya';
+    return 'Bahasa Indonesia';
+}
 function escapeHtml(str){
     const div = document.createElement('div');
     div.textContent = String(str);
@@ -1053,7 +1100,8 @@ function renderPreviewGroup(list, label, badgeClass){
     }).join('');
 }
 function openPreview(){
-    previewSummary.textContent = `${easy.length} soal mudah • ${hard.length} soal sulit • Total ${easy.length + hard.length} soal`;
+    startBtn.classList.add('hidden');
+    previewSummary.textContent = `${easy.length} soal mudah • ${hard.length} soal sulit • Total ${easy.length + hard.length} soal • ${languageLabel(currentSoalLanguage)}`;
     previewList.innerHTML =
         renderPreviewGroup(easy, 'MUDAH', 'bg-gradient-to-r from-emerald-500 to-teal-500') +
         renderPreviewGroup(hard, 'SULIT', 'bg-gradient-to-r from-[color:var(--team-a)] to-rose-600');
@@ -1083,6 +1131,7 @@ function openAiGenerator(){
     const savedKey = localStorage.getItem(GEMINI_KEY_STORAGE);
     if(savedKey) geminiApiKeyInput.value = savedKey;
     setAiStatus('', null);
+    document.getElementById('ai-language-hint').textContent = `Soal akan dibuat dalam: ${languageLabel(soalLanguageSelect.value)} (ubah di field "🌐 Bahasa Soal" pada layar sebelumnya kalau perlu)`;
     aiGeneratorModal.classList.remove('hidden');
     aiGeneratorModal.classList.add('flex');
 }
@@ -1119,7 +1168,13 @@ async function callGemini(model, prompt, apiKey){
     try{ data = await res.json(); }catch(e){ /* respons bukan JSON, biarkan data null */ }
     return { ok: res.ok, status: res.status, data };
 }
-function buildGeminiPrompt(topik, jenjang, jumlahEasy, jumlahHard){
+function buildGeminiPrompt(topik, jenjang, jumlahEasy, jumlahHard, language){
+    const instruksiBahasa = language === 'en'
+        ? '- PENTING: Tulis SEMUA teks soal dan pilihan jawaban dalam Bahasa Inggris (English), meskipun instruksi ini ditulis dalam Bahasa Indonesia. Cocok untuk sesi pelajaran Bahasa Inggris.'
+        : language === 'mixed'
+            ? '- Boleh mencampur Bahasa Indonesia dan istilah asing bila relevan dengan topik (misal istilah teknis/ilmiah).'
+            : '- Gunakan Bahasa Indonesia yang jelas, baku, dan sesuai jenjang yang disebutkan.';
+
     return `Kamu adalah asisten pembuat soal pilihan ganda untuk kuis edukasi interaktif "tarik tambang" antar siswa di Indonesia.
 
 Buatkan soal pilihan ganda dengan topik/materi: "${topik}"
@@ -1128,7 +1183,7 @@ Jumlah soal kategori "easy" (mudah): ${jumlahEasy}
 Jumlah soal kategori "hard" (sulit): ${jumlahHard}
 
 Aturan wajib:
-- Gunakan Bahasa Indonesia yang jelas, baku, dan sesuai jenjang yang disebutkan.
+${instruksiBahasa}
 - Setiap soal memiliki TEPAT 4 pilihan jawaban yang masuk akal, tidak ambigu, dan hanya 1 yang benar.
 - Soal kategori "easy" untuk pemahaman dasar/hafalan/definisi. Soal kategori "hard" untuk analisis, perhitungan, atau penerapan konsep yang lebih dalam.
 - Jangan mengulang soal atau pilihan jawaban yang sama persis.
@@ -1157,14 +1212,14 @@ async function generateQuestionsWithAI(){
     if(jumlahEasy + jumlahHard <= 0){ setAiStatus('⚠️ Jumlah soal mudah + sulit harus lebih dari 0.', 'error'); return; }
     if(!mapelInput.value.trim()){ setAiStatus('⚠️ Isi dulu "Nama Mapel / Sesi" di atas (sebelum membuka Generator AI).', 'error'); return; }
 
-    localStorage.setItem(GEMINI_KEY_STORAGE, apiKey);
+    try{ localStorage.setItem(GEMINI_KEY_STORAGE, apiKey); }catch(e){ /* gagal simpan, tidak fatal — cukup diketik ulang lain kali */ }
 
     aiGenerateBtn.disabled = true;
     aiGenerateBtn.classList.add('opacity-50','cursor-not-allowed');
     setAiStatus(`✨ Sedang membuat ${jumlahEasy + jumlahHard} soal tentang "${topik}"... mohon tunggu.`, 'loading');
 
     try{
-        const prompt = buildGeminiPrompt(topik, jenjang, jumlahEasy, jumlahHard);
+        const prompt = buildGeminiPrompt(topik, jenjang, jumlahEasy, jumlahHard, soalLanguageSelect.value);
         let res = await callGemini(GEMINI_MODEL, prompt, apiKey);
 
         // Fallback: kalau model 3.5 belum tersedia di akun/region ini, coba model 2.5
@@ -1212,10 +1267,11 @@ async function generateQuestionsWithAI(){
         easy = validEasy;
         hard = validHard;
         currentMapel = mapelInput.value.trim();
+        currentSoalLanguage = soalLanguageSelect.value;
 
         if(saveToBankCheckbox.checked){
             const bank = getBank();
-            bank[currentMapel] = { easy, hard };
+            bank[currentMapel] = { easy, hard, language: currentSoalLanguage };
             saveBank(bank);
             refreshBankSelect();
         }
@@ -1240,9 +1296,13 @@ function getHistory(){
     catch(e){ return []; }
 }
 function saveHistoryRecord(record){
-    const list = getHistory();
-    list.unshift(record); // terbaru di atas
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+    try{
+        const list = getHistory();
+        list.unshift(record); // terbaru di atas
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+    }catch(e){
+        console.warn('ArTTiS: gagal menyimpan riwayat pertandingan (localStorage penuh/diblok):', e);
+    }
 }
 function formatDurasi(sec){
     const m = Math.floor(sec/60), s = sec%60;
@@ -1255,7 +1315,7 @@ function renderHistoryCard(r){
             <div class="flex justify-between items-start flex-wrap gap-2">
                 <div>
                     <p class="font-display font-bold text-lg neon-text-v">🏆 ${r.mapel || '(Tanpa Nama)'}</p>
-                    <p class="text-xs text-slate-400 font-mono">${r.tanggal} • Turnamen ${r.tournamentTeams.length} Tim</p>
+                    <p class="text-xs text-slate-400 font-mono">${r.tanggal} • Turnamen ${r.tournamentTeams.length} Tim • ${languageBadge(r.language)}</p>
                 </div>
                 <span class="font-display font-bold text-sm px-3 py-1 rounded-full bg-gradient-to-r from-[color:var(--violet)] to-fuchsia-600 text-white">
                     ${escapeHtml(r.pemenang)} JUARA
@@ -1273,7 +1333,7 @@ function renderHistoryCard(r){
             <div class="flex justify-between items-start flex-wrap gap-2">
                 <div>
                     <p class="font-display font-bold text-lg neon-text-v">${r.mapel || '(Tanpa Nama)'}</p>
-                    <p class="text-xs text-slate-400 font-mono">${r.tanggal}</p>
+                    <p class="text-xs text-slate-400 font-mono">${r.tanggal} • ${languageBadge(r.language)}</p>
                 </div>
                 <span class="font-display font-bold text-sm px-3 py-1 rounded-full ${r.pemenang==='TIM A' ? 'bg-[color:var(--team-a)]' : 'bg-[color:var(--team-b)]'} text-white">
                     ${r.pemenang} MENANG
@@ -1365,7 +1425,7 @@ function exportHistoryPDF(){
 
         doc.setFontSize(10);
         doc.setTextColor(20);
-        doc.text(`Pemenang: ${r.pemenang}`, marginX, y);
+        doc.text(`Pemenang: ${r.pemenang}  •  Bahasa: ${languageLabelPlain(r.language)}`, marginX, y);
         y += 5;
         doc.text(`Tim A: ${r.skorA.correct} benar / ${r.skorA.wrong} salah     Tim B: ${r.skorB.correct} benar / ${r.skorB.wrong} salah`, marginX, y);
         y += 5;
@@ -1407,6 +1467,7 @@ function exportHistoryExcel(){
         'No': idx+1,
         'Mapel/Sesi': r.mapel || '(Tanpa Nama)',
         'Tanggal': r.tanggal,
+        'Bahasa': languageLabelPlain(r.language),
         'Pemenang': r.pemenang,
         'Mode': r.totalRounds && r.totalRounds > 1 ? `Best of ${r.totalRounds}` : 'Sekali Tarik',
         'Skor Ronde A': r.roundsA ?? '-',
@@ -1424,7 +1485,7 @@ function exportHistoryExcel(){
 
     const ws = XLSX.utils.json_to_sheet(rows);
     ws['!cols'] = [
-        {wch:4},{wch:22},{wch:20},{wch:10},{wch:14},
+        {wch:4},{wch:22},{wch:20},{wch:14},{wch:10},{wch:14},
         {wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:11},{wch:14},{wch:50}
     ];
     const wb = XLSX.utils.book_new();
@@ -1645,7 +1706,8 @@ function win(t){
                 totalRounds: totalRounds,
                 roundsA: roundsA,
                 roundsB: roundsB,
-                hardestQuestions: hardest
+                hardestQuestions: hardest,
+                language: currentSoalLanguage
             });
 
             winPrimaryBtn.textContent = '🔁 Tanding Lagi';
@@ -1707,7 +1769,7 @@ function startNewMatch(){
     hideCombo();
 
     if(currentMapel){
-        mapelTag.textContent = `📘 Sesi: ${currentMapel}`;
+        mapelTag.textContent = `📘 Sesi: ${currentMapel} · ${languageBadge(currentSoalLanguage)}`;
         mapelTag.classList.remove('hidden');
     } else {
         mapelTag.classList.add('hidden');
@@ -1815,7 +1877,7 @@ function playSound(type){
 }
 function toggleMute(){
     muted = !muted;
-    localStorage.setItem('arttis_muted', muted ? '1' : '0');
+    try{ localStorage.setItem('arttis_muted', muted ? '1' : '0'); }catch(e){ /* gagal simpan, tidak fatal */ }
     muteBtn.textContent = muted ? '🔇' : '🔊';
 }
 
@@ -1931,22 +1993,30 @@ function launchConfetti(count){
     if(!confettiRAF) animateConfetti();
 }
 function animateConfetti(){
-    ctxConfetti.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-    confettiParticles.forEach(p=>{
-        p.x += p.vx; p.y += p.vy; p.rot += p.vrot; p.life++;
-        ctxConfetti.save();
-        ctxConfetti.translate(p.x,p.y);
-        ctxConfetti.rotate(p.rot*Math.PI/180);
-        ctxConfetti.fillStyle = p.color;
-        ctxConfetti.globalAlpha = Math.max(0, 1 - p.life/p.maxLife);
-        ctxConfetti.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-        ctxConfetti.restore();
-    });
-    confettiParticles = confettiParticles.filter(p=>p.life < p.maxLife && p.y < confettiCanvas.height+40);
-    if(confettiParticles.length>0){
-        confettiRAF = requestAnimationFrame(animateConfetti);
-    } else {
+    try{
         ctxConfetti.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+        confettiParticles.forEach(p=>{
+            p.x += p.vx; p.y += p.vy; p.rot += p.vrot; p.life++;
+            ctxConfetti.save();
+            ctxConfetti.translate(p.x,p.y);
+            ctxConfetti.rotate(p.rot*Math.PI/180);
+            ctxConfetti.fillStyle = p.color;
+            ctxConfetti.globalAlpha = Math.max(0, 1 - p.life/p.maxLife);
+            ctxConfetti.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+            ctxConfetti.restore();
+        });
+        confettiParticles = confettiParticles.filter(p=>p.life < p.maxLife && p.y < confettiCanvas.height+40);
+        if(confettiParticles.length>0){
+            confettiRAF = requestAnimationFrame(animateConfetti);
+        } else {
+            ctxConfetti.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+            confettiRAF = null;
+        }
+    }catch(e){
+        // Canvas mungkin diblok (mis. ekstensi anti-fingerprinting) — hentikan confetti
+        // dengan tenang, jangan sampai mengganggu alur layar kemenangan.
+        console.warn('ArTTiS: efek confetti tidak tersedia di browser ini:', e);
+        confettiParticles = [];
         confettiRAF = null;
     }
 }
@@ -1981,10 +2051,11 @@ document.getElementById('fileInput').addEventListener('change',e=>{
                 return;
             }
             currentMapel = mapelName;
+            currentSoalLanguage = soalLanguageSelect.value;
 
             if(saveToBankCheckbox.checked){
                 const bank = getBank();
-                bank[mapelName] = { easy, hard };
+                bank[mapelName] = { easy, hard, language: currentSoalLanguage };
                 saveBank(bank);
                 refreshBankSelect();
             }
