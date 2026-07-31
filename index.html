@@ -397,6 +397,15 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
             Mulai Kompetisi
         </button>
     </div>
+
+    <div class="text-center pt-4 mt-2 border-t border-[color:rgba(139,92,246,0.15)]">
+        <p class="text-xs text-slate-500">
+            Suka ArTTiS? Dukung pengembangnya lewat
+            <button onclick="openWhatsAppSupport()" class="text-emerald-400 hover:underline cursor-pointer">💬 WhatsApp</button>
+            atau
+            <button onclick="openGoogleReview()" class="text-amber-400 hover:underline cursor-pointer">⭐ ulasan Google Maps</button>
+        </p>
+    </div>
 </div>
 
 <div id="format-guide" class="w-[95%] max-w-3xl mx-auto my-6 rounded-xl overflow-hidden panel">
@@ -550,6 +559,18 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
         <button onclick="openHistory()" class="btn-neon text-lg py-4 px-8 bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] rounded-lg text-white cursor-pointer">
             🏆 Lihat Riwayat
         </button>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-[color:rgba(139,92,246,0.2)] max-w-md">
+        <p class="text-sm font-normal text-slate-400 font-body mb-3 tracking-wide">🎉 Seru mainnya? Dukung pengembangnya, yuk!</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+            <button onclick="openWhatsAppSupport()" class="text-xs md:text-sm font-normal py-2 px-4 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/20 transition-colors cursor-pointer">
+                💬 Chat WhatsApp Pengembang
+            </button>
+            <button onclick="openGoogleReview()" class="text-xs md:text-sm font-normal py-2 px-4 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 transition-colors cursor-pointer">
+                ⭐ Beri Ulasan di Google Maps
+            </button>
+        </div>
     </div>
 </div>
 
@@ -1494,9 +1515,14 @@ function exportHistoryExcel(){
 }
 
 function openGoogleReview() {
-    // Ganti URL ini dengan URL Google Maps Anda
-    const reviewUrl = 'https://g.page/r/CRZT2jOWS46AEB0/review';
+    const reviewUrl = 'https://g.page/r/CRZT2jOWS46AEBM/review';
     window.open(reviewUrl, '_blank');
+}
+
+function openWhatsAppSupport() {
+    const nomorWA = '6285641051211'; // 085641051211, format internasional tanpa tanda +
+    const pesan = encodeURIComponent('Halo Kak Dimas! 👋 Saya pengguna ArTTiS dan ingin memberi apresiasi/masukan 😊');
+    window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
 }
 
 function createArena(){
