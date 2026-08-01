@@ -8,7 +8,7 @@
  * PENTING: naikkan CACHE_VERSION setiap kali ada update besar pada index.html,
  * supaya pengguna lama dapat versi terbaru (bukan versi cache basi).
  */
-const CACHE_VERSION = 'arttis-v5';
+const CACHE_VERSION = 'arttis-v6';
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 

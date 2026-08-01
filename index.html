@@ -244,6 +244,19 @@ body.tv-mode h1.font-display{ font-size: 3rem !important; }
 body.tv-mode h2{ font-size: 1.3rem !important; }
 @media (min-width: 768px){
     body.tv-mode h2{ font-size: 1.75rem !important; }
+}/* Tab Panduan Penggunaan */
+.help-tab-btn{
+    color: var(--ink-dim);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: color .2s, background .2s;
+}
+.help-tab-btn:hover{ color: var(--ink); }
+.help-tab-btn.help-tab-active{
+    color: #fff;
+    background: linear-gradient(180deg, rgba(139,92,246,0.25), rgba(139,92,246,0.08));
+    border-color: rgba(139,92,246,0.4);
 }
 </style>
 
@@ -278,6 +291,10 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 
     <button id="tv-mode-btn" onclick="toggleTvMode()" class="btn-neon fixed top-16 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
         📺 Mode TV
+    </button>
+
+    <button id="open-help-btn" onclick="openHelp()" class="btn-neon fixed top-28 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        ❓ Panduan
     </button>
 
     <button id="open-history-btn" onclick="openHistory()" class="btn-neon fixed top-3 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 md:px-4 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
@@ -606,6 +623,145 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
+<div id="help-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[120] p-3 md:p-5">
+    <div class="panel rounded-xl w-full max-w-3xl max-h-[92vh] flex flex-col overflow-hidden">
+        <div class="flex justify-between items-center p-4 md:p-5 border-b border-[color:rgba(139,92,246,0.25)]">
+            <div>
+                <h2 class="font-display text-xl md:text-3xl font-bold neon-text-v tracking-wide">❓ PANDUAN PENGGUNAAN</h2>
+                <p class="text-xs text-slate-400 mt-1">ArTTiS — Arena Tarik Tambang Informatika Style</p>
+            </div>
+            <button onclick="closeHelp()" class="text-slate-400 hover:text-white text-2xl leading-none px-2">✕</button>
+        </div>
+
+        <div class="flex gap-2 px-4 md:px-5 pt-4 border-b border-[color:rgba(139,92,246,0.15)] overflow-x-auto">
+            <button id="help-tab-btn-guru" onclick="switchHelpTab('guru')" class="help-tab-btn font-display text-xs md:text-sm font-bold py-2 px-4 rounded-t-lg whitespace-nowrap">
+                👨‍🏫 Untuk Guru
+            </button>
+            <button id="help-tab-btn-siswa" onclick="switchHelpTab('siswa')" class="help-tab-btn font-display text-xs md:text-sm font-bold py-2 px-4 rounded-t-lg whitespace-nowrap">
+                🎮 Untuk Siswa
+            </button>
+            <button id="help-tab-btn-faq" onclick="switchHelpTab('faq')" class="help-tab-btn font-display text-xs md:text-sm font-bold py-2 px-4 rounded-t-lg whitespace-nowrap">
+                💬 FAQ
+            </button>
+        </div>
+
+        <div class="overflow-y-auto p-5 md:p-6 text-left text-sm md:text-base leading-relaxed text-slate-200">
+
+            <!-- ===== TAB GURU ===== -->
+            <div id="help-tab-guru" class="help-tab-content space-y-5">
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">1. Menyiapkan Soal (pilih salah satu)</h3>
+                    <ul class="list-disc list-inside space-y-1.5 text-slate-300">
+                        <li><b class="text-slate-100">Upload File .json</b> — isi Nama Mapel/Sesi &amp; Bahasa Soal, lalu pilih file .json (format lihat di bawah).</li>
+                        <li><b class="text-slate-100">Bank Soal Tersimpan</b> — soal yang pernah diupload/dibuat otomatis tersimpan di perangkat ini, tinggal pilih &amp; klik "Muat".</li>
+                        <li><b class="text-slate-100">Generator AI (Gemini, gratis)</b> — klik "🤖 Buka Generator Soal AI", masukkan API Key pribadi (ambil gratis di aistudio.google.com/apikey), isi topik, lalu Generate.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">2. Format File Soal (.json)</h3>
+                    <pre class="bg-[#080b16] text-white p-3 rounded-lg overflow-x-auto text-xs border border-[color:rgba(139,92,246,0.3)] font-mono">{
+  <span class="text-cyan-400">"easy"</span>: [{ <span class="text-green-400">"q"</span>: <span class="text-orange-400">"Ibukota Indonesia?"</span>, <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"Jakarta"</span>,<span class="text-orange-400">"Surabaya"</span>,<span class="text-orange-400">"Bandung"</span>,<span class="text-orange-400">"Medan"</span>], <span class="text-green-400">"c"</span>: <span class="text-purple-400">0</span> }],
+  <span class="text-cyan-400">"hard"</span>: [{ <span class="text-green-400">"q"</span>: <span class="text-orange-400">"12 × 15 = ?"</span>, <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"160"</span>,<span class="text-orange-400">"170"</span>,<span class="text-orange-400">"180"</span>,<span class="text-orange-400">"190"</span>], <span class="text-green-400">"c"</span>: <span class="text-purple-400">2</span> }]
+}</pre>
+                    <p class="text-xs text-slate-400 mt-2"><b>c</b> = indeks jawaban benar (0=A, 1=B, 2=C, 3=D). Soal <b>easy</b> menarik tali 1 langkah, <b>hard</b> 2 langkah. Tidak mau bikin manual? Klik "Download Contoh File .json" di halaman utama.</p>
+                </div>
+
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">3. Mengatur Sesi</h3>
+                    <ul class="list-disc list-inside space-y-1.5 text-slate-300">
+                        <li><b class="text-slate-100">⏱️ Durasi per Soal</b> — geser 5–30 detik.</li>
+                        <li><b class="text-slate-100">🏁 Mode Per-Match</b> — Sekali Tarik, atau Best of 3/5/7 ronde.</li>
+                        <li><b class="text-slate-100">👥 Jumlah Tim</b> — 2 Tim (biasa) atau 4/8 Tim (Mode Turnamen sistem gugur).</li>
+                        <li><b class="text-slate-100">🌐 Bahasa Soal</b> — penanda Indonesia/English/Campuran, juga dipakai Generator AI.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">4. Menjalankan Pertandingan</h3>
+                    <ol class="list-decimal list-inside space-y-1.5 text-slate-300">
+                        <li>Cek dulu soal lewat layar <b class="text-slate-100">Preview Soal</b>, lanjutkan kalau sudah sesuai.</li>
+                        <li>Baca <b class="text-slate-100">Peraturan Permainan</b>, klik "Saya Mengerti, Mulai!".</li>
+                        <li>Siswa menjawab lewat tombol A/B/C/D di sisi timnya masing-masing sebelum waktu habis.</li>
+                        <li>Jawaban benar menarik tali ke timnya; salah/waktu habis membuat tali maju ke tim lawan.</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">5. Fitur Pendukung</h3>
+                    <ul class="list-disc list-inside space-y-1.5 text-slate-300">
+                        <li><b class="text-slate-100">📺 Mode TV</b> — perbesar tampilan &amp; layar penuh untuk proyektor.</li>
+                        <li><b class="text-slate-100">🏆 Riwayat</b> — rekap pertandingan, skor, dan soal tersulit; bisa diekspor ke PDF/Excel.</li>
+                        <li><b class="text-slate-100">📲 Install App</b> — pasang ArTTiS seperti aplikasi biasa, tetap jalan walau offline (kecuali Generator AI).</li>
+                    </ul>
+                </div>
+
+                <div class="bg-[color:var(--panel-2)] border-l-4 border-[color:var(--warn)] rounded p-3">
+                    <p class="text-xs md:text-sm text-amber-200"><b>💡 Tips:</b> simpan soal ke Bank Soal setiap kali membuat set baru — sangat menghemat waktu untuk kelas paralel dengan materi sama.</p>
+                </div>
+            </div>
+
+            <!-- ===== TAB SISWA ===== -->
+            <div id="help-tab-siswa" class="help-tab-content hidden space-y-5">
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-a)] mb-2 text-base md:text-lg">Cara Bermain</h3>
+                    <ol class="list-decimal list-inside space-y-1.5 text-slate-300">
+                        <li>Kelas dibagi jadi Tim A dan Tim B (atau lebih kalau Mode Turnamen).</li>
+                        <li>Perhatikan layar — akan muncul soal pilihan ganda dengan 4 pilihan (A, B, C, D).</li>
+                        <li>Diskusikan jawaban dengan timmu secepat mungkin, ada batas waktu di tiap soal!</li>
+                        <li>Klik tombol jawaban di sisi timmu sebelum waktu habis.</li>
+                        <li>Jawaban benar menarik tali ke arah timmu. Jawaban salah malah membuat tali maju ke tim lawan!</li>
+                        <li>Tim yang berhasil menarik tali sampai batas kemenangan, menang! 🎉</li>
+                    </ol>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-[color:var(--team-a)] mb-2 text-base md:text-lg">Aturan Skor</h3>
+                    <table class="w-full text-xs md:text-sm border-collapse">
+                        <tr class="bg-[color:var(--panel-2)]">
+                            <td class="border border-[color:rgba(139,92,246,0.25)] p-2 font-bold text-slate-100">Kejadian</td>
+                            <td class="border border-[color:rgba(139,92,246,0.25)] p-2 font-bold text-slate-100">Efek pada Tali</td>
+                        </tr>
+                        <tr><td class="border border-[color:rgba(139,92,246,0.2)] p-2">Jawab benar soal MUDAH</td><td class="border border-[color:rgba(139,92,246,0.2)] p-2">Tertarik 1 langkah ke timmu</td></tr>
+                        <tr><td class="border border-[color:rgba(139,92,246,0.2)] p-2">Jawab benar soal SULIT</td><td class="border border-[color:rgba(139,92,246,0.2)] p-2">Tertarik 2 langkah ke timmu</td></tr>
+                        <tr><td class="border border-[color:rgba(139,92,246,0.2)] p-2">Jawab salah / waktu habis</td><td class="border border-[color:rgba(139,92,246,0.2)] p-2">Maju 1 langkah ke tim lawan</td></tr>
+                    </table>
+                </div>
+                <div class="bg-[color:var(--panel-2)] border-l-4 border-emerald-500 rounded p-3">
+                    <p class="text-xs md:text-sm text-emerald-200"><b>🏆 Tips Menang:</b> baca soal cepat tapi teliti, diskusikan cepat kalau ragu, dan ingat — soal sulit bernilai 2x lebih besar, bisa jadi pembalikan keadaan!</p>
+                </div>
+            </div>
+
+            <!-- ===== TAB FAQ ===== -->
+            <div id="help-tab-faq" class="help-tab-content hidden space-y-4">
+                <div>
+                    <p class="font-bold text-slate-100">Apakah ArTTiS berbayar?</p>
+                    <p class="text-slate-300 text-sm">Tidak, sepenuhnya gratis. Generator Soal AI memakai jatah gratis dari Google Gemini.</p>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-100">Apakah data soal &amp; riwayat tersimpan di internet?</p>
+                    <p class="text-slate-300 text-sm">Tidak. Semua tersimpan lokal di browser perangkat masing-masing, tidak otomatis sinkron antar perangkat.</p>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-100">Kenapa Generator Soal AI gagal terus?</p>
+                    <p class="text-slate-300 text-sm">Biasanya API Key salah/kadaluarsa, atau batas gratis harian tercapai. Coba lagi beberapa saat kemudian.</p>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-100">Bisa dipakai tanpa internet?</p>
+                    <p class="text-slate-300 text-sm">Bisa untuk sebagian besar fitur, asalkan ArTTiS pernah dibuka online sekali sebelumnya. Generator AI tetap butuh internet.</p>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-100">Berapa maksimal jumlah tim?</p>
+                    <p class="text-slate-300 text-sm">2 tim untuk mode biasa. Mode Turnamen mendukung 4 atau 8 tim sistem gugur.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-[color:rgba(139,92,246,0.25)] text-center">
+            <p class="text-xs text-slate-500">Butuh bantuan lebih lanjut? <button onclick="openWhatsAppSupport()" class="text-emerald-400 hover:underline cursor-pointer">💬 Chat via WhatsApp</button></p>
+        </div>
+    </div>
+</div>
+
 <div id="rules-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
     <h2 class="font-display text-3xl md:text-5xl font-bold mb-5 neon-text-v text-center tracking-wide">PERATURAN PERMAINAN</h2>
     <ul class="list-disc list-inside space-y-3 text-lg md:text-2xl leading-relaxed max-w-3xl text-slate-200">
@@ -714,6 +870,7 @@ const teamNamesContainer = document.getElementById('team-names-container');
 const tournamentTag = document.getElementById('tournament-tag');
 const openBracketBtn = document.getElementById('open-bracket-btn');
 const bracketModal = document.getElementById('bracket-modal');
+const helpModal = document.getElementById('help-modal');
 const bracketContent = document.getElementById('bracket-content');
 const bracketFooter = document.getElementById('bracket-footer');
 
@@ -888,6 +1045,30 @@ function openBracket(isFinal){
 function closeBracket(){
     bracketModal.classList.add('hidden');
     bracketModal.classList.remove('flex');
+}
+
+/* --- Panduan Penggunaan (in-app) --- */
+function openHelp(){
+    helpModal.classList.remove('hidden');
+    helpModal.classList.add('flex');
+    switchHelpTab('guru');
+}
+function closeHelp(){
+    helpModal.classList.add('hidden');
+    helpModal.classList.remove('flex');
+}
+function switchHelpTab(tabName){
+    ['guru','siswa','faq'].forEach(name => {
+        const content = document.getElementById(`help-tab-${name}`);
+        const btn = document.getElementById(`help-tab-btn-${name}`);
+        if(name === tabName){
+            content.classList.remove('hidden');
+            btn.classList.add('help-tab-active');
+        } else {
+            content.classList.add('hidden');
+            btn.classList.remove('help-tab-active');
+        }
+    });
 }
 function startTournamentMatch(){
     const match = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
