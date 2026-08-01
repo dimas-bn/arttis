@@ -370,6 +370,21 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 
     <div class="mb-5">
+        <label class="flex items-center gap-2 text-sm text-slate-300 cursor-pointer select-none mb-2">
+            <input type="checkbox" id="match-timelimit-checkbox" class="w-4 h-4 accent-[color:var(--violet)] cursor-pointer">
+            <span class="font-display font-semibold text-[color:var(--ink-dim)] tracking-wide text-sm">⏳ AKTIFKAN BATAS WAKTU PER PERTANDINGAN</span>
+        </label>
+        <div id="match-timelimit-controls" class="hidden">
+            <label for="match-timelimit-input" class="flex justify-between items-center text-xs text-slate-400 mb-1.5">
+                <span>Batas waktu</span>
+                <span id="match-timelimit-value" class="font-mono text-[color:var(--ok)] text-sm">15 menit</span>
+            </label>
+            <input type="range" id="match-timelimit-input" min="5" max="30" step="1" value="15" class="w-full accent-[color:var(--violet)] cursor-pointer">
+            <p class="text-xs text-slate-500 mt-1.5">Kalau waktu habis sebelum tali sampai batas kemenangan, pemenang ditentukan dari posisi tali terakhir. Cocok untuk dua tim yang sama kuat dan tarik ulur terus-menerus.</p>
+        </div>
+    </div>
+
+    <div class="mb-5">
         <label for="team-count-input" class="block text-[color:var(--ink-dim)] font-semibold mb-2 text-sm font-display tracking-wide">👥 JUMLAH TIM</label>
         <select id="team-count-input" class="w-full text-sm md:text-base text-slate-100 border border-[color:rgba(139,92,246,0.4)] rounded-lg bg-[color:var(--panel-2)] px-4 py-2.5 focus:outline-none focus:border-[color:var(--violet)]">
             <option value="2">2 Tim (Head to Head Biasa)</option>
@@ -674,6 +689,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
                         <li><b class="text-slate-100">🏁 Mode Per-Match</b> — Sekali Tarik, atau Best of 3/5/7 ronde.</li>
                         <li><b class="text-slate-100">👥 Jumlah Tim</b> — 2 Tim (biasa) atau 4/8 Tim (Mode Turnamen sistem gugur).</li>
                         <li><b class="text-slate-100">🌐 Bahasa Soal</b> — penanda Indonesia/English/Campuran, juga dipakai Generator AI.</li>
+                        <li><b class="text-slate-100">⏳ Batas Waktu Pertandingan</b> — opsional, 5–30 menit. Kalau dua tim sama kuat dan tarik ulur terus, begitu waktu habis pemenang otomatis ditentukan dari posisi tali terakhir.</li>
                     </ul>
                 </div>
 
@@ -770,6 +786,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
         <li>Setiap jawaban salah = lawan maju 1 langkah</li>
         <li id="rules-duration-text">Waktu menjawab tiap soal hanya 10 detik</li>
         <li id="rules-rounds-text">Pemenang ronde ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya</li>
+        <li id="rules-timelimit-text" class="hidden text-[color:var(--warn)]"></li>
     </ul>
     <button id="close-rules" class="btn-neon mt-8 py-4 px-10 text-xl md:text-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-none rounded-lg cursor-pointer shadow-[0_0_30px_rgba(52,235,158,.4)]">
         Saya Mengerti, Mulai!
@@ -895,6 +912,23 @@ const urlSyncNotice = document.getElementById('url-sync-notice');
 const durationInput = document.getElementById('duration-input');
 const durationValue = document.getElementById('duration-value');
 const roundsInput = document.getElementById('rounds-input');
+const matchTimeLimitCheckbox = document.getElementById('match-timelimit-checkbox');
+const matchTimeLimitControls = document.getElementById('match-timelimit-controls');
+const matchTimeLimitInput = document.getElementById('match-timelimit-input');
+const matchTimeLimitValue = document.getElementById('match-timelimit-value');
+const rulesTimelimitText = document.getElementById('rules-timelimit-text');
+let matchTimeLimitEnabled = false;
+let matchTimeLimitMinutes = 15;
+let matchTimeLimitHandle = null;
+
+matchTimeLimitCheckbox.addEventListener('change', () => {
+    matchTimeLimitEnabled = matchTimeLimitCheckbox.checked;
+    matchTimeLimitControls.classList.toggle('hidden', !matchTimeLimitEnabled);
+});
+matchTimeLimitInput.addEventListener('input', () => {
+    matchTimeLimitMinutes = parseInt(matchTimeLimitInput.value, 10);
+    matchTimeLimitValue.textContent = matchTimeLimitMinutes + ' menit';
+});
 const roundTag = document.getElementById('round-tag');
 const mapelTag = document.getElementById('mapel-tag');
 const teamAStats = document.getElementById('team-a-stats');
@@ -1003,9 +1037,9 @@ function renderBracketContent(isFinal){
                     const isCurrent = !isFinal && rIdx===currentRoundIndex && mIdx===currentMatchIndexInRound;
                     return `
                     <div class="flex items-center justify-between gap-3 bg-[color:var(--panel-2)] border ${isCurrent ? 'border-[color:var(--warn)] shadow-[0_0_15px_rgba(251,191,36,.35)]' : 'border-[color:rgba(139,92,246,0.2)]'} rounded-lg px-4 py-2.5">
-                        <span class="text-sm ${m.winner===m.team1 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(m.team1)} ${m.winner===m.team1 ? '✔' : ''}</span>
+                        <span class="text-sm ${m.winner===m.team1 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${escapeHtml(m.team1)} ${m.winner===m.team1 ? ('✔'+(m.wonByTimeout?' ⏳':'')) : ''}</span>
                         <span class="text-xs text-slate-500 font-mono">vs</span>
-                        <span class="text-sm ${m.winner===m.team2 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${m.winner===m.team2 ? '✔' : ''} ${escapeHtml(m.team2)}</span>
+                        <span class="text-sm ${m.winner===m.team2 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${m.winner===m.team2 ? ((m.wonByTimeout?'⏳ ':'')+'✔') : ''} ${escapeHtml(m.team2)}</span>
                         ${isCurrent ? '<span class="text-xs font-display font-bold text-[color:var(--warn)] ml-2">▶ SELANJUTNYA</span>' : ''}
                     </div>`;
                 }).join('')}
@@ -1087,6 +1121,7 @@ function startTournamentMatch(){
 function finishTournamentMatch(winnerName, summary){
     const match = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
     match.winner = winnerName;
+    match.wonByTimeout = !!summary.wonByTimeout;
 
     const nextRoundIdx = currentRoundIndex + 1;
     if(nextRoundIdx < tournamentRounds.length){
@@ -1102,12 +1137,14 @@ function finishTournamentMatch(winnerName, summary){
     }
 
     const finished = currentRoundIndex >= tournamentRounds.length;
+    const catatanWaktu = summary.wonByTimeout ? ' ⏳ (waktu habis)' : '';
 
     if(finished){
-        winnerText.textContent = `🏆 ${winnerName} JUARA TURNAMEN! 🏆`;
+        winnerText.textContent = `🏆 ${winnerName} JUARA TURNAMEN! 🏆${catatanWaktu}`;
         winStats.innerHTML = `
             <p class="text-slate-300">Total ${tournamentTeams.length} tim bertanding dalam turnamen ini.</p>
             <p class="text-slate-400 text-sm mt-2">Total ${summary.totalSoal} soal di match terakhir • Durasi ${formatDurasi(summary.durasiDetik)}</p>
+            ${summary.wonByTimeout ? `<p class="text-[color:var(--warn)] text-sm mt-1">⏳ Match terakhir ditentukan oleh batas waktu — posisi tali terakhir</p>` : ''}
             <p class="text-slate-400 text-sm mt-1">Klik tombol di bawah untuk melihat bagan akhir.</p>
         `;
         winPrimaryBtn.textContent = '📋 Lihat Bagan Akhir';
@@ -1119,9 +1156,10 @@ function finishTournamentMatch(winnerName, summary){
         saveTournamentHistory(winnerName);
     } else {
         const nextMatch = tournamentRounds[currentRoundIndex][currentMatchIndexInRound];
-        winnerText.textContent = `${winnerName} MENANG! ✅`;
+        winnerText.textContent = `${winnerName} MENANG! ✅${catatanWaktu}`;
         winStats.innerHTML = `
             <p class="text-slate-300">Match berikutnya: <span class="text-[color:var(--warn)] font-bold">${escapeHtml(nextMatch.team1)} vs ${escapeHtml(nextMatch.team2)}</span></p>
+            ${summary.wonByTimeout ? `<p class="text-[color:var(--warn)] text-sm">⏳ Ditentukan oleh batas waktu</p>` : ''}
             <p class="text-slate-400 text-sm mt-2">Total ${summary.totalSoal} soal • Durasi ${formatDurasi(summary.durasiDetik)}</p>
         `;
         winPrimaryBtn.textContent = '📋 Lihat Bagan & Lanjut';
@@ -1131,7 +1169,7 @@ function finishTournamentMatch(winnerName, summary){
     }
 }
 function saveTournamentHistory(champion){
-    const bracketSummary = tournamentRounds.map(round => round.map(m => `${m.team1} vs ${m.team2} → ${m.winner || '-'}`));
+    const bracketSummary = tournamentRounds.map(round => round.map(m => `${m.team1} vs ${m.team2} → ${m.winner || '-'}${m.wonByTimeout ? ' ⏳' : ''}`));
     saveHistoryRecord({
         mapel: currentMapel || '(Tanpa Nama)',
         tanggal: new Date().toLocaleString('id-ID', { dateStyle:'medium', timeStyle:'short' }),
@@ -1157,6 +1195,7 @@ function backToSetup(){
     winBox.classList.add('hidden');
     winBox.classList.remove('flex');
     closeBracket();
+    clearMatchTimeLimitTimer();
     quiz.classList.add('hidden');
     document.getElementById('upload-box').classList.remove('hidden');
     document.getElementById('format-guide').classList.remove('hidden');
@@ -1324,6 +1363,14 @@ function confirmPreview(){
     rulesRoundsText.textContent = totalRounds > 1
         ? `Mode Best of ${totalRounds}: tim pertama yang menang ${majority} ronde jadi juara`
         : 'Pemenang ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya';
+
+    if(matchTimeLimitEnabled){
+        rulesTimelimitText.textContent = `⏳ Setiap ronde punya batas waktu ${matchTimeLimitMinutes} menit — kalau habis sebelum ada pemenang alami, posisi tali terakhir yang menentukan pemenang`;
+        rulesTimelimitText.classList.remove('hidden');
+    } else {
+        rulesTimelimitText.classList.add('hidden');
+    }
+
     rulesModal.classList.remove('hidden');
     rulesModal.classList.add('flex');
 }
@@ -1538,13 +1585,14 @@ function renderHistoryCard(r){
                     <p class="text-xs text-slate-400 font-mono">${r.tanggal} • ${languageBadge(r.language)}</p>
                 </div>
                 <span class="font-display font-bold text-sm px-3 py-1 rounded-full ${r.pemenang==='TIM A' ? 'bg-[color:var(--team-a)]' : 'bg-[color:var(--team-b)]'} text-white">
-                    ${r.pemenang} MENANG
+                    ${r.pemenang} MENANG${r.wonByTimeout ? ' ⏳' : ''}
                 </span>
             </div>
             <div class="grid grid-cols-2 gap-3 mt-3 font-mono text-sm">
                 <div class="text-[color:var(--team-a)]">TIM A &nbsp; ✔ ${r.skorA.correct} &nbsp; ✘ ${r.skorA.wrong}</div>
                 <div class="text-[color:var(--team-b)] text-right">TIM B &nbsp; ✔ ${r.skorB.correct} &nbsp; ✘ ${r.skorB.wrong}</div>
             </div>
+            ${r.wonByTimeout ? `<p class="text-xs text-[color:var(--warn)] mt-1 font-mono">⏳ Ditentukan oleh batas waktu — posisi tali terakhir</p>` : ''}
             ${r.totalRounds && r.totalRounds>1 ? `<p class="text-xs text-[color:var(--warn)] mt-1 font-mono">Mode Best of ${r.totalRounds} • Skor Ronde: A ${r.roundsA} - B ${r.roundsB}</p>` : ''}
             <p class="text-xs text-slate-400 mt-2 font-mono">Total soal: ${r.totalSoal} • Durasi: ${formatDurasi(r.durasiDetik)}</p>
             ${r.hardestQuestions && r.hardestQuestions.length>0 ? `
@@ -1757,6 +1805,59 @@ function startTimer(){
         }
     },1000);
 }
+
+/* --- Batas Waktu Pertandingan (alternatif penentu kemenangan) --- */
+function clearMatchTimeLimitTimer(){
+    if(matchTimeLimitHandle){
+        clearTimeout(matchTimeLimitHandle);
+        matchTimeLimitHandle = null;
+    }
+}
+function startMatchTimeLimitTimer(){
+    clearMatchTimeLimitTimer();
+    if(!matchTimeLimitEnabled) return;
+    matchTimeLimitHandle = setTimeout(handleMatchTimeUp, matchTimeLimitMinutes * 60 * 1000);
+}
+function handleMatchTimeUp(){
+    matchTimeLimitHandle = null;
+    if(!active || !questionActive) return; // pertandingan sudah berakhir duluan secara alami
+
+    clearInterval(timerInt);
+    timerEl.classList.remove('tick-urgent');
+    active = false;
+    questionActive = false;
+    hideCombo();
+    feedback.classList.add('hidden');
+    playSound('timeout');
+    flashScreen('wrong');
+
+    if(rope === 10){
+        // Kasus langka: tali persis di tengah saat waktu habis — ulangi ronde ini saja
+        // (tidak memengaruhi skor ronde Best-of-N atau bracket turnamen).
+        winnerText.textContent = `⏳ WAKTU HABIS — TALI PERSIS DI TENGAH!`;
+        winStats.innerHTML = `<p class="text-slate-300">Kedua tim sama kuat. Ronde ini diulang otomatis untuk menentukan pemenang.</p>`;
+        winPrimaryBtn.textContent = '🔁 Ulangi Ronde Ini';
+        winPrimaryBtn.onclick = () => {
+            winBox.classList.add('hidden');
+            winBox.classList.remove('flex');
+            rope = 10;
+            updateRope();
+            active = true;
+            questionActive = true;
+            loadQuestion();
+            startMatchTimeLimitTimer();
+        };
+        winnerText.classList.remove('win-pop');
+        void winnerText.offsetWidth;
+        winnerText.classList.add('win-pop');
+        winBox.classList.remove('hidden');
+        winBox.classList.add('flex');
+        return;
+    }
+
+    const winnerByPosition = rope < 10 ? 'TIM A' : 'TIM B';
+    win(winnerByPosition, true);
+}
 function loadQuestion(){
     const hardChance=Math.random()<0.3;
     currentQ=hardChance && iH<shuffledHard.length?shuffledEasy[iH++]:shuffledEasy[iE++%shuffledEasy.length];
@@ -1864,9 +1965,10 @@ function nextQuestion(){
     if(rope <= 0 || rope >= 20) return;
     loadQuestion();
 }
-function win(t){
+function win(t, wonByTimeout=false){
     active=false;
     clearInterval(timerInt);
+    clearMatchTimeLimitTimer();
 
     if(t==='TIM A') roundsA++; else roundsB++;
     const majority = Math.ceil(totalRounds/2);
@@ -1881,16 +1983,19 @@ function win(t){
 
         if(tournamentMode){
             const winnerName = teamDisplayName(finalWinner);
-            finishTournamentMatch(winnerName, { totalSoal, durasiDetik, hardest });
+            finishTournamentMatch(winnerName, { totalSoal, durasiDetik, hardest, wonByTimeout });
         } else {
             const finalWinnerName = teamDisplayName(finalWinner).toUpperCase();
-            winnerText.textContent = totalRounds>1 ? `${finalWinnerName} JUARA PERTANDINGAN 🎉` : `${finalWinnerName} MENANG 🎉`;
+            winnerText.textContent = (totalRounds>1 ? `${finalWinnerName} JUARA PERTANDINGAN 🎉` : `${finalWinnerName} MENANG 🎉`) + (wonByTimeout ? ' ⏳' : '');
 
             let statsHtml = `
                 <p><span class="text-[color:var(--team-a)]">${teamAShort.toUpperCase()}</span> — ✔ ${statsA.correct} benar &nbsp; ✘ ${statsA.wrong} salah</p>
                 <p><span class="text-[color:var(--team-b)]">${teamBShort.toUpperCase()}</span> — ✔ ${statsB.correct} benar &nbsp; ✘ ${statsB.wrong} salah</p>`;
             if(totalRounds>1){
                 statsHtml += `<p class="text-[color:var(--warn)] font-bold mt-2">Skor Ronde Akhir: ${teamAShort} ${roundsA} — ${teamBShort} ${roundsB}</p>`;
+            }
+            if(wonByTimeout){
+                statsHtml += `<p class="text-[color:var(--warn)] text-sm mt-2">⏳ Ditentukan oleh batas waktu — posisi tali terakhir saat waktu habis</p>`;
             }
             statsHtml += `<p class="text-slate-400 text-sm mt-2">Total ${totalSoal} soal • Durasi ${formatDurasi(durasiDetik)}</p>`;
 
@@ -1914,7 +2019,8 @@ function win(t){
                 roundsA: roundsA,
                 roundsB: roundsB,
                 hardestQuestions: hardest,
-                language: currentSoalLanguage
+                language: currentSoalLanguage,
+                wonByTimeout: wonByTimeout
             });
 
             winPrimaryBtn.textContent = '🔁 Tanding Lagi';
@@ -1925,9 +2031,10 @@ function win(t){
             setTimeout(()=>launchConfetti(140), 400);
         }
     } else {
-        winnerText.textContent = `RONDE ${currentRound} SELESAI — ${teamDisplayName(t)} MENANG!`;
+        winnerText.textContent = `RONDE ${currentRound} SELESAI — ${teamDisplayName(t)} MENANG!${wonByTimeout ? ' ⏳' : ''}`;
         winStats.innerHTML = `
             <p class="text-[color:var(--warn)] font-bold">Skor Ronde: ${teamAShort} ${roundsA} — ${teamBShort} ${roundsB}</p>
+            ${wonByTimeout ? `<p class="text-[color:var(--warn)] text-sm">⏳ Ronde ini ditentukan oleh batas waktu</p>` : ''}
             <p class="text-slate-400 text-sm mt-2">Lanjut ke Ronde ${currentRound+1} dari ${totalRounds}</p>
         `;
         winPrimaryBtn.textContent = '▶️ Lanjut ke Ronde Berikutnya';
@@ -1988,6 +2095,7 @@ function startNewMatch(){
     iE=iH=0;
     updateRope();
     loadQuestion();
+    startMatchTimeLimitTimer();
 
     quiz.classList.remove('hidden'); // Tampilkan kuis
 
@@ -2009,6 +2117,7 @@ function startNextRound(){
     iE=iH=0;
     updateRope();
     loadQuestion();
+    startMatchTimeLimitTimer();
 
     quiz.classList.remove('hidden');
 }
