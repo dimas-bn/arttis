@@ -38,7 +38,48 @@
     --ink-dim: #8a93b3;
     --ok: #34eb9e;
     --warn: #fbbf24;
+    --code-bg: #080b16;
+    --splash-glow: #1a0b2e;
+    --orb-opacity: 0.35;
+    --orb-opacity-v: 0.18;
 }
+
+/* ============ LIGHT MODE ============ */
+body.light-mode{
+    --void: #f5f3fb;
+    --panel: #ffffff;
+    --panel-2: #eeecf9;
+    --line: rgba(109, 40, 217, 0.09);
+    --team-a: #e11d48;
+    --team-a-glow: rgba(225, 29, 72, 0.28);
+    --team-b: #0e7490;
+    --team-b-glow: rgba(14, 116, 144, 0.25);
+    --violet: #7c3aed;
+    --violet-glow: rgba(124, 58, 237, 0.22);
+    --ink: #201c33;
+    --ink-dim: #635c7a;
+    --ok: #059669;
+    --warn: #b45309;
+    --code-bg: #eeecf9;
+    --splash-glow: #e3ddf7;
+    --orb-opacity: 0.16;
+    --orb-opacity-v: 0.10;
+}
+body.light-mode .text-white{ color: var(--ink); }
+body.light-mode .neon-text-v{ color: var(--violet); text-shadow: 0 0 10px var(--violet-glow); }
+body.light-mode .text-slate-100,
+body.light-mode .text-slate-200{ color: #241f3d; }
+body.light-mode .text-slate-300{ color: #3c3557; }
+body.light-mode .text-slate-400{ color: #6b6480; }
+body.light-mode .text-slate-500{ color: #837c98; }
+body.light-mode .text-cyan-400{ color: #0e7490; }
+body.light-mode .text-green-400{ color: #15803d; }
+body.light-mode .text-orange-400{ color: #c2410c; }
+body.light-mode .text-purple-400{ color: #7e22ce; }
+body.light-mode .panel{
+    box-shadow: 0 0 0 1px rgba(109,92,246,0.06) inset, 0 10px 40px -15px rgba(76,29,149,0.18);
+}
+body.light-mode ::-webkit-scrollbar-track{ background: var(--panel-2); }
 *{ scrollbar-color: var(--violet) var(--panel); }
 body{
     font-family:'Rajdhani',sans-serif;
@@ -64,12 +105,12 @@ body{
     to{ background-position: 42px 84px, 42px 84px; }
 }
 .glow-orb{
-    position: fixed; z-index: -1; border-radius: 9999px; filter: blur(90px); opacity: .35;
+    position: fixed; z-index: -1; border-radius: 9999px; filter: blur(90px); opacity: var(--orb-opacity);
     pointer-events: none;
 }
 .orb-a{ width: 480px; height: 480px; top: -160px; left: -160px; background: var(--team-a); }
 .orb-b{ width: 480px; height: 480px; bottom: -160px; right: -160px; background: var(--team-b); }
-.orb-v{ width: 380px; height: 380px; top: 40%; left: 50%; transform: translate(-50%,-50%); background: var(--violet); opacity: .18; }
+.orb-v{ width: 380px; height: 380px; top: 40%; left: 50%; transform: translate(-50%,-50%); background: var(--violet); opacity: var(--orb-opacity-v); }
 
 /* Glass panel */
 .panel{
@@ -270,7 +311,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 <canvas id="confetti-canvas" class="fixed inset-0 z-[150] pointer-events-none"></canvas>
 <div id="flash-overlay" class="fixed inset-0 z-[140] pointer-events-none opacity-0"></div>
 
-<div id="splash-screen" class="fixed inset-0 bg-[radial-gradient(circle_at_50%_20%,#1a0b2e_0%,#05060d_60%)] flex flex-col items-center justify-center text-white z-[200] cursor-pointer opacity-0 transition-opacity duration-1000 ease-out overflow-hidden">
+<div id="splash-screen" class="fixed inset-0 bg-[radial-gradient(circle_at_50%_20%,var(--splash-glow)_0%,var(--void)_60%)] flex flex-col items-center justify-center text-white z-[200] cursor-pointer opacity-0 transition-opacity duration-1000 ease-out overflow-hidden">
     <div class="grid-bg"></div>
     <div class="scanline" style="top:0"></div>
     <div class="animate-bounce-in text-center relative px-4">
@@ -303,6 +344,10 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 
     <button id="install-app-btn" onclick="installPwa()" class="btn-neon hidden fixed top-16 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-[0_0_15px_rgba(52,235,158,.4)]">
         📲 Install App
+    </button>
+
+    <button id="theme-toggle-btn" onclick="toggleTheme()" class="btn-neon fixed top-28 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        ☀️ Light Mode
     </button>
 
     <div id="offline-indicator" class="hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-[200] font-display text-xs md:text-sm font-bold py-2 px-4 rounded-full bg-[color:var(--warn)] text-black shadow-[0_0_20px_rgba(251,191,36,.6)]">
@@ -442,7 +487,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 
 <div id="format-guide" class="w-[95%] max-w-3xl mx-auto my-6 rounded-xl overflow-hidden panel">
 
-    <div id="guide-header" onclick="toggleGuide()" class="bg-gradient-to-r from-[color:var(--panel-2)] to-[#1a0f36] text-white p-4 cursor-pointer flex justify-between items-center font-bold text-lg select-none font-display tracking-wide">
+    <div id="guide-header" onclick="toggleGuide()" class="bg-gradient-to-r from-[color:var(--panel-2)] to-[color:var(--panel-2)] text-white p-4 cursor-pointer flex justify-between items-center font-bold text-lg select-none font-display tracking-wide">
         <span>Cara Membuat File Soal (format file .json)</span>
         <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-300 ease-in-out text-[color:var(--violet)]" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -454,7 +499,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
             <p class="mb-2 text-slate-300"><strong>1. Buat file teks baru → simpan dengan nama </strong><code class="bg-[color:var(--panel-2)] text-[color:var(--team-b)] p-1 px-2 rounded-md font-mono text-sm shadow-sm border border-[color:rgba(34,211,238,0.3)]">soal.json</code></p>
             <p class="mb-2 text-slate-300"><strong>2. Salin kode di bawah ini → tempel ke file tersebut</strong></p>
 
-            <pre id="json-example" class="bg-[#080b16] text-white p-4 rounded-lg overflow-x-auto text-sm border border-[color:rgba(139,92,246,0.3)] text-left my-4 font-mono">
+            <pre id="json-example" class="bg-[color:var(--code-bg)] text-white p-4 rounded-lg overflow-x-auto text-sm border border-[color:rgba(139,92,246,0.3)] text-left my-4 font-mono">
 {
   <span class="text-cyan-400">"easy"</span>: [
     {
@@ -495,7 +540,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
-<div id="preview-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[105] p-5">
+<div id="preview-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[105] p-5">
     <div class="panel rounded-xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
         <div class="p-5 border-b border-[color:rgba(139,92,246,0.25)]">
             <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🔍 PREVIEW SOAL</h2>
@@ -513,7 +558,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
-<div id="ai-generator-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[108] p-5">
+<div id="ai-generator-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[108] p-5">
     <div class="panel rounded-xl w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden">
         <div class="flex justify-between items-start p-5 border-b border-[color:rgba(139,92,246,0.25)]">
             <div>
@@ -581,7 +626,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     <div id="combo-badge" class="hidden font-display text-xl md:text-2xl font-black mt-3 text-[color:var(--warn)] drop-shadow-[0_0_16px_rgba(251,191,36,.8)] tracking-wide"></div>
 </div>
 
-<div id="win-message" class="fixed inset-0 w-full h-full bg-[#05060d]/92 backdrop-blur-sm text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
+<div id="win-message" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/92 backdrop-blur-sm text-white text-4xl md:text-6xl font-bold hidden justify-center items-center flex-col z-50 text-center p-4">
     <span id="winner-text" class="font-display neon-text-v"></span>
     <div id="win-stats" class="font-mono text-base md:text-lg font-normal text-slate-300 mt-5 space-y-1"></div>
     <div class="flex flex-wrap gap-4 justify-center mt-8">
@@ -606,7 +651,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
-<div id="history-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[110] p-5">
+<div id="history-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[110] p-5">
     <div class="panel rounded-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
         <div class="flex justify-between items-center p-5 border-b border-[color:rgba(139,92,246,0.25)]">
             <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🏆 RIWAYAT PERTANDINGAN</h2>
@@ -627,7 +672,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
-<div id="bracket-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[115] p-5">
+<div id="bracket-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[115] p-5">
     <div class="panel rounded-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
         <div class="flex justify-between items-center p-5 border-b border-[color:rgba(139,92,246,0.25)]">
             <h2 class="font-display text-2xl md:text-3xl font-bold neon-text-v tracking-wide">🏆 BAGAN TURNAMEN</h2>
@@ -638,7 +683,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
-<div id="help-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[120] p-3 md:p-5">
+<div id="help-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[120] p-3 md:p-5">
     <div class="panel rounded-xl w-full max-w-3xl max-h-[92vh] flex flex-col overflow-hidden">
         <div class="flex justify-between items-center p-4 md:p-5 border-b border-[color:rgba(139,92,246,0.25)]">
             <div>
@@ -675,7 +720,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 
                 <div>
                     <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">2. Format File Soal (.json)</h3>
-                    <pre class="bg-[#080b16] text-white p-3 rounded-lg overflow-x-auto text-xs border border-[color:rgba(139,92,246,0.3)] font-mono">{
+                    <pre class="bg-[color:var(--code-bg)] text-white p-3 rounded-lg overflow-x-auto text-xs border border-[color:rgba(139,92,246,0.3)] font-mono">{
   <span class="text-cyan-400">"easy"</span>: [{ <span class="text-green-400">"q"</span>: <span class="text-orange-400">"Ibukota Indonesia?"</span>, <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"Jakarta"</span>,<span class="text-orange-400">"Surabaya"</span>,<span class="text-orange-400">"Bandung"</span>,<span class="text-orange-400">"Medan"</span>], <span class="text-green-400">"c"</span>: <span class="text-purple-400">0</span> }],
   <span class="text-cyan-400">"hard"</span>: [{ <span class="text-green-400">"q"</span>: <span class="text-orange-400">"12 × 15 = ?"</span>, <span class="text-green-400">"o"</span>: [<span class="text-orange-400">"160"</span>,<span class="text-orange-400">"170"</span>,<span class="text-orange-400">"180"</span>,<span class="text-orange-400">"190"</span>], <span class="text-green-400">"c"</span>: <span class="text-purple-400">2</span> }]
 }</pre>
@@ -707,6 +752,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
                     <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">5. Fitur Pendukung</h3>
                     <ul class="list-disc list-inside space-y-1.5 text-slate-300">
                         <li><b class="text-slate-100">📺 Mode TV</b> — perbesar tampilan &amp; layar penuh untuk proyektor.</li>
+                        <li><b class="text-slate-100">☀️ Light Mode</b> — beralih ke tema terang, cocok untuk ruangan yang terang/proyektor kurang gelap.</li>
                         <li><b class="text-slate-100">🏆 Riwayat</b> — rekap pertandingan, skor, dan soal tersulit; bisa diekspor ke PDF/Excel.</li>
                         <li><b class="text-slate-100">📲 Install App</b> — pasang ArTTiS seperti aplikasi biasa, tetap jalan walau offline (kecuali Generator AI).</li>
                     </ul>
@@ -778,7 +824,7 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     </div>
 </div>
 
-<div id="rules-modal" class="fixed inset-0 w-full h-full bg-[#05060d]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
+<div id="rules-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
     <h2 class="font-display text-3xl md:text-5xl font-bold mb-5 neon-text-v text-center tracking-wide">PERATURAN PERMAINAN</h2>
     <ul class="list-disc list-inside space-y-3 text-lg md:text-2xl leading-relaxed max-w-3xl text-slate-200">
         <li>Dua tim akan saling bertanding menjawab soal pilihan ganda</li>
@@ -896,11 +942,13 @@ let comboCount=0;
 let muted = localStorage.getItem('arttis_muted') === '1';
 let audioCtx=null;
 let tvMode=false;
+let lightMode = (localStorage.getItem('arttis_theme') === 'light');
 let deferredInstallPrompt=null;
 const installAppBtn = document.getElementById('install-app-btn');
 const offlineIndicator = document.getElementById('offline-indicator');
 const muteBtn = document.getElementById('mute-btn');
 const tvModeBtn = document.getElementById('tv-mode-btn');
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const flashOverlay = document.getElementById('flash-overlay');
 const confettiCanvas = document.getElementById('confetti-canvas');
 const comboBadge = document.getElementById('combo-badge');
@@ -2214,6 +2262,17 @@ function toggleTvMode(){
         }
     }
 }
+
+/* ============ LIGHT MODE ============ */
+function applyTheme(){
+    document.body.classList.toggle('light-mode', lightMode);
+    themeToggleBtn.textContent = lightMode ? '🌙 Dark Mode' : '☀️ Light Mode';
+}
+function toggleTheme(){
+    lightMode = !lightMode;
+    try{ localStorage.setItem('arttis_theme', lightMode ? 'light' : 'dark'); }catch(e){ /* gagal simpan, tidak fatal */ }
+    applyTheme();
+}
 // Kalau guru keluar fullscreen manual (misal tekan Esc), sinkronkan status tombol
 document.addEventListener('fullscreenchange', () => {
     if(!document.fullscreenElement && tvMode){
@@ -2437,6 +2496,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeConfettiCanvas();
     muteBtn.textContent = muted ? '🔇' : '🔊';
     updateOnlineStatus();
+    applyTheme();
 
     // --- 2. Mulai Logika Hitung Mundur ---
     let count = 5; // Mulai hitungan dari 3
