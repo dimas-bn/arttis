@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ArTTiS — Arena Tarik Tambang Informatika</title>
 
 <!-- PWA -->
@@ -117,7 +117,6 @@ body{
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)), var(--panel);
     border: 1px solid rgba(139,92,246,0.25);
     box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset, 0 20px 60px -20px rgba(0,0,0,0.7);
-    backdrop-filter: blur(10px);
 }
 .neon-text-a{ color: var(--team-a); text-shadow: 0 0 12px var(--team-a-glow), 0 0 30px var(--team-a-glow); }
 .neon-text-b{ color: var(--team-b); text-shadow: 0 0 12px var(--team-b-glow), 0 0 30px var(--team-b-glow); }
@@ -225,67 +224,101 @@ body{
     60%{ transform: scale(1.1) rotate(2deg); opacity: 1; }
     100%{ transform: scale(1) rotate(0); opacity: 1; }
 }
-.win-pop{ animation: winPopIn 0.6s cubic-bezier(0.34,1.56,0.64,1); }/* ============ TV MODE — tampilan raksasa untuk proyektor ============ */
-body.tv-mode #mapel-tag,
-body.tv-mode #round-tag,
-body.tv-mode #tournament-tag{ font-size: 1.15rem !important; }
-
-body.tv-mode #team-a, body.tv-mode #team-b{ font-size: 2.8rem !important; line-height: 1.1; }
-@media (min-width: 768px){
-    body.tv-mode #team-a, body.tv-mode #team-b{ font-size: 4rem !important; }
+.win-pop{ animation: winPopIn 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+/* ============ MODE TAMPILAN (dulu "TV Mode") — 3 level skala, dipilih sesuai ukuran layar ============ */
+body.tv-active #mute-btn, body.tv-active #tv-mode-btn, body.tv-active #open-help-btn, body.tv-active #perf-saver-btn,
+body.tv-active #open-history-btn, body.tv-active #install-app-btn, body.tv-active #theme-toggle-btn{
+    opacity: 0.35; transition: opacity .2s;
 }
-body.tv-mode #team-a-stats, body.tv-mode #team-b-stats{ font-size: 1.2rem !important; }
-
-body.tv-mode #timer{ font-size: 5.5rem !important; }
-@media (min-width: 768px){
-    body.tv-mode #timer{ font-size: 9rem !important; }
+body.tv-active #mute-btn:hover, body.tv-active #tv-mode-btn:hover, body.tv-active #open-help-btn:hover, body.tv-active #perf-saver-btn:hover,
+body.tv-active #open-history-btn:hover, body.tv-active #install-app-btn:hover, body.tv-active #theme-toggle-btn:hover{
+    opacity: 1;
 }
 
-body.tv-mode #arena{ max-width: 96vw !important; }
-body.tv-mode #arena > div{ height: 6rem !important; }
-@media (min-width: 768px){
-    body.tv-mode #arena > div{ height: 8.5rem !important; }
-}
-body.tv-mode .rope-animation{ font-size: 3.2rem !important; }
-@media (min-width: 768px){
-    body.tv-mode .rope-animation{ font-size: 4.5rem !important; }
-}
+/* --- Level 1: SEDANG --- */
+body.tv-sedang #mapel-tag, body.tv-sedang #round-tag, body.tv-sedang #tournament-tag{ font-size: 1rem !important; }
+body.tv-sedang #team-a, body.tv-sedang #team-b{ font-size: 2.2rem !important; line-height: 1.1; }
+@media (min-width: 768px){ body.tv-sedang #team-a, body.tv-sedang #team-b{ font-size: 3rem !important; } }
+body.tv-sedang #team-a-stats, body.tv-sedang #team-b-stats{ font-size: 1.05rem !important; }
+body.tv-sedang #timer{ font-size: 4rem !important; }
+@media (min-width: 768px){ body.tv-sedang #timer{ font-size: 6.5rem !important; } }
+body.tv-sedang #arena{ max-width: 92vw !important; }
+body.tv-sedang #arena > div{ height: 5rem !important; }
+@media (min-width: 768px){ body.tv-sedang #arena > div{ height: 6.5rem !important; } }
+body.tv-sedang .rope-animation{ font-size: 2.6rem !important; }
+@media (min-width: 768px){ body.tv-sedang .rope-animation{ font-size: 3.4rem !important; } }
+body.tv-sedang #quiz-container{ max-width: 92vw !important; padding: 1.5rem !important; }
+body.tv-sedang #difficulty-indicator{ font-size: 1.1rem !important; padding: 0.7rem 1.5rem !important; }
+body.tv-sedang #question-text{ font-size: 1.6rem !important; }
+@media (min-width: 768px){ body.tv-sedang #question-text{ font-size: 2.2rem !important; } }
+body.tv-sedang #options button{ font-size: 1.25rem !important; padding: 1.1rem 0.5rem !important; }
+@media (min-width: 768px){ body.tv-sedang #options button{ font-size: 1.6rem !important; padding: 1.3rem 0.5rem !important; } }
+body.tv-sedang #options > div > div{ font-size: 1.15rem !important; padding: 0.85rem !important; }
+@media (min-width: 768px){ body.tv-sedang #options > div > div{ font-size: 1.4rem !important; } }
+body.tv-sedang #feedback-message{ font-size: 1.5rem !important; }
+@media (min-width: 768px){ body.tv-sedang #feedback-message{ font-size: 2rem !important; } }
+body.tv-sedang #combo-badge{ font-size: 1.5rem !important; }
+body.tv-sedang h1.font-display{ font-size: 2.5rem !important; }
+@media (min-width: 768px){ body.tv-sedang h1.font-display{ font-size: 3.5rem !important; } }
+body.tv-sedang h2{ font-size: 1.15rem !important; }
+@media (min-width: 768px){ body.tv-sedang h2{ font-size: 1.5rem !important; } }
 
-body.tv-mode #quiz-container{ max-width: 96vw !important; padding: 2rem !important; }
-body.tv-mode #difficulty-indicator{ font-size: 1.3rem !important; padding: 0.85rem 2rem !important; }
-body.tv-mode #question-text{ font-size: 1.9rem !important; }
-@media (min-width: 768px){
-    body.tv-mode #question-text{ font-size: 2.8rem !important; }
-}
-body.tv-mode #options button{ font-size: 1.5rem !important; padding: 1.5rem 0.5rem !important; }
-@media (min-width: 768px){
-    body.tv-mode #options button{ font-size: 2rem !important; padding: 1.75rem 0.5rem !important; }
-}
-body.tv-mode #options > div > div{ font-size: 1.3rem !important; padding: 1rem !important; }
-@media (min-width: 768px){
-    body.tv-mode #options > div > div{ font-size: 1.75rem !important; }
-}
-body.tv-mode #feedback-message{ font-size: 1.8rem !important; }
-@media (min-width: 768px){
-    body.tv-mode #feedback-message{ font-size: 2.6rem !important; }
-}
-body.tv-mode #combo-badge{ font-size: 1.8rem !important; }
+/* --- Level 2: BESAR --- */
+body.tv-besar #mapel-tag, body.tv-besar #round-tag, body.tv-besar #tournament-tag{ font-size: 1.15rem !important; }
+body.tv-besar #team-a, body.tv-besar #team-b{ font-size: 2.8rem !important; line-height: 1.1; }
+@media (min-width: 768px){ body.tv-besar #team-a, body.tv-besar #team-b{ font-size: 4rem !important; } }
+body.tv-besar #team-a-stats, body.tv-besar #team-b-stats{ font-size: 1.2rem !important; }
+body.tv-besar #timer{ font-size: 5.5rem !important; }
+@media (min-width: 768px){ body.tv-besar #timer{ font-size: 9rem !important; } }
+body.tv-besar #arena{ max-width: 96vw !important; }
+body.tv-besar #arena > div{ height: 6rem !important; }
+@media (min-width: 768px){ body.tv-besar #arena > div{ height: 8.5rem !important; } }
+body.tv-besar .rope-animation{ font-size: 3.2rem !important; }
+@media (min-width: 768px){ body.tv-besar .rope-animation{ font-size: 4.5rem !important; } }
+body.tv-besar #quiz-container{ max-width: 96vw !important; padding: 2rem !important; }
+body.tv-besar #difficulty-indicator{ font-size: 1.3rem !important; padding: 0.85rem 2rem !important; }
+body.tv-besar #question-text{ font-size: 1.9rem !important; }
+@media (min-width: 768px){ body.tv-besar #question-text{ font-size: 2.8rem !important; } }
+body.tv-besar #options button{ font-size: 1.5rem !important; padding: 1.5rem 0.5rem !important; }
+@media (min-width: 768px){ body.tv-besar #options button{ font-size: 2rem !important; padding: 1.75rem 0.5rem !important; } }
+body.tv-besar #options > div > div{ font-size: 1.3rem !important; padding: 1rem !important; }
+@media (min-width: 768px){ body.tv-besar #options > div > div{ font-size: 1.75rem !important; } }
+body.tv-besar #feedback-message{ font-size: 1.8rem !important; }
+@media (min-width: 768px){ body.tv-besar #feedback-message{ font-size: 2.6rem !important; } }
+body.tv-besar #combo-badge{ font-size: 1.8rem !important; }
+body.tv-besar h1.font-display{ font-size: 3rem !important; }
+@media (min-width: 768px){ body.tv-besar h1.font-display{ font-size: 4.5rem !important; } }
+body.tv-besar h2{ font-size: 1.3rem !important; }
+@media (min-width: 768px){ body.tv-besar h2{ font-size: 1.75rem !important; } }
 
-body.tv-mode #mute-btn,
-body.tv-mode #tv-mode-btn,
-body.tv-mode #open-history-btn{ opacity: 0.35; transition: opacity .2s; }
-body.tv-mode #mute-btn:hover,
-body.tv-mode #tv-mode-btn:hover,
-body.tv-mode #open-history-btn:hover{ opacity: 1; }
-
-body.tv-mode h1.font-display{ font-size: 3rem !important; }
-@media (min-width: 768px){
-    body.tv-mode h1.font-display{ font-size: 4.5rem !important; }
-}
-body.tv-mode h2{ font-size: 1.3rem !important; }
-@media (min-width: 768px){
-    body.tv-mode h2{ font-size: 1.75rem !important; }
-}/* Tab Panduan Penggunaan */
+/* --- Level 3: SANGAT BESAR --- */
+body.tv-sangat-besar #mapel-tag, body.tv-sangat-besar #round-tag, body.tv-sangat-besar #tournament-tag{ font-size: 1.3rem !important; }
+body.tv-sangat-besar #team-a, body.tv-sangat-besar #team-b{ font-size: 3.2rem !important; line-height: 1.1; }
+@media (min-width: 768px){ body.tv-sangat-besar #team-a, body.tv-sangat-besar #team-b{ font-size: 4.8rem !important; } }
+body.tv-sangat-besar #team-a-stats, body.tv-sangat-besar #team-b-stats{ font-size: 1.4rem !important; }
+body.tv-sangat-besar #timer{ font-size: 6.5rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar #timer{ font-size: 11rem !important; } }
+body.tv-sangat-besar #arena{ max-width: 98vw !important; }
+body.tv-sangat-besar #arena > div{ height: 7rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar #arena > div{ height: 10rem !important; } }
+body.tv-sangat-besar .rope-animation{ font-size: 3.8rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar .rope-animation{ font-size: 5.5rem !important; } }
+body.tv-sangat-besar #quiz-container{ max-width: 98vw !important; padding: 2.5rem !important; }
+body.tv-sangat-besar #difficulty-indicator{ font-size: 1.5rem !important; padding: 1rem 2.25rem !important; }
+body.tv-sangat-besar #question-text{ font-size: 2.2rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar #question-text{ font-size: 3.4rem !important; } }
+body.tv-sangat-besar #options button{ font-size: 1.75rem !important; padding: 1.75rem 0.5rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar #options button{ font-size: 2.4rem !important; padding: 2rem 0.5rem !important; } }
+body.tv-sangat-besar #options > div > div{ font-size: 1.5rem !important; padding: 1.15rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar #options > div > div{ font-size: 2rem !important; } }
+body.tv-sangat-besar #feedback-message{ font-size: 2.1rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar #feedback-message{ font-size: 3.1rem !important; } }
+body.tv-sangat-besar #combo-badge{ font-size: 2.1rem !important; }
+body.tv-sangat-besar h1.font-display{ font-size: 3.5rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar h1.font-display{ font-size: 5.5rem !important; } }
+body.tv-sangat-besar h2{ font-size: 1.5rem !important; }
+@media (min-width: 768px){ body.tv-sangat-besar h2{ font-size: 2rem !important; } }
+/* Tab Panduan Penggunaan */
 .help-tab-btn{
     color: var(--ink-dim);
     background: transparent;
@@ -299,6 +332,22 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
     background: linear-gradient(180deg, rgba(139,92,246,0.25), rgba(139,92,246,0.08));
     border-color: rgba(139,92,246,0.4);
 }
+
+/* ============ MODE HEMAT PERFORMA — untuk GPU lemah (mis. IFP/Android embedded) ============ */
+body.perf-saver .grid-bg{ animation: none !important; }
+body.perf-saver .glow-orb{ display: none !important; }
+body.perf-saver .scanline{ display: none !important; }
+body.perf-saver [class*="backdrop-blur"]{ backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+body.perf-saver .neon-text-a{ text-shadow: 0 0 8px var(--team-a-glow) !important; }
+body.perf-saver .neon-text-b{ text-shadow: 0 0 8px var(--team-b-glow) !important; }
+body.perf-saver .neon-text-v{ text-shadow: 0 0 8px var(--violet-glow) !important; }
+body.perf-saver .rope-animation{ animation: none !important; }
+body.perf-saver .pulse-ring{ animation: none !important; }
+body.perf-saver .danger-pulse{ animation: none !important; }
+body.perf-saver .tick-urgent{ animation: none !important; }
+
+/* ============ CEGAH PINCH-ZOOM TIDAK SENGAJA (layar sentuh IFP multi-peserta) ============ */
+html, body{ touch-action: manipulation; }
 </style>
 
 </head>
@@ -336,6 +385,10 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 
     <button id="open-help-btn" onclick="openHelp()" class="btn-neon fixed top-28 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
         ❓ Panduan
+    </button>
+
+    <button id="perf-saver-btn" onclick="togglePerfSaver()" class="btn-neon fixed top-40 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        🐢 Hemat Performa
     </button>
 
     <button id="open-history-btn" onclick="openHistory()" class="btn-neon fixed top-3 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 md:px-4 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
@@ -751,8 +804,9 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
                 <div>
                     <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">5. Fitur Pendukung</h3>
                     <ul class="list-disc list-inside space-y-1.5 text-slate-300">
-                        <li><b class="text-slate-100">📺 Mode TV</b> — perbesar tampilan &amp; layar penuh untuk proyektor.</li>
+                        <li><b class="text-slate-100">📺 Mode TV</b> — ketuk berulang untuk memilih level ukuran tampilan: Normal → Sedang → Besar → Sangat Besar, sesuaikan dengan ukuran layar/proyektor di kelas. Otomatis masuk layar penuh.</li>
                         <li><b class="text-slate-100">☀️ Light Mode</b> — beralih ke tema terang, cocok untuk ruangan yang terang/proyektor kurang gelap.</li>
+                        <li><b class="text-slate-100">🐢 Hemat Performa</b> — aktifkan kalau animasi terasa patah-patah (biasa terjadi di TV/IFP dengan GPU terbatas). Mematikan efek blur &amp; animasi berat, tampilan tetap rapi tapi jauh lebih ringan.</li>
                         <li><b class="text-slate-100">🏆 Riwayat</b> — rekap pertandingan, skor, dan soal tersulit; bisa diekspor ke PDF/Excel.</li>
                         <li><b class="text-slate-100">📲 Install App</b> — pasang ArTTiS seperti aplikasi biasa, tetap jalan walau offline (kecuali Generator AI).</li>
                     </ul>
@@ -815,6 +869,10 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
                     <p class="font-bold text-slate-100">Berapa maksimal jumlah tim?</p>
                     <p class="text-slate-300 text-sm">2 tim untuk mode biasa. Mode Turnamen mendukung 4 atau 8 tim sistem gugur.</p>
                 </div>
+                <div>
+                    <p class="font-bold text-slate-100">Animasinya patah-patah / layar suka ke-zoom sendiri di layar sentuh besar (IFP)?</p>
+                    <p class="text-slate-300 text-sm">Aktifkan "🐢 Hemat Performa" kalau perangkat terasa berat (biasa terjadi di IFP dengan GPU terbatas). Zoom tak sengaja saat banyak peserta menyentuh layar bersamaan juga sudah dicegah otomatis.</p>
+                </div>
             </div>
         </div>
 
@@ -841,6 +899,17 @@ body.tv-mode h2{ font-size: 1.3rem !important; }
 
 
 <script>
+/* ============ CEGAH PINCH-ZOOM TIDAK SENGAJA ============
+   Layar sentuh IFP sering disentuh banyak peserta bersamaan — dua sentuhan di titik
+   berbeda gampang terbaca browser sebagai gestur pinch-zoom. Dicegah di 2 lapis:
+   1. Meta viewport (user-scalable=no) — lapis utama.
+   2. Listener di bawah ini — cadangan untuk WebView Android/embedded yang kadang
+      tidak sepenuhnya mematuhi meta viewport. */
+document.addEventListener('touchmove', function(e){
+    if(e.touches && e.touches.length > 1){ e.preventDefault(); }
+}, { passive: false });
+document.addEventListener('gesturestart', function(e){ e.preventDefault(); }); // Safari/WebKit
+
 // Toggle buka/tutup panel (Fungsi ini 100% sama, hanya target ID ikonnya diubah)
 function toggleGuide() {
     const content = document.getElementById('guide-content');
@@ -941,14 +1010,16 @@ const bracketFooter = document.getElementById('bracket-footer');
 let comboCount=0;
 let muted = localStorage.getItem('arttis_muted') === '1';
 let audioCtx=null;
-let tvMode=false;
+let tvLevelIndex=0; // 0=Normal, 1=Sedang, 2=Besar, 3=Sangat Besar
 let lightMode = (localStorage.getItem('arttis_theme') === 'light');
+let perfSaverMode = (localStorage.getItem('arttis_perfsaver') === '1');
 let deferredInstallPrompt=null;
 const installAppBtn = document.getElementById('install-app-btn');
 const offlineIndicator = document.getElementById('offline-indicator');
 const muteBtn = document.getElementById('mute-btn');
 const tvModeBtn = document.getElementById('tv-mode-btn');
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const perfSaverBtn = document.getElementById('perf-saver-btn');
 const flashOverlay = document.getElementById('flash-overlay');
 const confettiCanvas = document.getElementById('confetti-canvas');
 const comboBadge = document.getElementById('combo-badge');
@@ -2246,16 +2317,33 @@ function toggleMute(){
 }
 
 /* ============ TV MODE — tampilan raksasa untuk proyektor ============ */
+const TV_LEVELS = [
+    { cls: null, label: '📺 Mode TV' },
+    { cls: 'tv-sedang', label: '📺 TV: Sedang' },
+    { cls: 'tv-besar', label: '📺 TV: Besar' },
+    { cls: 'tv-sangat-besar', label: '📺 TV: Sangat Besar' },
+];
+function applyTvLevel(){
+    document.body.classList.remove('tv-active', 'tv-sedang', 'tv-besar', 'tv-sangat-besar');
+    const level = TV_LEVELS[tvLevelIndex];
+    if(level.cls){
+        document.body.classList.add('tv-active', level.cls);
+    }
+    tvModeBtn.textContent = level.label + (tvLevelIndex > 0 ? ' (ketuk untuk ganti)' : '');
+}
 function toggleTvMode(){
-    tvMode = !tvMode;
-    document.body.classList.toggle('tv-mode', tvMode);
-    tvModeBtn.textContent = tvMode ? '📺 Keluar TV Mode' : '📺 Mode TV';
+    const wasOff = tvLevelIndex === 0;
+    tvLevelIndex = (tvLevelIndex + 1) % TV_LEVELS.length;
+    const isNowOff = tvLevelIndex === 0;
+    applyTvLevel();
 
-    if(tvMode){
+    if(wasOff && !isNowOff){
+        // Baru masuk mode tampilan besar dari kondisi normal -> coba masuk fullscreen
         const el = document.documentElement;
         const reqFs = el.requestFullscreen || el.webkitRequestFullscreen;
         if(reqFs){ reqFs.call(el).catch(()=>{ /* browser menolak, tetap lanjut tanpa fullscreen */ }); }
-    } else {
+    } else if(isNowOff){
+        // Kembali ke Normal -> keluar fullscreen
         if(document.fullscreenElement || document.webkitFullscreenElement){
             const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
             if(exitFs){ exitFs.call(document).catch(()=>{}); }
@@ -2273,12 +2361,22 @@ function toggleTheme(){
     try{ localStorage.setItem('arttis_theme', lightMode ? 'light' : 'dark'); }catch(e){ /* gagal simpan, tidak fatal */ }
     applyTheme();
 }
+
+/* ============ MODE HEMAT PERFORMA ============ */
+function applyPerfSaver(){
+    document.body.classList.toggle('perf-saver', perfSaverMode);
+    perfSaverBtn.textContent = perfSaverMode ? '🐢 Hemat Performa: ON' : '🐢 Hemat Performa';
+}
+function togglePerfSaver(){
+    perfSaverMode = !perfSaverMode;
+    try{ localStorage.setItem('arttis_perfsaver', perfSaverMode ? '1' : '0'); }catch(e){ /* gagal simpan, tidak fatal */ }
+    applyPerfSaver();
+}
 // Kalau guru keluar fullscreen manual (misal tekan Esc), sinkronkan status tombol
 document.addEventListener('fullscreenchange', () => {
-    if(!document.fullscreenElement && tvMode){
-        tvMode = false;
-        document.body.classList.remove('tv-mode');
-        tvModeBtn.textContent = '📺 Mode TV';
+    if(!document.fullscreenElement && tvLevelIndex > 0){
+        tvLevelIndex = 0;
+        applyTvLevel();
     }
 });
 
@@ -2348,6 +2446,7 @@ function resizeConfettiCanvas(){
 }
 window.addEventListener('resize', resizeConfettiCanvas);
 function launchConfetti(count){
+    if(perfSaverMode) count = Math.round(count * 0.35); // GPU lemah: kurangi beban partikel drastis
     resizeConfettiCanvas();
     const colors = ['#ff3b6e','#22d3ee','#8b5cf6','#fbbf24','#34eb9e','#ffffff'];
     for(let i=0;i<count;i++){
@@ -2497,6 +2596,7 @@ document.addEventListener('DOMContentLoaded', () => {
     muteBtn.textContent = muted ? '🔇' : '🔊';
     updateOnlineStatus();
     applyTheme();
+    applyPerfSaver();
 
     // --- 2. Mulai Logika Hitung Mundur ---
     let count = 5; // Mulai hitungan dari 3
