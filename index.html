@@ -226,14 +226,80 @@ body{
 }
 .win-pop{ animation: winPopIn 0.6s cubic-bezier(0.34,1.56,0.64,1); }
 /* ============ MODE TAMPILAN (dulu "TV Mode") — 3 level skala, dipilih sesuai ukuran layar ============ */
-body.tv-active #mute-btn, body.tv-active #tv-mode-btn, body.tv-active #open-help-btn, body.tv-active #perf-saver-btn,
+body.tv-active #mute-btn, body.tv-active #tv-mode-select, body.tv-active #open-help-btn, body.tv-active #perf-saver-btn,
 body.tv-active #open-history-btn, body.tv-active #install-app-btn, body.tv-active #theme-toggle-btn{
     opacity: 0.35; transition: opacity .2s;
 }
-body.tv-active #mute-btn:hover, body.tv-active #tv-mode-btn:hover, body.tv-active #open-help-btn:hover, body.tv-active #perf-saver-btn:hover,
+body.tv-active #mute-btn:hover, body.tv-active #tv-mode-select:hover, body.tv-active #open-help-btn:hover, body.tv-active #perf-saver-btn:hover,
 body.tv-active #open-history-btn:hover, body.tv-active #install-app-btn:hover, body.tv-active #theme-toggle-btn:hover{
     opacity: 1;
 }
+
+/* --- Level -1: KECIL --- */
+body.tv-kecil #mapel-tag, body.tv-kecil #round-tag, body.tv-kecil #tournament-tag{ font-size: 0.8rem !important; }
+body.tv-kecil #team-a, body.tv-kecil #team-b{ font-size: 1.3rem !important; line-height: 1.1; }
+@media (min-width: 768px){ body.tv-kecil #team-a, body.tv-kecil #team-b{ font-size: 1.9rem !important; } }
+body.tv-kecil #team-a-stats, body.tv-kecil #team-b-stats{ font-size: 0.7rem !important; }
+body.tv-kecil #timer{ font-size: 2.5rem !important; }
+@media (min-width: 768px){ body.tv-kecil #timer{ font-size: 3.6rem !important; } }
+body.tv-kecil #arena > div{ height: 4rem !important; }
+@media (min-width: 768px){ body.tv-kecil #arena > div{ height: 4.8rem !important; } }
+body.tv-kecil .rope-animation{ font-size: 1.8rem !important; }
+body.tv-kecil #quiz-container{ padding: 1rem !important; }
+body.tv-kecil #difficulty-indicator{ font-size: 0.85rem !important; padding: 0.4rem 1rem !important; }
+body.tv-kecil #question-text{ font-size: 1.25rem !important; }
+body.tv-kecil #options button{ font-size: 0.95rem !important; padding: 0.75rem 0.5rem !important; }
+body.tv-kecil #options > div > div{ font-size: 1.05rem !important; padding: 0.6rem !important; }
+body.tv-kecil #feedback-message{ font-size: 1.05rem !important; }
+body.tv-kecil #combo-badge{ font-size: 1.05rem !important; }
+body.tv-kecil h1.font-display{ font-size: 1.9rem !important; }
+@media (min-width: 768px){ body.tv-kecil h1.font-display{ font-size: 2.5rem !important; } }
+body.tv-kecil h2{ font-size: 1.05rem !important; }
+@media (min-width: 768px){ body.tv-kecil h2{ font-size: 1.25rem !important; } }
+
+/* --- Level -2: LEBIH KECIL --- */
+body.tv-lebih-kecil #mapel-tag, body.tv-lebih-kecil #round-tag, body.tv-lebih-kecil #tournament-tag{ font-size: 0.7rem !important; }
+body.tv-lebih-kecil #team-a, body.tv-lebih-kecil #team-b{ font-size: 1.1rem !important; line-height: 1.1; }
+@media (min-width: 768px){ body.tv-lebih-kecil #team-a, body.tv-lebih-kecil #team-b{ font-size: 1.6rem !important; } }
+body.tv-lebih-kecil #team-a-stats, body.tv-lebih-kecil #team-b-stats{ font-size: 0.65rem !important; }
+body.tv-lebih-kecil #timer{ font-size: 2.1rem !important; }
+@media (min-width: 768px){ body.tv-lebih-kecil #timer{ font-size: 3rem !important; } }
+body.tv-lebih-kecil #arena > div{ height: 3.4rem !important; }
+@media (min-width: 768px){ body.tv-lebih-kecil #arena > div{ height: 4rem !important; } }
+body.tv-lebih-kecil .rope-animation{ font-size: 1.5rem !important; }
+body.tv-lebih-kecil #quiz-container{ padding: 0.85rem !important; }
+body.tv-lebih-kecil #difficulty-indicator{ font-size: 0.75rem !important; padding: 0.35rem 0.85rem !important; }
+body.tv-lebih-kecil #question-text{ font-size: 1.05rem !important; }
+body.tv-lebih-kecil #options button{ font-size: 0.85rem !important; padding: 0.6rem 0.4rem !important; }
+body.tv-lebih-kecil #options > div > div{ font-size: 0.9rem !important; padding: 0.5rem !important; }
+body.tv-lebih-kecil #feedback-message{ font-size: 0.9rem !important; }
+body.tv-lebih-kecil #combo-badge{ font-size: 0.9rem !important; }
+body.tv-lebih-kecil h1.font-display{ font-size: 1.6rem !important; }
+@media (min-width: 768px){ body.tv-lebih-kecil h1.font-display{ font-size: 2.1rem !important; } }
+body.tv-lebih-kecil h2{ font-size: 0.9rem !important; }
+@media (min-width: 768px){ body.tv-lebih-kecil h2{ font-size: 1.05rem !important; } }
+
+/* --- Level -3: PALING KECIL --- */
+body.tv-paling-kecil #mapel-tag, body.tv-paling-kecil #round-tag, body.tv-paling-kecil #tournament-tag{ font-size: 0.6rem !important; }
+body.tv-paling-kecil #team-a, body.tv-paling-kecil #team-b{ font-size: 0.95rem !important; line-height: 1.1; }
+@media (min-width: 768px){ body.tv-paling-kecil #team-a, body.tv-paling-kecil #team-b{ font-size: 1.35rem !important; } }
+body.tv-paling-kecil #team-a-stats, body.tv-paling-kecil #team-b-stats{ font-size: 0.6rem !important; }
+body.tv-paling-kecil #timer{ font-size: 1.8rem !important; }
+@media (min-width: 768px){ body.tv-paling-kecil #timer{ font-size: 2.5rem !important; } }
+body.tv-paling-kecil #arena > div{ height: 2.8rem !important; }
+@media (min-width: 768px){ body.tv-paling-kecil #arena > div{ height: 3.3rem !important; } }
+body.tv-paling-kecil .rope-animation{ font-size: 1.3rem !important; }
+body.tv-paling-kecil #quiz-container{ padding: 0.7rem !important; }
+body.tv-paling-kecil #difficulty-indicator{ font-size: 0.65rem !important; padding: 0.3rem 0.7rem !important; }
+body.tv-paling-kecil #question-text{ font-size: 0.9rem !important; }
+body.tv-paling-kecil #options button{ font-size: 0.75rem !important; padding: 0.5rem 0.35rem !important; }
+body.tv-paling-kecil #options > div > div{ font-size: 0.8rem !important; padding: 0.4rem !important; }
+body.tv-paling-kecil #feedback-message{ font-size: 0.78rem !important; }
+body.tv-paling-kecil #combo-badge{ font-size: 0.78rem !important; }
+body.tv-paling-kecil h1.font-display{ font-size: 1.35rem !important; }
+@media (min-width: 768px){ body.tv-paling-kecil h1.font-display{ font-size: 1.8rem !important; } }
+body.tv-paling-kecil h2{ font-size: 0.78rem !important; }
+@media (min-width: 768px){ body.tv-paling-kecil h2{ font-size: 0.9rem !important; } }
 
 /* --- Level 1: SEDANG --- */
 body.tv-sedang #mapel-tag, body.tv-sedang #round-tag, body.tv-sedang #tournament-tag{ font-size: 1rem !important; }
@@ -346,6 +412,17 @@ body.perf-saver .pulse-ring{ animation: none !important; }
 body.perf-saver .danger-pulse{ animation: none !important; }
 body.perf-saver .tick-urgent{ animation: none !important; }
 
+/* ============ TOMBOL MENGAMBANG BISA DISEMBUNYIKAN ============ */
+body.floating-btns-hidden #mute-btn,
+body.floating-btns-hidden #tv-mode-select,
+body.floating-btns-hidden #open-help-btn,
+body.floating-btns-hidden #perf-saver-btn,
+body.floating-btns-hidden #open-history-btn,
+body.floating-btns-hidden #install-app-btn,
+body.floating-btns-hidden #theme-toggle-btn{
+    display: none !important;
+}
+
 /* ============ CEGAH PINCH-ZOOM TIDAK SENGAJA (layar sentuh IFP multi-peserta) ============ */
 html, body{ touch-action: manipulation; }
 </style>
@@ -379,9 +456,15 @@ html, body{ touch-action: manipulation; }
         🔊
     </button>
 
-    <button id="tv-mode-btn" onclick="toggleTvMode()" class="btn-neon fixed top-16 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
-        📺 Mode TV
-    </button>
+    <select id="tv-mode-select" onchange="setTvLevel(this.value)" title="Ukuran Tampilan" class="btn-neon fixed top-16 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 pl-3 pr-2 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)] cursor-pointer">
+        <option value="paling-kecil">📺 Paling Kecil</option>
+        <option value="lebih-kecil">📺 Lebih Kecil</option>
+        <option value="kecil">📺 Kecil</option>
+        <option value="normal" selected>📺 Normal</option>
+        <option value="sedang">📺 Sedang</option>
+        <option value="besar">📺 Besar</option>
+        <option value="sangat-besar">📺 Sangat Besar</option>
+    </select>
 
     <button id="open-help-btn" onclick="openHelp()" class="btn-neon fixed top-28 left-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
         ❓ Panduan
@@ -401,6 +484,10 @@ html, body{ touch-action: manipulation; }
 
     <button id="theme-toggle-btn" onclick="toggleTheme()" class="btn-neon fixed top-28 right-3 z-30 text-xs md:text-sm font-display font-bold py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
         ☀️ Light Mode
+    </button>
+
+    <button id="toggle-floating-buttons-btn" onclick="toggleFloatingButtons()" title="Tampilkan/Sembunyikan Tombol Mengambang" class="btn-neon fixed bottom-3 right-3 z-40 text-base py-2 px-3 rounded-full bg-[color:var(--panel-2)] border border-[color:rgba(139,92,246,0.4)] text-[color:var(--ink)] shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+        🙈
     </button>
 
     <div id="offline-indicator" class="hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-[200] font-display text-xs md:text-sm font-bold py-2 px-4 rounded-full bg-[color:var(--warn)] text-black shadow-[0_0_20px_rgba(251,191,36,.6)]">
@@ -804,7 +891,8 @@ html, body{ touch-action: manipulation; }
                 <div>
                     <h3 class="font-display font-bold text-[color:var(--team-b)] mb-2 text-base md:text-lg">5. Fitur Pendukung</h3>
                     <ul class="list-disc list-inside space-y-1.5 text-slate-300">
-                        <li><b class="text-slate-100">📺 Mode TV</b> — ketuk berulang untuk memilih level ukuran tampilan: Normal → Sedang → Besar → Sangat Besar, sesuaikan dengan ukuran layar/proyektor di kelas. Otomatis masuk layar penuh.</li>
+                        <li><b class="text-slate-100">📺 Mode Tampilan</b> — pilih dari dropdown, 7 tingkat: Paling Kecil, Lebih Kecil, Kecil, Normal, Sedang, Besar, Sangat Besar. Level Sedang ke atas otomatis masuk layar penuh; level Kecil ke bawah cocok untuk layar sentuh besar yang justru terasa terlalu penuh di ukuran Normal.</li>
+                        <li><b class="text-slate-100">🙈/👁️ Sembunyikan Tombol</b> — tombol di pojok kanan bawah untuk menyembunyikan semua tombol mengambang lain (biar tidak mengganggu tampilan saat presentasi/dokumentasi). Tombol ini sendiri selalu terlihat sebagai jalan kembali.</li>
                         <li><b class="text-slate-100">☀️ Light Mode</b> — beralih ke tema terang, cocok untuk ruangan yang terang/proyektor kurang gelap.</li>
                         <li><b class="text-slate-100">🐢 Hemat Performa</b> — aktifkan kalau animasi terasa patah-patah (biasa terjadi di TV/IFP dengan GPU terbatas). Mematikan efek blur &amp; animasi berat, tampilan tetap rapi tapi jauh lebih ringan.</li>
                         <li><b class="text-slate-100">🏆 Riwayat</b> — rekap pertandingan, skor, dan soal tersulit; bisa diekspor ke PDF/Excel.</li>
@@ -1010,16 +1098,18 @@ const bracketFooter = document.getElementById('bracket-footer');
 let comboCount=0;
 let muted = localStorage.getItem('arttis_muted') === '1';
 let audioCtx=null;
-let tvLevelIndex=0; // 0=Normal, 1=Sedang, 2=Besar, 3=Sangat Besar
+let tvLevelIndex=3; // indeks 'normal' di TV_LEVELS: 0=Paling Kecil...3=Normal...6=Sangat Besar
 let lightMode = (localStorage.getItem('arttis_theme') === 'light');
 let perfSaverMode = (localStorage.getItem('arttis_perfsaver') === '1');
+let floatingButtonsHidden = (localStorage.getItem('arttis_hide_floating_btns') === '1');
 let deferredInstallPrompt=null;
 const installAppBtn = document.getElementById('install-app-btn');
 const offlineIndicator = document.getElementById('offline-indicator');
 const muteBtn = document.getElementById('mute-btn');
-const tvModeBtn = document.getElementById('tv-mode-btn');
+const tvModeBtn = document.getElementById('tv-mode-select');
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const perfSaverBtn = document.getElementById('perf-saver-btn');
+const toggleFloatingButtonsBtn = document.getElementById('toggle-floating-buttons-btn');
 const flashOverlay = document.getElementById('flash-overlay');
 const confettiCanvas = document.getElementById('confetti-canvas');
 const comboBadge = document.getElementById('combo-badge');
@@ -2318,32 +2408,40 @@ function toggleMute(){
 
 /* ============ TV MODE — tampilan raksasa untuk proyektor ============ */
 const TV_LEVELS = [
-    { cls: null, label: '📺 Mode TV' },
-    { cls: 'tv-sedang', label: '📺 TV: Sedang' },
-    { cls: 'tv-besar', label: '📺 TV: Besar' },
-    { cls: 'tv-sangat-besar', label: '📺 TV: Sangat Besar' },
+    { key: 'paling-kecil',  cls: 'tv-paling-kecil',  fullscreen: false },
+    { key: 'lebih-kecil',   cls: 'tv-lebih-kecil',   fullscreen: false },
+    { key: 'kecil',         cls: 'tv-kecil',         fullscreen: false },
+    { key: 'normal',        cls: null,               fullscreen: false },
+    { key: 'sedang',        cls: 'tv-sedang',        fullscreen: true },
+    { key: 'besar',         cls: 'tv-besar',         fullscreen: true },
+    { key: 'sangat-besar',  cls: 'tv-sangat-besar',  fullscreen: true },
 ];
+const TV_ALL_CLASSES = ['tv-paling-kecil','tv-lebih-kecil','tv-kecil','tv-sedang','tv-besar','tv-sangat-besar'];
+
 function applyTvLevel(){
-    document.body.classList.remove('tv-active', 'tv-sedang', 'tv-besar', 'tv-sangat-besar');
+    document.body.classList.remove('tv-active', ...TV_ALL_CLASSES);
     const level = TV_LEVELS[tvLevelIndex];
     if(level.cls){
         document.body.classList.add('tv-active', level.cls);
     }
-    tvModeBtn.textContent = level.label + (tvLevelIndex > 0 ? ' (ketuk untuk ganti)' : '');
+    tvModeBtn.value = level.key;
 }
-function toggleTvMode(){
-    const wasOff = tvLevelIndex === 0;
-    tvLevelIndex = (tvLevelIndex + 1) % TV_LEVELS.length;
-    const isNowOff = tvLevelIndex === 0;
+function setTvLevel(key){
+    const newIndex = TV_LEVELS.findIndex(l => l.key === key);
+    if(newIndex === -1) return;
+
+    const wasFullscreenLevel = TV_LEVELS[tvLevelIndex].fullscreen;
+    const isNowFullscreenLevel = TV_LEVELS[newIndex].fullscreen;
+    tvLevelIndex = newIndex;
     applyTvLevel();
 
-    if(wasOff && !isNowOff){
-        // Baru masuk mode tampilan besar dari kondisi normal -> coba masuk fullscreen
+    if(!wasFullscreenLevel && isNowFullscreenLevel){
+        // Baru masuk level besar (Sedang/Besar/Sangat Besar) -> coba masuk fullscreen
         const el = document.documentElement;
         const reqFs = el.requestFullscreen || el.webkitRequestFullscreen;
         if(reqFs){ reqFs.call(el).catch(()=>{ /* browser menolak, tetap lanjut tanpa fullscreen */ }); }
-    } else if(isNowOff){
-        // Kembali ke Normal -> keluar fullscreen
+    } else if(wasFullscreenLevel && !isNowFullscreenLevel){
+        // Keluar dari level besar -> keluar fullscreen
         if(document.fullscreenElement || document.webkitFullscreenElement){
             const exitFs = document.exitFullscreen || document.webkitExitFullscreen;
             if(exitFs){ exitFs.call(document).catch(()=>{}); }
@@ -2372,11 +2470,22 @@ function togglePerfSaver(){
     try{ localStorage.setItem('arttis_perfsaver', perfSaverMode ? '1' : '0'); }catch(e){ /* gagal simpan, tidak fatal */ }
     applyPerfSaver();
 }
+
+/* ============ TOMBOL MENGAMBANG BISA DISEMBUNYIKAN ============ */
+function applyFloatingButtonsVisibility(){
+    document.body.classList.toggle('floating-btns-hidden', floatingButtonsHidden);
+    toggleFloatingButtonsBtn.textContent = floatingButtonsHidden ? '👁️' : '🙈';
+    toggleFloatingButtonsBtn.title = floatingButtonsHidden ? 'Tampilkan Tombol Mengambang' : 'Sembunyikan Tombol Mengambang';
+}
+function toggleFloatingButtons(){
+    floatingButtonsHidden = !floatingButtonsHidden;
+    try{ localStorage.setItem('arttis_hide_floating_btns', floatingButtonsHidden ? '1' : '0'); }catch(e){ /* gagal simpan, tidak fatal */ }
+    applyFloatingButtonsVisibility();
+}
 // Kalau guru keluar fullscreen manual (misal tekan Esc), sinkronkan status tombol
 document.addEventListener('fullscreenchange', () => {
-    if(!document.fullscreenElement && tvLevelIndex > 0){
-        tvLevelIndex = 0;
-        applyTvLevel();
+    if(!document.fullscreenElement && TV_LEVELS[tvLevelIndex].fullscreen){
+        setTvLevel('normal');
     }
 });
 
@@ -2597,6 +2706,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateOnlineStatus();
     applyTheme();
     applyPerfSaver();
+    applyTvLevel();
+    applyFloatingButtonsVisibility();
 
     // --- 2. Mulai Logika Hitung Mundur ---
     let count = 5; // Mulai hitungan dari 3
