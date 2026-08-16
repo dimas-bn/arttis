@@ -387,16 +387,20 @@ body.tv-sangat-besar h2{ font-size: 1.5rem !important; }
 /* Tab Panduan Penggunaan */
 .help-tab-btn{
     color: var(--ink-dim);
-    background: transparent;
-    border: 1px solid transparent;
+    background: var(--panel-2);
+    border: 2px solid rgba(139,92,246,0.3);
     border-bottom: none;
-    transition: color .2s, background .2s;
+    opacity: 0.8;
+    font-weight: 700;
+    transition: color .2s, background .2s, opacity .2s, border-color .2s;
 }
-.help-tab-btn:hover{ color: var(--ink); }
+.help-tab-btn:hover{ color: var(--ink); opacity: 1; }
 .help-tab-btn.help-tab-active{
-    color: #fff;
-    background: linear-gradient(180deg, rgba(139,92,246,0.25), rgba(139,92,246,0.08));
-    border-color: rgba(139,92,246,0.4);
+    color: #ffffff !important;
+    background: var(--violet) !important;
+    border-color: var(--violet) !important;
+    opacity: 1;
+    box-shadow: 0 -3px 14px var(--violet-glow);
 }
 
 /* ============ MODE HEMAT PERFORMA — untuk GPU lemah (mis. IFP/Android embedded) ============ */
@@ -833,7 +837,7 @@ html, body{ touch-action: manipulation; }
             <button onclick="closeHelp()" class="text-slate-400 hover:text-white text-2xl leading-none px-2">✕</button>
         </div>
 
-        <div class="flex gap-2 px-4 md:px-5 pt-4 border-b border-[color:rgba(139,92,246,0.15)] overflow-x-auto">
+        <div class="flex gap-2 px-4 md:px-5 pt-4 border-b-2 border-[color:rgba(139,92,246,0.35)] overflow-x-auto">
             <button id="help-tab-btn-guru" onclick="switchHelpTab('guru')" class="help-tab-btn font-display text-xs md:text-sm font-bold py-2 px-4 rounded-t-lg whitespace-nowrap">
                 👨‍🏫 Untuk Guru
             </button>
