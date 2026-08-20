@@ -974,19 +974,27 @@ html, body{ touch-action: manipulation; }
     </div>
 </div>
 
-<div id="rules-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm text-white hidden justify-center items-center flex-col z-[100] p-5 text-left">
-    <h2 class="font-display text-3xl md:text-5xl font-bold mb-5 neon-text-v text-center tracking-wide">PERATURAN PERMAINAN</h2>
-    <ul class="list-disc list-inside space-y-3 text-lg md:text-2xl leading-relaxed max-w-3xl text-slate-200">
-        <li>Dua tim akan saling bertanding menjawab soal pilihan ganda</li>
-        <li>Setiap jawaban benar = tarik 1 langkah (atau 2 langkah untuk soal sulit)</li>
-        <li>Setiap jawaban salah = lawan maju 1 langkah</li>
-        <li id="rules-duration-text">Waktu menjawab tiap soal hanya 10 detik</li>
-        <li id="rules-rounds-text">Pemenang ronde ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya</li>
-        <li id="rules-timelimit-text" class="hidden text-[color:var(--warn)]"></li>
-    </ul>
-    <button id="close-rules" class="btn-neon mt-8 py-4 px-10 text-xl md:text-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-none rounded-lg cursor-pointer shadow-[0_0_30px_rgba(52,235,158,.4)]">
-        Saya Mengerti, Mulai!
-    </button>
+<div id="rules-modal" class="fixed inset-0 w-full h-full bg-[color:var(--void)]/95 backdrop-blur-sm hidden justify-center items-center z-[100] p-3 md:p-5">
+    <div class="panel rounded-xl w-full max-w-3xl max-h-[92vh] flex flex-col overflow-hidden text-left">
+        <div class="shrink-0 p-5 md:p-8 pb-3 md:pb-4 border-b border-[color:rgba(139,92,246,0.25)]">
+            <h2 class="font-display text-2xl md:text-4xl font-bold neon-text-v text-center tracking-wide">PERATURAN PERMAINAN</h2>
+        </div>
+        <div class="flex-1 min-h-0 overflow-y-auto p-5 md:p-8">
+            <ul class="list-disc list-inside space-y-3 text-base md:text-xl leading-relaxed text-slate-200">
+                <li>Dua tim akan saling bertanding menjawab soal pilihan ganda</li>
+                <li>Setiap jawaban benar = tarik 1 langkah (atau 2 langkah untuk soal sulit)</li>
+                <li>Setiap jawaban salah = lawan maju 1 langkah</li>
+                <li id="rules-duration-text">Waktu menjawab tiap soal hanya 10 detik</li>
+                <li id="rules-rounds-text">Pemenang ronde ditentukan dari posisi tali yang berhasil ditarik ke sisi timnya</li>
+                <li id="rules-timelimit-text" class="hidden text-[color:var(--warn)]"></li>
+            </ul>
+        </div>
+        <div class="shrink-0 p-5 md:p-8 pt-3 md:pt-4 border-t border-[color:rgba(139,92,246,0.25)] text-center">
+            <button id="close-rules" class="btn-neon py-4 px-10 text-lg md:text-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-none rounded-lg cursor-pointer shadow-[0_0_30px_rgba(52,235,158,.4)]">
+                Saya Mengerti, Mulai!
+            </button>
+        </div>
+    </div>
 </div>
 
 
